@@ -1,0 +1,53 @@
+body {
+    background-image: url(../imagenes/fondo.png); /*Coloco la imagen de fondo*/
+    background-repeat: repeat; /*Le doy diseño de repeticion en caso de falta*/
+    background-size: 1500px; /*indico que tan grande hacer la imagen*/
+    padding: 0;
+    margin: 0;
+    min-height: 2000vh;
+} 
+
+.navbar {
+    height: 70px;
+    width: 100%;
+    background-color: rgb(229, 247, 240);
+    display: flex;   
+    position: fixed;      
+    align-items: center;
+    padding-left: 10px;
+    gap: 15px;
+}
+
+.logo{
+    height: 80%;
+}
+
+.logo:hover{
+    cursor: pointer;
+    margin-top: -5px;
+}
+
+.container_buscador {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#buscador {
+    height: 35px;
+    border-radius: 100px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: gray;
+    font-size: 15px; /*tamaño de letra*/
+    padding-left: 10px; /*espacio izquierdo*/
+}
+
+.icono_lupa {
+    position: absolute;
+    right: 10px;
+}
+
+.icono_lupa:hover {
+    cursor: pointer;
+}
