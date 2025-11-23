@@ -1,0 +1,14 @@
+body {
+  background-image: url("images/fondo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.logo{
+  background-image: url("images/Icono.ico");
+  background-repeat: repeat;
+  background-position: top; 
+  width: 30%;
+  height: 200px;
+}
