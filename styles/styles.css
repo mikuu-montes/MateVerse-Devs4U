@@ -10,7 +10,7 @@ body {
 .navbar {
     height: 70px;
     width: 100%;
-    background-color: rgb(229, 247, 240);
+    background-color: #e5f7f0;
     display: flex;   
     position: fixed;      
     align-items: center;
@@ -18,16 +18,15 @@ body {
     gap: 15px;
 }
 
-.logo{
+#logo_pag{
     height: 80%;
 }
 
-.logo:hover{
+#logo_pag:hover{
     cursor: pointer;
-    margin-top: -5px;
 }
 
-.container_buscador {
+#container_buscador {
     position: relative;
     display: flex;
     align-items: center;
@@ -38,16 +37,44 @@ body {
     border-radius: 100px;
     border-width: 2px;
     border-style: solid;
-    border-color: gray;
-    font-size: 15px; /*tamaño de letra*/
-    padding-left: 10px; /*espacio izquierdo*/
+    border-color: #808080;
+    font-size: 15px; 
+    padding-left: 10px; 
 }
 
-.icono_lupa {
+#icono_lupa {
     position: absolute;
     right: 10px;
 }
 
-.icono_lupa:hover {
+#icono_lupa:hover {
     cursor: pointer;
 }
+
+#contenedor_logos {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    flex-grow: 1;
+    margin-right: 20px;
+    height: 70px;
+    gap: 5px;
+}
+
+.logos {
+    max-height: 60%;
+}
+
+.logos:hover {
+    cursor: pointer;
+    margin-top: -5px;
+}
+
+#postear_meme {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    height: 60px;
+}
+
+
