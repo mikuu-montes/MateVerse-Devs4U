@@ -1,5 +1,5 @@
 body {
-    background-image: url("../imagenes/fondo.jpg"); /*Coloco la imagen de fondo*/
+    background-image: url("../../imagenes/fondo.png"); /*Coloco la imagen de fondo*/
     background-repeat: repeat; /*Le doy diseño de repeticion en caso de falta*/
     background-size: cover; /* ahora la imagen se ajusta bien */
     padding: 0;
@@ -12,10 +12,11 @@ body {
     min-height: 100vh; 
 } 
 
-#logo_perfil{
-    height: 80px;
-    margin-bottom: 20px;
+#logo_perfil {
+    width: 60px;
+    height: 60px;
 }
+
 
 #logo_perfil:hover{
     cursor: pointer;
@@ -46,19 +47,25 @@ form {
 form input {
     width: 100%;
     padding: 3px;
-    font-size: 15px;
+    font-size: 17px;
     border-radius: 5px;
     border: 1px solid #aaa;
 }
 form button {
     width: 50%;
     padding: 10px;
-    font-size: 15px;
+    font-size: 17px;
     border-radius: 5px;
     border: 1px solid #aaa;
     align-self: center;
     margin-top: 20px;
 }
+.link{
+    margin-top: 15px;
+    width: 100%;
+    font-size: 17px;
+    text-align: center;
 
+}
 
 
