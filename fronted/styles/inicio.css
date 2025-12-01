@@ -1,0 +1,19 @@
+#container_posteos {
+    /*background-color: black;*/
+    margin-top: 70px;
+    min-height: calc(100vh - 70px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.post {
+    width: 90%;
+    max-width: 75%;
+    background-color: #e5f7f0;
+    border-radius: 10px;
+    min-height: 220px; /* alto visible estilo "publicación" */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
