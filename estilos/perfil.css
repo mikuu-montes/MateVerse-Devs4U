@@ -9,6 +9,14 @@ html, body{
 }
 
 .pagina_perfil{
+    
+    display: grid;
+    grid-template-columns: 300px 1fr 2fr;
+    grid-template-rows: 250px auto auto;
+    grid-template-areas:
+        "foto nombre pass"
+        "usuario mail mail"
+        "memes_publicados categorias .";
 
     background-color:rgba(255, 255, 255, 0.85); 
     height: 100%;    
