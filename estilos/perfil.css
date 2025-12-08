@@ -83,6 +83,15 @@ html, body{
     opacity: 0.6;
 }
 
+.input_editar {
+    margin-top: 15px;
+    height: min-content;
+    font-weight: bold;
+    background-color: #acd5ea55;
+    border: 2px solid #acd5ea;
+    border-radius: 8px;
+
+}
 
 .usuario_contenedor{
     grid-area:usuario;
