@@ -68,4 +68,31 @@ html, body{
     opacity: 1;
 }
 
+.contenedor_campo_editable {
+    display: inline-flex;
+    width: fit-content;
+    height: fit-content;
+}
 
+.texto_editable {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.texto_editable:hover {
+    opacity: 0.6;
+}
+
+
+.usuario_contenedor{
+    grid-area:usuario;
+    justify-self:center;
+}
+
+
+.nombre_usuario{
+    justify-self: center;
+    margin:0;
+    padding-top: 15px;
+    font-weight: bold;
+}
