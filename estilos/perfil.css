@@ -30,7 +30,9 @@ html, body{
 .foto_contenedor {
     width:256px;
     height:256px;    
-    margin-left: 0;        
+    margin-left: 0;
+    justify-self: center;
+    position: relative;         
 }
 
 .foto_perfil{
@@ -39,5 +41,31 @@ html, body{
     width: 100%;     
     height: 100%;
     object-fit: cover;
-    border-radius: 50%; 
+    border-radius: 50%;
+    justify-self: center;
+    display: inline-flex; 
+    cursor: pointer;
+    transition: 0.2s; 
 }
+
+.foto_perfil:hover {
+    opacity: 0.8;
+}
+
+.icono_editar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: white;
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+    pointer-events: none; 
+}
+
+.foto_perfil:hover + .icono_editar {
+    opacity: 1;
+}
+
+
