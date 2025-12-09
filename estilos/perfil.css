@@ -155,5 +155,37 @@ html, body{
     padding-left: 5px;
 }
 
+.contenedor_cat_favoritas {
+  grid-area:categorias; 
+  display: flex;
+  flex-direction: column; /* Título arriba, burbujas abajo */
+  gap: 5px;
+  align-self: start;
+  
+  
+}
+
+.contenedor_cat{
+  grid-area:categorias; 
+  display: flex;
+  gap: 10px;
+}
+
+
+.categoria {
+  background-color:#acd5ea;
+  padding: 6px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+  width: 150px;
+  color: #4184a6;
+}
+
+.categoria:hover {
+  background-color: #cce5ff;
+}
+
+
 
 
