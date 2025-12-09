@@ -137,4 +137,18 @@ html, body{
     padding-top: 2px;
 }
 
+.mail_contenedor{
+    grid-area: mail;
+    justify-self: center;
+    border: 2px solid #acd5ea;
+    background-color:#acd5ea55;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+    border-radius: 8px;
+    margin-top: 15px ;
+    width: 95%
+}
+.mail{
+    padding-left: 5px;
+}
+
 
