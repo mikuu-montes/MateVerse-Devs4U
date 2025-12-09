@@ -13,7 +13,7 @@ html, body{
     min-height: 100vh;
     display: grid;
     grid-template-columns: 300px 1fr 1fr;
-    grid-template-rows: 250px auto auto;
+    grid-template-rows: 250px auto auto auto;
     grid-template-areas:
         "foto nombre pass"
         "usuario mail mail"
