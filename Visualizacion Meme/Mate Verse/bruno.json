@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Mate Verse",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
