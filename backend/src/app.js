@@ -1,86 +1,111 @@
 const express = require('express'); //importar express
 const app = express();
 const port = 3000;
-let usuarios = [{
-  id: 1,
-  nombre_completo: "Fernanda Rivera",
-  nombre_usuario: "Ferchu",
-  email: "mrivera@fi.uba.ar",
-  },
-  {
-  id: 2,
-  nombre_completo: "Micaela Montes",
-  nombre_usuario: "Mica",
-  email: "mmicaela@fi.uba.ar",
-  },
-  {
-  id: 3,
-  nombre_completo: "Abril Bornish",
-  nombre_usuario: "Abru",
-  email: "babril@fi.uba.ar",
-  }
-]
-let meme = []
-let categoria = []
-let contexto = []
-let comentario = []
-let ranking = []
-let usuario_categoria_fav = []
-let usuario_meme_guardado = []
-app.use(express.json())
+const { getAllUsuarios, getUsuario, createUsuario, removeUsuario, updateUsuario} =require("./db/usuarios.js");
+app.use(express.json());
 
 //primer endpoint 
 app.get('/', (req, res) => {
-  res.send('MATE VERSE chicas \n')
-})
+  res.send('MATE VERSE chicas \n');
+});
 
+//GET ALL USUARIOS
+app.get('/usuarios', async(req, res) => {
+    const usuarios = await getAllUsuarios();
+  res.json(usuarios);
+});
 
-app.get('/usuarios', (req, res) => {
-  res.json(usuarios)
-})
-app.get('/usuarios/:id', (req, res) => {
-  const usuario = usuarios.find((element) => element.id == req.params.id)
-  if (usuario === undefined) {
-    res.sendStatus(404)
-    return
+//GET USUARIO
+app.get('/usuarios/:id', async(req, res) => {
+  const id= await getUsuario(req.params.id);
+  res.json(id);
+});
+//POST USUARIO
+app.post('/usuarios', async(req, res) => {
+  if (req.body === undefined) {
+    return res.status(400).send("No se proporciono un body");
   }
-  res.json(usuario)
-})
-
-
-app.post('/usuarios', (req, res) => {
-
-  const usuario={
-    id: usuarios.length +1,
-    nombre_completo: req.body.nombre_completo,
-    nombre_usuario: req.body.nombre_usuario,
-    email: req.body.email
-  }
+  const nombre_completo = req.body.nombre_completo;
+  const nombre_usuario = req.body.nombre_usuario;
+  const email = req.body.email;
+  const contrasenia = req.body.contrasenia;
+  const foto_perfil = req.body.foto_perfil;
   
-  usuarios.push(usuario)
-  res.status(201).send(usuario)
-})
+ /*  if (getUsuario(id) !== undefined) {
+    return res.status(409).send("EL usuario ya existe");
+  } */
+  if (nombre_completo === undefined) {
+    res.status(404).send("No se proporciono un nombre_completo");
+    return
+  }
+  if (nombre_usuario === undefined) {
+    res.status(404).send("No se proporciono un nombre_usuario");
+    return
+  }
+  if (email === undefined) {
+    res.status(404).send("No se proporciono un email");
+    return
+  }
+   if (contrasenia === undefined) {
+    res.status(404).send("No se proporciono un email");
+    return
+  }
+   if (foto_perfil === undefined) {
+    res.status(404).send("No se proporciono un email");
+    return
+  }
+  const usuario = await createUsuario(nombre_completo,nombre_usuario,email,contrasenia,foto_perfil);
+ 
+  res.status(201).json(usuario);
 
+});
+
+//DELETE USUARIO
 app.delete('/usuarios/:id', (req, res) => {
-  const usuario = usuarios.find((element) => element.id == req.params.id)
+  const usuario = getUsuario(req.params.id);
   if (usuario === undefined) {
-    res.sendStatus(404)
+    res.status(404)
     return
   }
-  usuarios=usuarios.filter((element) => element.id != req.params.id)
-  res.send(usuario)
+  removeUsuario(req.params.id);
 })
 
+//PUT USUARIO
 app.put('/usuarios/:id', (req, res) => {
-  let usuario_index = usuarios.findIndex((element) => element.id == req.params.id)
-  if (usuario_index === -1) { //si no encontro el indice de usuario
-    res.sendStatus(404)
+  let usuario = getUsuario(req.params.id);
+  if (usuario === undefined) {
+    res.status(404)
     return
   }
-  usuarios[usuario_index].nombre_completo = req.body.nombre_completo ?? usuarios[usuario_index].nombre_completo
-  usuarios[usuario_index].nombre_usuario = req.body.nombre_usuario ?? usuarios[usuario_index].nombre_usuario
-  usuarios[usuario_index].email = req.body.email ?? usuarios[usuario_index].email
-  res.send(usuarios[usuario_index])
+  if (req.body === undefined) {
+    return res.status(400).send("No se proporciono un body");
+  }
+  const id = req.body.id;
+  const nombre_completo = req.body.nombre_completo;
+  const nombre_usuario = req.body.nombre_usuario;
+  const email = req.body.email;
+
+  if (getUsuario(id) !== undefined) {
+    return res.status(409).send("EL usuario ya existe");
+  }
+  if (nombre_completo === undefined) {
+    res.status(404).send("No se proporciono un nombre_completo");
+    return
+  }
+  if (nombre_usuario === undefined) {
+    res.status(404).send("No se proporciono un nombre_usuario");
+    return
+  }
+  if (email === undefined) {
+    res.status(404).send("No se proporciono un email");
+    return
+  }
+  //Actualizo
+
+  usuario = updateUsuario(req.params.id,nombre_completo,nombre_usuario,email);
+ 
+  res.status(201).json(usuario);
+
 })
 
 
