@@ -74,5 +74,39 @@
     background-color: #9bd4bf;
 }
 
+.containerEstrellas {
+    display: flex;
+    align-items: center;
+    width: 100px; /* ancho total del conjunto de estrellas */
+}
+
+.estrellasVacias {
+    position: relative;
+    display: inline-block;
+    color: #ccc;
+    width: 100%;
+    overflow: hidden;
+}
+
+.estrellasLlenas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    width: 50%; /* cuanto de la estrella relleno*/
+    color: gold;
+}
+
+.estrellasVacias::before {
+    content: "★★★★★";
+    font-size: 20px;
+}
+
+.estrellasLlenas::before {
+    content: "★★★★★";
+    font-size: 20px;
+}
+
+
 
 
