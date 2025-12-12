@@ -1,6 +1,7 @@
 .containerRanking {
     margin-top: 70px;
     padding-top: 10px;
+    margin-bottom: 10px;
     height: auto;
     width: 100%;
     display: flex;
@@ -9,6 +10,7 @@
 
 .containerInfoRanking {
     height: 100%;
+    padding-bottom: 20px;
     width: 70%;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
