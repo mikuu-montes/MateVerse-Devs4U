@@ -1,0 +1,235 @@
+html, body{
+    min-height: 100vh;
+    height: auto;
+    margin:0;
+    padding:0;
+}
+
+.navbar {
+    position: relative;
+}
+
+.pagina_perfil{
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 300px 1fr 1fr;
+    grid-template-rows: 250px auto auto auto;
+    grid-template-areas:
+        "foto nombre pass"
+        "usuario mail mail"
+        "categorias categorias categorias"
+        "post post post";
+
+    background-color:rgba(255, 255, 255, 0.85); 
+    height: 100%;    
+    width: 89%;
+    margin-top: 50px; 
+    margin-left: auto;  
+    margin-right: auto;
+    padding: 15px;
+}
+
+.foto_contenedor {
+    width:256px;
+    height:256px;    
+    margin-left: 0;
+    justify-self: center;
+    position: relative;         
+}
+
+.foto_perfil{
+    border: 4px solid #acd5ea;     
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+    width: 100%;     
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    justify-self: center;
+    display: inline-flex; 
+    cursor: pointer;
+    transition: 0.2s; 
+}
+
+.foto_perfil:hover {
+    opacity: 0.8;
+}
+
+.icono_editar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: white;
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+    pointer-events: none; 
+}
+
+.foto_perfil:hover + .icono_editar {
+    opacity: 1;
+}
+
+.contenedor_campo_editable {
+    display: inline-flex;
+    height: fit-content;
+}
+
+.texto_editable {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.texto_editable:hover {
+    opacity: 0.6;
+}
+
+.input_editar {
+    margin-top: 15px;
+    height: min-content;
+    font-weight: bold;
+    background-color: #acd5ea55;
+    border: 2px solid #acd5ea;
+    border-radius: 8px;
+
+}
+
+.usuario_contenedor{
+    grid-area:usuario;
+    justify-self:center;
+    width: fit-content;
+}
+
+
+.nombre_usuario{
+    justify-self: center;
+    margin:0;
+    padding-top: 15px;
+    font-weight: bold;
+}
+
+.nombre_contenedor{
+    grid-area: nombre;
+    justify-self: center;
+    border: 2px solid #acd5ea;
+    background-color:#acd5ea55;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+    border-radius: 8px;
+    align-self: end;
+    width: 90%
+}
+
+.nombre_completo{
+    padding-left: 5px;
+    justify-self: left;
+}
+
+.clave_contenedor{
+    grid-area: pass;
+    justify-self: center;
+    border: 2px solid #acd5ea;
+    background-color:#acd5ea55;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+    border-radius: 8px;
+    align-self: end;
+    width: 90%
+}
+.clave{
+    padding-left: 5px;
+    padding-top: 2px;
+    justify-self: left;
+}
+
+.mail_contenedor{
+    grid-area: mail;
+    justify-self: center;
+    border: 2px solid #acd5ea;
+    background-color:#acd5ea55;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+    border-radius: 8px;
+    align-self: start;
+    margin-top: 15px;
+    width: 95%
+}
+.mail{
+    padding-left: 5px;
+}
+
+.contenedor_cat_favoritas {
+  grid-area:categorias; 
+  display: flex;
+  flex-direction: column; 
+  gap: 5px;
+  align-self: start;
+  
+  
+}
+
+.contenedor_cat{
+  grid-area:categorias; 
+  display: flex;
+  gap: 10px;
+}
+
+
+.categoria {
+  background-color:#acd5ea;
+  padding: 6px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+  width: 150px;
+  color: #4184a6;
+}
+
+.categoria:hover {
+  background-color: #cce5ff;
+}
+
+.posts_contenedor {
+  grid-area: post;
+  display: flex;
+  gap: 30px; 
+  flex-direction: column;
+}
+
+
+.fila_posts {
+  display: flex; 
+  flex-direction: row;
+  gap: 20px;    
+  flex-wrap: wrap; /* si no entran, bajan a la siguiente fila */
+}
+.meme_box {
+  background-color: #acd5ea;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  
+}
+
+.nombre_meme {
+  font-weight: bold;
+  font-size: 18px;
+  justify-self: center;
+}
+
+.botones_meme{
+    justify-self: center;
+}
+
+.botones_meme button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 10px;
+  transition: transform 0.2s;
+  
+}
+
+
+
+
+
