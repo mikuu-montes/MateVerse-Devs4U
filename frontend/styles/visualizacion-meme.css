@@ -1,26 +1,18 @@
-
 html {
-    min-height: 100%;
-    background-image: url(../imagenes/fondo.png);
-    background-repeat: repeat;
-    background-size: 1600px;
-}
-
-body {
     min-height: 100vh;
     margin: 0;
     padding-top: 60px; 
     background: transparent;
 }
 
-.columna_foto {
+.columnaFoto {
     grid-area: foto;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.pagina_meme {
+.paginaMeme {
     display: grid;
     grid-template-columns: 320px 500px; 
     grid-template-areas: "foto datos";
@@ -30,19 +22,10 @@ body {
     margin-top: 50px;
     width: fit-content;      
     padding: 20px;
-   
     background-color: rgba(255, 255, 255, 0.85);
 }
 
-
-
-.foto_contenedor {
-    grid-area: foto;
-    justify-self: center;
-    align-self: start;
-}
-
-.foto_meme{
+.fotoMeme{
     border: 4px solid #acd5ea;     
     box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
     width: 100%;     
@@ -55,48 +38,26 @@ body {
     margin-left: 20px;
 }
 
-.foto_meme:hover {
-    opacity: 0.8;
-}
-
-.nombre_contenedor {
+.nombreContenedor {
     grid-area: datos;
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-left: 30px;
+    max-width: 500px;
 }
 
-
-
-.foto_meme:hover {
-    opacity: 1;
-}
-
-
-
-.foto_contenedor {
+.fotoContenedor {
     grid-area: foto;
     align-self: center;
 }
-.nombre_meme {
+
+.nombreMeme {
     margin-top: 15px;   
     font-weight: bold;
     text-align: center;
     margin-left: 30px;
 }
-.nombre_contenedor {
-    grid-area: datos;
-    display: flex;
-    flex-direction: column; 
-    gap: 10px;
-    max-width: 500px;
-}
-
-
-
-
-
 
 .descripcion {
     font-size: 14px;
@@ -109,10 +70,9 @@ body {
     transition: 0.2s;
 }
 
-.descripcion:hover {
+.descripcion:hover, .protagonista:hover, .categoria:hover, .origen:hover, .medio:hover, .fechaSurgio:hover, .fechaCreacion:hover{
     opacity: 0.7;
 }
-
 
 .protagonista{
   font-size: 14px;
@@ -124,10 +84,6 @@ body {
     cursor: pointer;
     transition: 0.2s;
 }
-.protagonista:hover {
-    opacity: 0.7;
-}
-
 
 .categoria {
   font-size: 14px;
@@ -140,9 +96,6 @@ body {
     transition: 0.2s;
 }
 
-.categoria:hover {
-  opacity: 0.7;
-}
 .origen{
    font-size: 14px;
     font-weight: 600;
@@ -152,10 +105,6 @@ body {
     border-radius: 6px;
     cursor: pointer;
     transition: 0.2s;
-
-}
-.origen:hover{
-    opacity: 0.7;
 }
 
 .medio{
@@ -167,12 +116,9 @@ body {
     border-radius: 6px;
     cursor: pointer;
     transition: 0.2s;
+}
 
-}
-.medio:hover{
-    opacity: 0.7;
-}
-.fecha_surgio{
+.fechaSurgio{
    font-size: 14px;
     font-weight: 600;
     color: #4184a6;
@@ -181,13 +127,9 @@ body {
     border-radius: 6px;
     cursor: pointer;
     transition: 0.2s;
-
-}
-.fecha_surgio:hover{
-    opacity: 0.7;
 }
 
-.fecha_creacion{
+.fechaCreacion{
    font-size: 14px;
     font-weight: 600;
     color: #4184a6;
@@ -196,97 +138,89 @@ body {
     border-radius: 6px;
     cursor: pointer;
     transition: 0.2s;
-
-}
-.fecha_creacion:hover{
-    opacity: 0.7;
 }
 
 /* PIE DE PAGINA*/
-.usuario_datos {
+.usuarioDatos {
     display: flex;
     align-items: flex-start;
     gap: 40px;
-
     padding: 30px 40px;
     margin-top: 60px;
-
     border-top: 1px solid #ddd;
     background-color: #fafafa;
 }
-.columna1_foto {
+
+.columna1Foto {
     width: 140px;
     text-align: center;
 }
-.foto_perfil {
+
+.fotoPerfil {
     width: 90px;
     height: 90px;
     border-radius: 50%;
     object-fit: cover;
 }
-.nombre_usuario {
+
+.nombreUsuario {
     font-size: 14px;
     font-weight: bold;
     text-align: center;
 }
-.columna2_comentarios {
+
+.columna2Comentario {
     flex: 1;
     max-width: 350px;
 }
 
-
-
-.comentario_contenedor {
+.comentarioContenedor {
     display: flex;
     flex-direction: column;
     gap: 8px;
     min-width: 320px;
 }
 
-
-.comentario_label {
+.comentarioLabel {
     font-weight: bold;
     color: #4184a6;
 }
 
-.comentario_textarea {
+.comentarioTexTarea {
     resize: none;
     padding: 8px;
     font-size: 14px;
 }
 
-
-.comentario_boton {
+.comentarioBoton {
     align-self: flex-start;
     padding: 6px 14px;
     font-size: 13px;
     cursor: pointer;
 }
 
-
-.comentario_boton:hover {
+.comentarioBoton:hover {
     background-color: #2f6f8f;
 }
 
-
-.rating_contenedor {
+.ratingContenedor {
     margin-top: 15px;
 }
 
 /* Contenedor de estrellas */
-.rating_estrellas {
+.ratingEstrellas {
     display: flex;
     flex-direction: row-reverse; 
     gap: 6px;
 }
 
 /* ocultamos radios */
-.rating_estrellas input {
+.ratingEstrellas input {
     display: none;
 }
 
 /* estrellas */
-.rating_estrellas label {
+.ratingEstrellas label {
     font-size: 26px;
     color: #ccc;
     cursor: pointer;
@@ -294,22 +228,20 @@ body {
 }
 
 /* hover pinta hacia la izquierda */
-.rating_estrellas label:hover,
-.rating_estrellas label:hover ~ label {
+.ratingEstrellas label:hover, .ratingEstrellas label:hover ~ label {
     color: #ffcc00;
 }
 
 /* selección */
-.rating_estrellas input:checked ~ label {
+.ratingEstrellas input:checked ~ label {
     color: #ffcc00;
 }
 
-.rating_estrellas label:hover {
+.ratingEstrellas label:hover {
     transform: scale(1.1);
 }
 
-
-.columna3_todos_comentarios {
+.columna3TodosComentarios {
     width: 320px;
     margin-left: auto;
     margin-right: 150px;
@@ -317,7 +249,7 @@ body {
     flex-direction: column;
 }
 
-.lista_comentarios {
+.listaComentarios {
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -328,65 +260,48 @@ body {
     overflow-y: auto;       
     box-shadow: 0px 4px 8px rgba(0,0,0,0.08);
 }
+
 /* CAJA DE CADA COMENTARIO */
-.comentario_item {
+.comentarioItem {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     padding: 10px 12px;
     border-bottom: 1px solid #ddd;
 }
 
-
-.comentario_texto {
+.comentarioTexto {
     font-size: 14px;
     color: #333;
     max-width: 70%;
 }
 
-
-.like_contenedor {
+.likeContenedor {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-
-.like_input {
+.likeInput {
     display: none;
 }
 
-
-.like_estrellas {
+.likeEstrellas {
     font-size: 18px;
     cursor: pointer;
     color: #bbb;
     transition: transform 0.2s, color 0.2s;
 }
 
-
-.like_estrellas:hover {
+.likeEstrellas:hover {
     transform: scale(1.2);
 }
 
-
-.like_input:checked + .like_estrellas {
+.likeInput:checked + .likeEstrellas {
     color: #e63946;
 }
 
-
-.like_contador {
+.likeContador {
     font-size: 13px;
     color: #555;
 }
-
-
-
-
-
-
-
-
-
-
