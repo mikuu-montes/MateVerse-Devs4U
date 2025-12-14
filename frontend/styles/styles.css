@@ -1,0 +1,81 @@
+body {
+    background-image: url(../imagenes/fondo.png); /*Coloco la imagen de fondo*/
+    background-repeat: repeat; /*Le doy diseño de repeticion en caso de falta*/
+    background-size: 1500px; /*indico que tan grande hacer la imagen*/
+    padding: 0;
+    margin: 0;
+    /*min-height: 2000vh;*/
+} 
+
+.navbar {
+    height: 70px;
+    width: 100%;
+    background-color: #e5f7f0;
+    display: flex;   
+    position: fixed;      
+    align-items: center;
+    padding-left: 10px;
+    gap: 15px;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+#logoPag{
+    height: 80%;
+}
+
+#logoPag:hover{
+    cursor: pointer;
+}
+
+#containerBuscador {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#buscador {
+    height: 35px;
+    border-radius: 100px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #808080;
+    font-size: 15px; 
+    padding-left: 10px; 
+}
+
+#iconoLupa {
+    position: absolute;
+    right: 10px;
+}
+
+#iconoLupa:hover {
+    cursor: pointer;
+}
+
+#contenedorLogos {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    flex-grow: 1;
+    margin-right: 20px;
+    height: 70px;
+    gap: 5px;
+}
+
+.logos {
+    max-height: 60%;
+}
+
+.logos:hover {
+    cursor: pointer;
+    margin-top: -5px;
+}
+
+#postearMeme {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    height: 60px;
+}
