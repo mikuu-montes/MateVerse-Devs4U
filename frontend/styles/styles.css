@@ -1,9 +1,15 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
+
+
 body {
     background-image: url(../imagenes/fondo.png); /*Coloco la imagen de fondo*/
     background-repeat: repeat; /*Le doy diseño de repeticion en caso de falta*/
     background-size: 1500px; /*indico que tan grande hacer la imagen*/
     padding: 0;
     margin: 0;
+    font-family: 'Rubik', Arial, sans-serif;
+
 } 
 
 .navbar {
