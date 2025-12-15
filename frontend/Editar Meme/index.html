@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>MateVerse | Visualizacion meme</title>
+        <link rel="icon" href="../imagenes/icono.ico">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="../styles/styles.css">
+        <link rel="stylesheet" href="../styles/visualizacion-meme.css">
+        <link rel="stylesheet" href="../styles/editar.css">
+    </head>
+
+    <body>
+        
+        <div class="navbar">
+
+            <a href="../Información/index.html" class="linkContainerInfo">
+
+                <img id="logoPag" title="MateVerse" src="../imagenes/icono.ico" alt="Logo MateVerse">
+
+            </a>
+
+            <div id="containerBuscador">
+
+                <label for="buscador" id="iconoLupa">🔍</label>
+                <input id="buscador" type="text" placeholder="¿Qué meme buscas?">
+
+            </div>
+
+            <div id="contenedorLogos">
+
+                <a href="../Inicio/index.html" class="linkContainerInicio">
+
+                    <img class="logos" title="Inicio" src="../imagenes/inicio.png" alt="Logo Inicio">
+
+                </a>
+
+                <a href="../Ranking/index.html" class="linkContainerRanking">
+
+                    <img class="logos" title="Ranking" src="../imagenes/ranking.png" alt="Logo Ranking">
+
+                </a>
+
+                <a href="../Perfil Usuario/index.html" class="linkContainerPerfil">
+                    <img class="logos" title="Perfil" src="../imagenes/perfil.png" alt="Logo Perfil">
+                </a>
+
+                <a href="../Memes Guardados/index.html" class="linkContainerGuardados">
+
+                    <img class="logos" title="Guardados" src="../imagenes/archivo.png" alt="Logo Archivo">
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <a href="../Post Meme/index.html" class="linkContainerPostear">
+            
+            <img class="logos" title="Postear" id="postearMeme" src="../imagenes/postear_meme.png" alt="Logo Posteo Meme">
+
+        </a>
+
+        <div class="paginaMeme">
+            <!-- COLUMNA IZQUIERDA -->
+            <div class="columnaFoto">
+
+                <figure class="fotoContenedor">
+                    <img class="fotoMeme" src="../imagenes/medallas.png">   
+                </figure>
+
+                <input type="file" id="input_foto_meme" class="inputEditar">
+
+
+                <!-- TÍTULO DEBAJO DE LA FOTO -->
+                <div class="nombreMemeContenedor">
+
+                    <h3 class="nombreMeme textoEditable" id="descripcion">
+                        Titulo del meme    
+                    </h3>    
+                    <input type="text" id="input_tiutlo_meme" class="inputEditar">
+                    
+                </div>
+            </div>
+    
+            <!-- COLUMNA DERECHA DEL MEME -->
+            <div class="nombreContenedor">
+
+                <h2 style="font-weight: bold";>DESCRIPCION DEL MEME</h2> 
+                   
+                <div class="descripcionContenedor">
+
+                    <h3 class="descripcion textoEditable" id="descripcion">
+                        Descripción del meme
+                    </h3>
+
+                    <input type="text" class="inputEditar" id="input_descripcion">
+
+                </div>
+
+                <h2 style="font-weight: bold";>PROTAGONISTAS DEL MEME</h2>
+
+                <div class="protagonistaContenedor">
+
+                    <h3 class="protagonista textoEditable" id="protagonista">
+                        Protagonistas del meme 
+                    </h3>
+
+                    <input type="text" class="inputEditar" id="input_protagonista">
+
+                </div>
+        
+                <h2 style="font-weight: bold";>CATEGORIA</h2>
+
+                <div class="categoriaContenedor">
+
+                    <h3 class="categoria textoEditable" id="categoria">
+                        Categoría
+                    </h3>
+
+                    <input type="text" class="inputEditar" id="input_categoria">
+
+                </div>
+            
+                <h2 style="font-weight: bold";>ORIGEN DEL MEME</h2>
+
+                <div class="origenContenedor">
+
+                    <h3 class="origen textoEditable" id="categoria">
+                        Origen del meme
+                    </h3>
+
+                    <input type="text" class="inputEditar">
+
+                </div>
+            
+                <h2 style="font-weight: bold";>MEDIO DEL QUE SURGIO EL MEME</h2>
+
+                <div class="medioContenedor">
+
+                    <h3 class="medio textoEditable" id="categoria">
+                        Medio del que surgió
+                    </h3>
+
+                    <input type="text" class="inputEditar" id="input_medio">
+
+                </div>
+
+                <h2 style="font-weight: bold";>FECHA DONDE SURGIO EL MEME</h2>
+
+                <div class="fechaSurgioContenedor">
+
+                    <h3 class="fechaSurgio textoEditable" id="categoria">
+                        Fecha donde surgió
+                    </h3>
+
+                    <input type="text" class="inputEditar" id="input_fechaSurgio">
+
+                </div>
+                
+                <h2 style="font-weight: bold";>FECHA DE PUBLICACION DEL MEME</h2>
+
+                <div class="fechaCreacionContenedor">
+
+                    <h3 class="fechaCreacion textoEditable" id="categoria">
+                        Fecha de creación
+                    </h3>
+
+                </div>
+
+                <button class='boton_guardar' id="guardado_de_cambios">Guardar Cambios</button>
+
+            </div>
+
+        </div>
+
+       
+
+</html>
