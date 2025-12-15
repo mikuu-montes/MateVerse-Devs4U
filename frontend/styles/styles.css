@@ -26,8 +26,15 @@ body {
     z-index: 1000;
 }
 
+.linkContainerInfo, .linkContainerInicio, .linkContainerRanking, .linkContainerPerfil, .linkContainerGuardados, .linkContainerPostear {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
 #logoPag{
     height: 80%;
+    width: auto;
 }
 
 #logoPag:hover{
@@ -71,6 +78,7 @@ body {
 
 .logos {
     max-height: 60%;
+    width: auto;
 }
 
 .logos:hover {
