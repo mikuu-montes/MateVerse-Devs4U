@@ -92,3 +92,11 @@ body {
     right: 20px;
     height: 60px;
 }
+
+.linkContainerPost {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    text-decoration-line: none;
+    color: inherit;
+}
