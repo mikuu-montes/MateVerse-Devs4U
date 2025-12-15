@@ -9,7 +9,7 @@ html, body{
     position: relative;
 }
 
-.pagina_perfil{
+.paginaPerfil{
     min-height: 100vh;
     display: grid;
     grid-template-columns: 300px 1fr 1fr;
@@ -29,7 +29,7 @@ html, body{
     padding: 15px;
 }
 
-.foto_contenedor {
+.fotoContenedor {
     width:256px;
     height:256px;    
     margin-left: 0;
@@ -37,7 +37,7 @@ html, body{
     position: relative;         
 }
 
-.foto_perfil{
+.fotoPerfil{
     border: 4px solid #acd5ea;     
     box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
     width: 100%;     
@@ -50,11 +50,11 @@ html, body{
     transition: 0.2s; 
 }
 
-.foto_perfil:hover {
+.fotoPerfil:hover {
     opacity: 0.8;
 }
 
-.icono_editar {
+.iconoEditar {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -66,49 +66,47 @@ html, body{
     pointer-events: none; 
 }
 
-.foto_perfil:hover + .icono_editar {
+.fotoPerfil:hover + .iconoEditar {
     opacity: 1;
 }
 
-.contenedor_campo_editable {
+.contenedorCampoEditable {
     display: inline-flex;
     height: fit-content;
 }
 
-.texto_editable {
+.textoEditable {
     cursor: pointer;
     transition: 0.2s;
 }
 
-.texto_editable:hover {
+.textoEditable:hover {
     opacity: 0.6;
 }
 
-.input_editar {
+.inputEditar {
     margin-top: 15px;
     height: min-content;
     font-weight: bold;
     background-color: #acd5ea55;
     border: 2px solid #acd5ea;
     border-radius: 8px;
-
 }
 
-.usuario_contenedor{
+.usuarioContenedor{
     grid-area:usuario;
     justify-self:center;
     width: fit-content;
 }
 
-
-.nombre_usuario{
+.nombreUsuario{
     justify-self: center;
     margin:0;
     padding-top: 15px;
     font-weight: bold;
 }
 
-.nombre_contenedor{
+.nombreContenedor{
     grid-area: nombre;
     justify-self: center;
     border: 2px solid #acd5ea;
@@ -119,12 +117,12 @@ html, body{
     width: 90%
 }
 
-.nombre_completo{
+.nombreCompleto{
     padding-left: 5px;
     justify-self: left;
 }
 
-.clave_contenedor{
+.claveContenedor{
     grid-area: pass;
     justify-self: center;
     border: 2px solid #acd5ea;
@@ -134,13 +132,14 @@ html, body{
     align-self: end;
     width: 90%
 }
+
 .clave{
     padding-left: 5px;
     padding-top: 2px;
     justify-self: left;
 }
 
-.mail_contenedor{
+.mailContenedor{
     grid-area: mail;
     justify-self: center;
     border: 2px solid #acd5ea;
@@ -151,26 +150,24 @@ html, body{
     margin-top: 15px;
     width: 95%
 }
+
 .mail{
     padding-left: 5px;
 }
 
-.contenedor_cat_favoritas {
+.contenedorCatFavoritas {
   grid-area:categorias; 
   display: flex;
   flex-direction: column; 
   gap: 5px;
   align-self: start;
-  
-  
 }
 
-.contenedor_cat{
+.contenedorCat{
   grid-area:categorias; 
   display: flex;
   gap: 10px;
 }
-
 
 .categoria {
   background-color:#acd5ea;
@@ -186,50 +183,43 @@ html, body{
   background-color: #cce5ff;
 }
 
-.posts_contenedor {
+.postsContenedor {
   grid-area: post;
   display: flex;
   gap: 30px; 
   flex-direction: column;
 }
 
-
-.fila_posts {
+.filaPosts {
   display: flex; 
   flex-direction: row;
   gap: 20px;    
   flex-wrap: wrap; /* si no entran, bajan a la siguiente fila */
 }
-.meme_box {
+
+.memeBox {
   background-color: #acd5ea;
   border: 2px solid #ddd;
   border-radius: 10px;
   padding: 10px 15px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  
 }
 
-.nombre_meme {
+.nombreMeme {
   font-weight: bold;
   font-size: 18px;
   justify-self: center;
 }
 
-.botones_meme{
+.botonesMeme{
     justify-self: center;
 }
 
-.botones_meme button {
+.botonesMeme button {
   border: none;
   background: none;
   cursor: pointer;
   font-size: 18px;
   margin-left: 10px;
   transition: transform 0.2s;
-  
 }
-
-
-
-
-
