@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <title>MateVerse | perfil</title>
+        <link rel="icon" href="../imagenes/icono.ico">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="../styles/styles.css">
+        <link rel="stylesheet" href="../styles/perfil.css">
+
+    </head>
+
+    <body>
+
+        <div class="navbar">
+
+            <img id="logoPag" title="MateVerse" src="../imagenes/icono.ico" alt="Logo MateVerse">
+
+            <div id="containerBuscador">
+
+                <label for="buscador" id="iconoLupa">🔍</label>
+                <input id="buscador" type="text" placeholder="¿Qué meme buscas?">
+
+            </div>
+
+            <div id="contenedorLogos">
+
+                <img class="logos" title="Inicio" src="../imagenes/inicio.png" alt="Logo Inicio">
+                <img class="logos" title="Ranking" src="../imagenes/ranking.png" alt="Logo Ranking">
+                <img class="logos" title="Perfil" src="../imagenes/perfil.png" alt="Logo Perfil">
+                <img class="logos" title="Guardados" src="../imagenes/archivo.png" alt="Logo Archivo">
+
+            </div>
+
+        </div>
+
+        <img class="logos" title="Postear" id="postearMeme" src="../imagenes/postear_meme.png" alt="Logo Posteo Meme">
+
+        <div class="paginaPerfil">
+            
+            <figure class="fotoContenedor">
+
+                <img class="fotoPerfil is-rounded" src="../imagenes/perfil-default.jpeg">
+
+                <span class="iconoEditar">
+
+                    <i class="far fa-edit"></i>
+
+                </span>
+
+                <input type="file" id="inputFoto" accept="image/*" style="display:none;">
+
+            </figure>
+
+            <div class= "contenedorCampoEditable usuarioContenedor">
+
+                <h2 class="nombreUsuario textoEditable" id="nombreUsuario">@Nombre_de_Usuario</h2>
+                <input type="text" id="cambiarUsuario" class="inputEditar"  style="display:none";> 
+        
+            </div>
+
+            <div class= "contenedorCampoEditable nombreContenedor">
+
+                <h2 class="nombreCompleto textoEditable" id="nombreCompleto">Nombre Apellido</h2>
+                <input type="text" id="cambiarNombre" class="inputEditar"  style="display:none";> 
+        
+            </div>
+            
+            <div class= "contenedorCampoEditable claveContenedor">
+
+                <h2 class="clave textoEditable" id="clave">********</h2>
+                <input type="password" id="cambiarClave" class="inputEditar"  style="display:none";> 
+        
+            </div>
+            
+            
+            <div class= "contenedorCampoEditable mailContenedor">
+
+                <h2 class="mail textoEditable" id="mail">nombre.apellido@gmail.com</h2>
+                <input type="text" id="cambiarMail" class="inputEditar"  style="display:none";> 
+        
+            </div>
+
+            <div class="contenedorCantFavoritas">
+
+                <h2 style="font-weight: bold";>CATEGORIAS FAVORITAS</h2>
+
+                <div class="contenedorCat">
+
+                    <h2 class="categoria" id="fav1">#Cat1</h2>
+                    <h2 class="categoria" id="fav2">#Cat2</h2>
+                    <h2 class="categoria" id="fav3">#Cat3</h2>
+
+                </div>
+
+            </div>
+
+            <div class="postsContenedor">
+
+                <h2 style="font-weight: bold";>MEMES PUBLICADOS</h2>
+                
+                <div class="filaPosts">
+
+                    <div class="memeBox">
+
+                        <h2 class="nombreMeme">nombre meme 1</h2>
+
+                        <div class="botonesMeme">
+
+                            <button class="editar">✏️</button>
+                            <button class="eliminar">🗑️</button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="memeBox">
+
+                        <h2 class="nombreMeme">nombre meme 2</h2>
+
+                        <div class="botonesMeme">
+
+                            <button class="editar">✏️</button>
+                            <button class="eliminar">🗑️</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </body>
+
+</html>

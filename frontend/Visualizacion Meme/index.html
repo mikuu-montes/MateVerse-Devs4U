@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>MateVerse | Visualizacion meme</title>
+        <link rel="icon" href="../imagenes/icono.ico">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="../styles/styles.css">
+        <link rel="stylesheet" href="../styles/visualizacion-meme.css"> 
+    </head>
+
+    <body>
+
+        <div class="navbar">
+
+            <img id="logoPag" title="MateVerse" src="../imagenes/icono.ico" alt="Logo MateVerse">
+
+            <div id="containerBuscador">
+                <label for="buscador" id="iconoLupa">🔍</label>
+                <input id="buscador" type="text" placeholder="¿Qué meme buscas?">
+            </div>
+
+            <div id="contenedorLogos">
+                <img class="logos" title="Inicio" src="../imagenes/inicio.png" alt="Logo Inicio">
+                <img class="logos" title="Ranking" src="../imagenes/ranking.png" alt="Logo Ranking">
+                <img class="logos" title="Perfil" src="../imagenes/perfil.png" alt="Logo Perfil">
+                <img class="logos" title="Guardados" src="../imagenes/archivo.png" alt="Logo Archivo">
+            </div>
+
+        </div>
+
+        <img class="logos" title="Postear" id="postearMeme" src="../imagenes/postear_meme.png" alt="Logo Posteo Meme"> 
+
+        <div class="paginaMeme">
+            <!-- COLUMNA IZQUIERDA -->
+            <div class="columnaFoto">
+
+                <figure class="fotoContenedor">
+                    <img class="fotoMeme" src="../imagenes/medallas.png">
+                </figure>
+
+                <!-- TÍTULO DEBAJO DE LA FOTO -->
+                <div class="nombreMemeContenedor">
+
+                    <h3 class="nombreMeme textoEditable" id="descripcion">
+                        Titulo del meme
+                    </h3>
+
+                    <input type="text" class="inputEditar" style="display:none;">
+                    
+                </div>
+            </div>
+    
+            <!-- COLUMNA DERECHA DEL MEME -->
+            <div class="nombreContenedor">
+
+                <h2 style="font-weight: bold";>DESCRIPCION DEL MEME</h2> 
+                   
+                <div class="descripcionContenedor">
+
+                    <h3 class="descripcion textoEditable" id="descripcion">
+                        Descripción del meme
+                    </h3>
+
+                    <input type="text" class="inputEditar" style="display:none;">
+
+                </div>
+
+                <h2 style="font-weight: bold";>PROTAGONISTAS DEL MEME</h2>
+
+                <div class="protagonistaContenedor">
+
+                    <h3 class="protagonista textoEditable" id="protagonista">
+                        Protagonistas del meme 
+                    </h3>
+
+                    <input type="text" class="inputEditar" style="display:none;">
+
+                </div>
+        
+                <h2 style="font-weight: bold";>CATEGORIA</h2>
+
+                <div class="categoriaContenedor">
+
+                    <h3 class="categoria textoEditable" id="categoria">
+                        Categoría
+                    </h3>
+
+                    <input type="text" class="inputEditar" style="display:none;">
+
+                </div>
+            
+                <h2 style="font-weight: bold";>ORIGEN DEL MEME</h2>
+
+                <div class="origenContenedor">
+
+                    <h3 class="origen textoEditable" id="categoria">
+                        Origen del meme
+                    </h3>
+
+                    <input type="text" class="inputEditar" style="display:none;">
+
+                </div>
+            
+                <h2 style="font-weight: bold";>MEDIO DEL QUE SURGIO EL MEME</h2>
+
+                <div class="medioContenedor">
+
+                    <h3 class="medio textoEditable" id="categoria">
+                        Medio del que surgió
+                    </h3>
+
+                    <input type="text" class="inputEditar" style="display:none;">
+
+                </div>
+
+                <h2 style="font-weight: bold";>FECHA DONDE SURGIO EL MEME</h2>
+
+                <div class="fechaSurgioContenedor">
+
+                    <h3 class="fechaSurgio textoEditable" id="categoria">
+                        Fecha donde surgió
+                    </h3>
+
+                    <input type="text" class="inputEditar" style="display:none;">
+
+                </div>
+                
+                <h2 style="font-weight: bold";>FECHA DE PUBLICACION DEL MEME</h2>
+
+                <div class="fechaCreacionContenedor">
+
+                    <h3 class="fechaCreacion textoEditable" id="categoria">
+                        Fecha de creación
+                    </h3>
+
+                    <input type="text" class="inputEditar" style="display:none;">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="usuarioDatos">
+
+            <div class="columna1Foto">
+
+                <figure class="fotoPerfilContenedor">
+
+                    <img class="fotoPerfil" src="../imagenes/medallas.png">
+
+                    <span class="iconoEditar">
+                        <i class="far fa-edit"></i>
+                    </span>
+
+                </figure>
+
+                <div class="nombreUsuarioContenedor">
+
+                    <h3 class="nombreUsuario textoEditable" id="nombreUsuario">
+                        Nombre del usuario
+                    </h3>
+
+                    <input type="text" class="inputEditar" style="display:none;">
+                    
+                </div>
+
+            </div>
+
+            <div class="columna3Comentario">
+                
+                <div class="comentarioContenedor">
+
+                    <label for="comentarioMeme" class="comentarioLabel">
+                        Dejá tu comentario sobre el meme
+                    </label>
+
+                    <textarea
+                        id="comentarioMeme"
+                        class="comentarioTexTarea"
+                        placeholder="¿Qué opinás de este meme?"
+                        rows="4">
+                    </textarea>
+
+                    <button class="comentarioBoton">
+                        Comentar
+                    </button>
+
+                </div>
+
+                <form action="/guardar_rating" method="POST" class="ratingContenedor">
+
+                    <input type="hidden" name="memeId" value="{{ meme.id }}">
+
+                    <div class="ratingEstrellas">
+
+                        <input type="radio" name="rating" id="star5" value="5"
+                            onchange="this.form.submit()">
+
+                        <label for="star5">★</label>
+
+                        <input type="radio" name="rating" id="star4" value="4"
+                            onchange="this.form.submit()">
+
+                        <label for="star4">★</label>
+
+                        <input type="radio" name="rating" id="star3" value="3"
+                            onchange="this.form.submit()">
+
+                        <label for="star3">★</label>
+
+                        <input type="radio" name="rating" id="star2" value="2"
+                            onchange="this.form.submit()">
+
+                        <label for="star2">★</label>
+
+                        <input type="radio" name="rating" id="star1" value="1"
+                            onchange="this.form.submit()">
+                            
+                        <label for="star1">★</label>
+
+                    </div>
+
+                </form>
+
+            </div>
+    
+            <div class="columna3TodosComentarios">
+
+                <label class="comentarioLabel">Comentarios del meme</label>
+
+                <div class="listaComentarios">
+
+                    <!-- COMENTARIO -->
+                    <div class="comentarioItem" data-comentario-id="1">
+
+                        <p class="comentarioTexto">
+                            JAJAA este meme me representa totalmente 😂
+                        </p>
+
+                        <div class="likeContenedor">
+
+                            <!-- input que JS va a escuchar -->
+                            <input 
+                                type="checkbox"
+                                class="likeInput"
+                                id="likeComentario1"
+                                data-comentario-id="1"
+                            >
+
+                            <!-- estrella clickeable -->
+                            <label 
+                                for="likeComentario1"
+                                class="likeEstrellas"
+                                title="Me gusta">
+                                ★
+                            </label>
+
+                            <!-- contador manipulable por JS -->
+                            <span 
+                                class="likeContador"
+                                data-like-contador="1">
+                                12
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- COMENTARIO -->
+                    <div class="comentarioItem" data-comentario-id="2">
+
+                        <div class="comentarioItem">
+
+                            <p class="comentarioTexto">
+                                Muy bueno 😂
+                            </p>
+
+                            <div class="likeContenedor">
+
+                                <input 
+                                    type="checkbox"
+                                    class="likeInput"
+                                    id="likeComentario2"
+                                    data-comentario-id="2"
+                                >
+
+                                <label 
+                                    for="likeComentario2"
+                                    class="likeEstrellas">
+                                    ★
+                                </label>
+
+                                <span 
+                                    class="likeContador"
+                                    data-like-contador="2">
+                                    8
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- COMENTARIO -->
+                    <div class="comentarioItem" data-comentario-id="3">
+
+                        <div class="comentarioItem">
+
+                            <p class="comentarioTexto">
+                                Clásico meme
+                            </p>
+
+                            <div class="likeContenedor">
+
+                                <input 
+                                    type="checkbox"
+                                    class="likeInput"
+                                    id="likeComentario3"
+                                    data-comentario-id="3"
+                                >
+
+                                <label 
+                                    for="likeComentario3"
+                                    class="likeEstrellas">
+                                    ★
+                                </label>
+
+                                <span 
+                                    class="likeContador"
+                                    data-like-contador="3">
+                                    5
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="comentarioItem">
+
+                        <p class="comentarioTexto">Nunca falla</p>
+
+                        <div class="likeContenedor">
+
+                            <input type="checkbox" id="like4" class="likeInput">
+
+                            <label for="like4" class="likeEstrellas">★</label>
+
+                            <span class="likeContador">3</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <button class="verMasComentarios">Ver más comentarios</button>
+
+            </div>
+
+        </div>
+ 
+    </body>
+
+</html>
