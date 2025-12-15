@@ -205,6 +205,8 @@ html, body{
   font-weight: bold;
   font-size: 18px;
   justify-self: center;
+  color: inherit;
+  text-decoration-line: none;
 }
 
 .botonesMeme{
