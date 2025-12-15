@@ -1,0 +1,27 @@
+.inputEditar{
+    display: none;
+    margin-top: 15px;
+    height: min-content;
+    font-weight: bold;
+    background-color: #acd5ea55;
+    border: 2px solid #acd5ea;
+    border-radius: 8px;
+}
+.nombreMemeContenedor{
+    cursor: pointer;
+}
+
+
+.boton_guardar{
+    padding: 20px;
+    align-self: center;
+    justify-self: center;
+    margin-top: 30px;
+    background-color:#acd5ea  ;
+    color:#4184a6;
+    border: 2px solid #acd5ea55;
+    border-radius: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
