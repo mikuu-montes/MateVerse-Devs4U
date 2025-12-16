@@ -3,11 +3,9 @@ html, body{
     height: auto;
 }
 
-.navbar {
-    position: relative;
-}
 
 .paginaPerfil{
+    position: relative;
     min-height: 100vh;
     display: grid;
     grid-template-columns: 300px 1fr 1fr;
@@ -20,12 +18,32 @@ html, body{
     background-color:rgba(255, 255, 255, 0.85); 
     height: 100%;    
     width: 89%;
-    margin-top: 50px; 
+    margin-top: 110px; 
     margin-left: auto;  
     margin-right: auto;
     padding: 15px;
 }
 
+.botonEliminarUsuario {
+
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.botonEliminarUsuario:hover {
+    background-color: #c0392b;
+}
 .fotoContenedor {
     width:256px;
     height:256px;    
@@ -164,6 +182,7 @@ html, body{
   grid-area:categorias; 
   display: flex;
   gap: 10px;
+  padding-top: 10px ;
 }
 
 .categoria {
