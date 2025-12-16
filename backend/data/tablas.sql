@@ -10,10 +10,15 @@ create table usuarios (
     foto_perfil TEXT DEFAULT '/imagenes/perfil-default.jpeg'
 );
 
-
 create table categorias (
     id_categoria SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT
 )
 
+create table contexto (
+    id_contexto SERIAL PRIMARY KEY,
+    origen VARCHAR(100) NOT NULL,
+    medio_fuente VARCHAR(100),
+    fecha_original DATE
+)

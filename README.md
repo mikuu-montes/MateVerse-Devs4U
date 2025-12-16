@@ -79,13 +79,13 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr>
   <tr>
     <td>id_contexto</td>
-    <td>SERIAL</td>
-    <td>Identificador único del contexto(Primary Key)</td>
+    <td>SERIAL PRIMARY KEY</td>
+    <td>Identificador único del contexto autogenerado.</td>
   </tr>
   <tr>
     <td>origen</td>
-    <td>VARCHAR(100)</td>
-    <td>Lugar, situación donde surgió (“TV”, “Redes”, etc)</td>
+    <td>VARCHAR(100) NOT NULL</td>
+    <td>Lugar, situación donde surgió (“TV”, “Redes”, etc), no nulo.</td>
   </tr>
   <tr>
     <td>medio_fuente</td>
