@@ -262,7 +262,7 @@ Tabla intermedia entre Usuario y Meme, para luego armar un ranking de los memes 
   </tr>  
 </table>
 
-## Usuario_categoria_fav
+## usuarios_categorias_favs
 <table border="1" cellpadding="5" cellspacing="0">
   <tr>
     <th>Campo</th>
@@ -271,18 +271,18 @@ Tabla intermedia entre Usuario y Meme, para luego armar un ranking de los memes 
   </tr>
   <tr>
     <td>id_cat_fav</td>
-    <td>SERIAL</td>
-    <td>Identificador único de la categoria favorita(Primary Key)</td>
+    <td>SERIAL PRIMARY KEY</td>
+    <td>Identificador único de la categoria favorita autogenerado.</td>
   </tr>
   <tr>
     <td>categoria_id</td>
-    <td>INTEGER</td>
-    <td>FK a <code>categoria_id</code></td>
+    <td>INT NOT NULL REFERENCES categorias (id_categoria)</td>
+    <td>FK a <code>id_categoria</code></td>
   </tr>
   <tr>
     <td>usuario_id</td>
-    <td>INTEGER</td>
-    <td>FK a <code>usuario_id</code></td>
+    <td>INT NOT NULL REFERENCES usuarios (id_usuario)</td>
+    <td>FK a <code>id_usuario</code></td>
   </tr>
 </table>
 

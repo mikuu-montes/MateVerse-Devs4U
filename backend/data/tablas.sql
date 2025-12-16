@@ -14,14 +14,14 @@ create table categorias (
     id_categoria SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL UNIQUE,
     descripcion TEXT
-)
+);
 
 create table contextos (
     id_contexto SERIAL PRIMARY KEY,
     origen VARCHAR(100) NOT NULL,
     medio_fuente VARCHAR(100),
     fecha_original DATE
-)
+);
 
 create table calificaciones (
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
@@ -39,7 +39,7 @@ create table memes (
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
     categoria_id INT REFERENCES categorias (id_categoria),
     context_id INT REFERENCES contextos (id_contexto)
-)
+);
 
 CREATE TABLE likes_comentarios (
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
@@ -51,5 +51,11 @@ create table comentarios (
     contenido TEXT,
     fecha_registro DATE NOT NULL DEFAULT CURRENT_DATE,
     meme_id INT NOT NULL REFERENCES memes (id_meme),
+    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario)
+);
+
+create table usuarios_categorias_favs (
+    id_cat_fav SERIAL PRIMARY KEY,
+    categoria_id INT NOT NULL REFERENCES categorias (id_categoria),
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario)
 )
