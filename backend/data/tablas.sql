@@ -23,13 +23,6 @@ create table contextos (
     fecha_original DATE
 );
 
-create table calificaciones (
-    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
-    meme_id INT NOT NULL REFERENCES memes (id_meme),
-    estrellas INT NOT NULL CHECK (estrellas BETWEEN 1 AND 5),
-    fecha_cracion DATE NOT NULL DEFAULT CURRENT_DATE
-);
-
 create table memes (
     id_meme SERIAL PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
@@ -38,12 +31,14 @@ create table memes (
     protagonistas VARCHAR(200),
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
     categoria_id INT REFERENCES categorias (id_categoria),
-    context_id INT REFERENCES contextos (id_contexto)
+    contexto_id INT REFERENCES contextos (id_contexto)
 );
 
-CREATE TABLE likes_comentarios (
+create table calificaciones (
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
-    comentario_id INT NOT NULL REFERENCES comentarios (id_comentario)
+    meme_id INT NOT NULL REFERENCES memes (id_meme),
+    estrellas INT NOT NULL CHECK (estrellas BETWEEN 1 AND 5),
+    fecha_creacion DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 create table comentarios (
@@ -51,17 +46,24 @@ create table comentarios (
     contenido TEXT,
     fecha_registro DATE NOT NULL DEFAULT CURRENT_DATE,
     meme_id INT NOT NULL REFERENCES memes (id_meme),
-    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario)
+    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
+    UNIQUE (usuario_id, meme_id)
+);
+
+create table likes_comentarios (
+    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
+    comentario_id INT NOT NULL REFERENCES comentarios (id_comentario),
+    PRIMARY KEY (usuario_id, comentario_id)
 );
 
 create table usuarios_categorias_favs (
-    id_cat_fav SERIAL PRIMARY KEY,
     categoria_id INT NOT NULL REFERENCES categorias (id_categoria),
-    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario)
+    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
+    PRIMARY KEY (categoria_id, usuario_id)
 )
 
 create table usuarios_memes_guardados (
-    id_meme_guardado SERIAL PRIMARY KEY,
     meme_id INT NOT NULL REFERENCES memes (id_meme),
-    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario)
+    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
+    PRIMARY KEY (meme_id, usuario_id)
 )

@@ -99,34 +99,6 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr>
 </table>
 
-## calificaciones
-<table border="1" cellpadding="5" cellspacing="0">
-  <tr>
-    <th>Campo</th>
-    <th>Tipo de dato</th>
-    <th>Descripción</th>
-  </tr>
-  <tr>
-    <td>usuario_id</td>
-    <td>INT NOT NULL REFERENCES usuarios (id_usuario)</td>
-    <td>FK a <code>id_usuario</code></td>
-  </tr>
-  <tr>
-    <td>meme_id</td>
-    <td>INT NOT NULL REFERENCES memes (id_meme)</td>
-    <td>FK a <code>id_meme</code></td>
-  </tr>
-  <tr>
-    <td>estrellas</td>
-    <td>INT NOT NULL CHECK (estrellas BETWEEN 1 AND 5)</td>
-    <td>cantidad númerica de estrellas con un rango de opción entre 1 y 5.</td>
-  </tr>
-  <tr>
-    <td>fecha_cracion</td>
-    <td>DATE NOT NULL DEFAULT CURRENT_DATE</td>
-    <td>Fecha en la que se creo la calificación, agrega por defecto la actúal.</td>
-  </tr>
-</table>
 
 ## memes
 <table border="1" cellpadding="5" cellspacing="0">
@@ -178,8 +150,7 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr> 
 </table>
 
-
-## likes_comentarios
+## calificaciones
 <table border="1" cellpadding="5" cellspacing="0">
   <tr>
     <th>Campo</th>
@@ -192,11 +163,22 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
     <td>FK a <code>id_usuario</code></td>
   </tr>
   <tr>
-    <td>comentario_id</td>
-    <td>INT NOT NULL REFERENCES comentarios (id_comentario)</td>
-    <td>FK a <code>id_comentario</code></td>
+    <td>meme_id</td>
+    <td>INT NOT NULL REFERENCES memes (id_meme)</td>
+    <td>FK a <code>id_meme</code></td>
+  </tr>
+  <tr>
+    <td>estrellas</td>
+    <td>INT NOT NULL CHECK (estrellas BETWEEN 1 AND 5)</td>
+    <td>cantidad númerica de estrellas con un rango de opción entre 1 y 5.</td>
+  </tr>
+  <tr>
+    <td>fecha_craecion</td>
+    <td>DATE NOT NULL DEFAULT CURRENT_DATE</td>
+    <td>Fecha en la que se creo la calificación, agrega por defecto la actúal.</td>
   </tr>
 </table>
+
 
 ## comentarios
 <table border="1" cellpadding="5" cellspacing="0">
@@ -230,7 +212,37 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
     <td>INT NOT NULL REFERENCES usuarios (id_usuario)</td>
     <td>FK a <code>id_usuario</code></td>
   </tr>
+  <tr>
+    <td>UNIQUE (usuario_id, meme_id)</td>
+    <td> </td>
+    <td>Permite una única vez que <code>usuario_id</code> y <code>meme_id</code> esten juntos (un único comentario en el meme).</code></td>
+  </tr>
 </table>
+
+## likes_comentarios
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr>
+    <th>Campo</th>
+    <th>Tipo de dato</th>
+    <th>Descripción</th>
+  </tr>
+  <tr>
+    <td>usuario_id</td>
+    <td>INT NOT NULL REFERENCES usuarios (id_usuario)</td>
+    <td>FK a <code>id_usuario</code></td>
+  </tr>
+  <tr>
+    <td>comentario_id</td>
+    <td>INT NOT NULL REFERENCES comentarios (id_comentario)</td>
+    <td>FK a <code>id_comentario</code></td>
+  </tr>
+  <tr>
+    <td>PRIMARY KEY (usuario_id, comentario_id)</td>
+    <td> </td>
+    <td>Identifica de forma única el like de un usuario, impidiendo que repita.</td>
+  </tr>
+</table>
+
 
 ## Ranking 
 Tabla intermedia entre Usuario y Meme, para luego armar un ranking de los memes mejor puntuados y realizar un promedio de puntaje de cada meme
@@ -270,11 +282,6 @@ Tabla intermedia entre Usuario y Meme, para luego armar un ranking de los memes 
     <th>Descripción</th>
   </tr>
   <tr>
-    <td>id_cat_fav</td>
-    <td>SERIAL PRIMARY KEY</td>
-    <td>Identificador único de la categoria favorita autogenerado.</td>
-  </tr>
-  <tr>
     <td>categoria_id</td>
     <td>INT NOT NULL REFERENCES categorias (id_categoria)</td>
     <td>FK a <code>id_categoria</code></td>
@@ -283,6 +290,11 @@ Tabla intermedia entre Usuario y Meme, para luego armar un ranking de los memes 
     <td>usuario_id</td>
     <td>INT NOT NULL REFERENCES usuarios (id_usuario)</td>
     <td>FK a <code>id_usuario</code></td>
+  </tr>
+  <tr>
+    <td>PRIMARY KEY (categoria_id, usuario_id)</td>
+    <td> </td>
+    <td>Identifica de forma única a la relación entre el usuario y la categoria fav, impidiendo que se repita.</td>
   </tr>
 </table>
 
@@ -294,11 +306,6 @@ Tabla intermedia entre Usuario y Meme, para luego armar un ranking de los memes 
     <th>Descripción</th>
   </tr>
   <tr>
-    <td>id_meme_guardado</td>
-    <td>SERIAL PRIMARY KEY</td>
-    <td>Identificador único del meme guardado autogenerado.</td>
-  </tr>
-  <tr>
     <td>meme_id</td>
     <td>INT NOT NULL REFERENCES memes (id_meme)</td>
     <td>FK a <code>id_meme</code></td>
@@ -307,6 +314,11 @@ Tabla intermedia entre Usuario y Meme, para luego armar un ranking de los memes 
     <td>usuario_id</td>
     <td>INT NOT NULL REFERENCES usuarios (id_usuario)</td>
     <td>FK a <code>id_usuario</code></td>
+  </tr>
+  <tr>
+    <td>PRIMARY KEY (meme_id, usuario_id)</td>
+    <td> </td>
+    <td>Identifica de forma única a la relacion entre el usuario y el meme, impidiendo que se vuelva a guardar el mismo.</td>
   </tr>
 </table>
 
