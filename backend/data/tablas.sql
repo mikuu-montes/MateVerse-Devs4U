@@ -10,9 +10,10 @@ create table usuarios (
     foto_perfil TEXT DEFAULT '/imagenes/perfil-default.jpeg'
 );
 
-create table 
 
+create table categorias (
+    id_categoria SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT
+)
 
-/*CURRENT_DATE automaticamente la bdd lo a
-
-CREATE TABLE meme(id_meme INT PRIMARY KEY, titulo VARCHAR(100), imagen_url TEXT, descripcion TEXT, protagonistas VARCHAR(200), id_usuario INT FOREIGN KEY, id_categoria INT FOREIGN KEY, id_contexto INT FOREIGN KEY);

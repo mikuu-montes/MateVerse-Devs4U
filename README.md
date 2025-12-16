@@ -45,56 +45,6 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr>
 </table>
 
-## Meme
-<table border="1" cellpadding="5" cellspacing="0">
-  <tr>
-    <th>Campo</th>
-    <th>Tipo de dato</th>
-    <th>Descripción</th>
-  </tr>
-  <tr>
-    <td>id_meme</td>
-    <td>SERIAL</td>
-    <td>Identificador único del meme(Primary Key)</td>
-  </tr>
-  <tr>
-    <td>titulo</td>
-    <td>VARCHAR(100)</td>
-    <td>Palabra o frase como se conoce al meme</td>
-  </tr>
-  <tr>
-    <td>imagen_url</td>
-    <td>TEXT</td>
-    <td>link al video o foto del meme</td>
-  </tr>
-
-  <tr>
-    <td>descripcion</td>
-    <td>TEXT</td>
-    <td>Breve texto sobre el meme</td>
-  </tr>
-  <tr>
-    <td>protagonistas</td>
-    <td>VARCHAR(200)</td>
-    <td>Si son famosos, nombre de las personas involucradas</td>
-  </tr>
-  <tr>
-    <td>usuario_id</td>
-    <td>INTEGER</td>
-    <td>FK a <code>usuario_id</code></td>
-  </tr>
-  <tr>
-    <td>categoria_id</td>
-    <td>INTEGER</td>
-    <td>FK a <code>categoria_id</code></td>
-  </tr>
-  <tr>
-    <td>contexto_id</td>
-    <td>INTEGER</td>
-    <td>FK a <code>contexto_id</code></td>
-  </tr> 
-</table>
-
 ## Categoría
 
 <table border="1" cellpadding="5" cellspacing="0">
@@ -105,23 +55,18 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr>
   <tr>
     <td>id_categoria</td>
-    <td>SERIAL</td>
-    <td>Identificador único de la categoría(Primary Key)</td>
+    <td>SERIAL PRIMARY KEY</td>
+    <td>Identificador único de la categoría autogenerado.</td>
   </tr>
   <tr>
     <td>nombre</td>
-    <td>VARCHAR(100)</td>
-    <td>Nombre de la categoría</td>
+    <td>VARCHAR(100) NOT NULL</td>
+    <td>Nombre de la categoría, no nulo.</td>
   </tr>
   <tr>
     <td>descripción</td>
     <td>TEXT</td>
     <td>Breve texto sobre que abarca esta categoría</td>
-  </tr>
-  <tr>
-    <td>popularidad</td>
-    <td>INTEGER</td>
-    <td>Cuantos memes pertenecen a esta categoría</td>
   </tr>
 </table>
 
@@ -152,6 +97,57 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
     <td>DATE</td>
     <td>Cuando ocurrió la situación que originó el meme</td>
   </tr>
+</table>
+
+
+## Meme
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr>
+    <th>Campo</th>
+    <th>Tipo de dato</th>
+    <th>Descripción</th>
+  </tr>
+  <tr>
+    <td>id_meme</td>
+    <td>SERIAL PRIMARY KEY</td>
+    <td>Identificador único del meme autogenerado.</td>
+  </tr>
+  <tr>
+    <td>titulo</td>
+    <td>VARCHAR(100) NOT NULL</td>
+    <td>Palabra o frase como se conoce al meme, no nula.</td>
+  </tr>
+  <tr>
+    <td>media_url</td>
+    <td>TEXT NOT NULL</td>
+    <td>link al video o foto del meme, no nulo.</td>
+  </tr>
+
+  <tr>
+    <td>descripcion</td>
+    <td>TEXT NOT NULL</td>
+    <td>Breve texto sobre el meme, no nula.</td>
+  </tr>
+  <tr>
+    <td>protagonistas</td>
+    <td>VARCHAR(200)</td>
+    <td>Si son famosos, nombre de las personas involucradas</td>
+  </tr>
+  <tr>
+    <td>usuario_id</td>
+    <td>INT REFERENCES usuarios (usuario_id) </td>
+    <td>FK a <code>usuario_id</code></td>
+  </tr>
+  <tr>
+    <td>categoria_id</td>
+    <td>INT</td>
+    <td>FK a <code>categoria_id</code></td>
+  </tr>
+  <tr>
+    <td>contexto_id</td>
+    <td>INT</td>
+    <td>FK a <code>contexto_id</code></td>
+  </tr> 
 </table>
 
 ## Comentario
