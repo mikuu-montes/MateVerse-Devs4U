@@ -10,38 +10,38 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr>
   <tr>
     <td>id_usuario</td>
-    <td>SERIAL</td>
-    <td>Identificador único del usuario (Primary Key)</td>
+    <td>SERIAL PRIMARY KEY</td>
+    <td>Identificador único del usuario autogenerado.</td>
   </tr>
   <tr>
     <td>nombre_completo</td>
-    <td>VARCHAR(100)</td>
-    <td>Nombre y apellido del usuario</td>
+    <td>VARCHAR(100) NOT NULL</td>
+    <td>Nombre y apellido del usuario, no nulo.</td>
   </tr>
   <tr>
     <td>nombre_usuario</td>
-    <td>VARCHAR(100)</td>
-    <td>Nombre de usuario o nickname</td>
+    <td>VARCHAR(100) NOT NULL UNIQUE</td>
+    <td>Nombre de usuario o nickname, no nulo y único.</td>
   </tr>
   <tr>
     <td>email</td>
-    <td>VARCHAR(100)</td>
-    <td>Correo electrónico del usuario</td>
+    <td>VARCHAR(100) NOT NULL UNIQUE</td>
+    <td>Correo electrónico del usuario, no nulo y único.</td>
   </tr>
   <tr>
     <td>contrasenia</td>
-    <td>VARCHAR(100)</td>
-    <td> hashed, no visible</td>
+    <td>VARCHAR(100) NOT NULL</td>
+    <td> Contraseña no nula.</td>
   </tr>
   <tr>
-    <td>fecha_creacion</td>
-    <td>DATE</td>
-    <td>Fecha de creación de la cuenta</td>
+    <td>fecha_registro</td>
+    <td>DATE NOT NULL DEFAULT CURRENT_DATE</td>
+    <td>Fecha de creación/registro de la cuenta, no nula y generada por defecto.</td>
   </tr>
   <tr>
     <td>foto_perfil</td>
-    <td>TEXT</td>
-    <td>URL o ruta de la foto de perfil</td>
+    <td>TEXT DEFAULT '/imagenes/perfil-default.jpeg'</td>
+    <td>URL o ruta de la foto de perfil, por defecto asigna una.</td>
   </tr>
 </table>
 

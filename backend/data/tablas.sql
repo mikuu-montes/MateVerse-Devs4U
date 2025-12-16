@@ -7,8 +7,10 @@ create table usuarios (
     email VARCHAR(100) NOT NULL UNIQUE,
     contrasenia VARCHAR(100) NOT NULL,
     fecha_registro DATE NOT NULL DEFAULT CURRENT_DATE,
-    foto_perfil TEXT
+    foto_perfil TEXT DEFAULT '/imagenes/perfil-default.jpeg'
 );
+
+create table 
 
 
 /*CURRENT_DATE automaticamente la bdd lo a
