@@ -1,6 +1,15 @@
 Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subir y comentar memes del "lore argentino" (memes históricos, políticos, televisivos, deportivos, etc.), con su trasfondo y contexto sociocultural.
 
-# Entidades
+---
+### Tabla de contenido:
+    falta rellenar
+
+---
+
+
+### Base de Datos:
+  La base de datos se compone de las siguientes entidades/tablas:
+
 ## usuarios
 <table border="1" cellpadding="5" cellspacing="0">
   <tr>
@@ -322,13 +331,17 @@ Tabla intermedia entre Usuario y Meme, para luego armar un ranking de los memes 
   </tr>
 </table>
 
+---
 
+### Como levantar el proyecto:
+- Requisitos previos:
+  - Tener node.js instalado previamente (v18 o superior).
+  - Tener instalado nodemon. (se instala corriendo ``` npm install nodemon --save-dev ```).
+  - Tener docker y docker compose instalado.
+  - Tener git instalado.
+  - Tener postgreSQL instalado.
 
-
-
-
-
-
-
-
-
+Para levantar el backend debes:
+  - Estar parado en la carpeta base (MateVerse-Devs4U).
+  - Debes correr: 
+  ``` make run-backend ```
