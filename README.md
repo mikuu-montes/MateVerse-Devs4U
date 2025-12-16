@@ -60,7 +60,7 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr>
   <tr>
     <td>nombre</td>
-    <td>VARCHAR(100) NOT NULL</td>
+    <td>VARCHAR(100) NOT NULL UNIQUE</td>
     <td>Nombre de la categoría, no nulo.</td>
   </tr>
   <tr>
@@ -135,7 +135,7 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr>
   <tr>
     <td>usuario_id</td>
-    <td>INT REFERENCES usuarios (id_usuario) </td>
+    <td>INT NOT NULL REFERENCES usuarios (id_usuario) </td>
     <td>FK a <code>id_usuario</code></td>
   </tr>
   <tr>
@@ -150,7 +150,7 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr> 
 </table>
 
-## Comentario
+## Comentarios
 <table border="1" cellpadding="5" cellspacing="0">
   <tr>
     <th>Campo</th>
@@ -159,8 +159,8 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr>
   <tr>
     <td>id_comentario</td>
-    <td>SERIAL</td>
-    <td>Identificador único del comentario(Primary Key)</td>
+    <td>SERIAL PRIMARY KEY</td>
+    <td>Identificador único del comentario autogenerado.</td>
   </tr>
   <tr>
     <td>contenido</td>
@@ -168,24 +168,19 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
     <td>texto del comentario</td>
   </tr>
   <tr>
-    <td>Fecha</td>
-    <td>DATE</td>
-    <td>Fecha en la que se realizó el comentario</td>
-  </tr>
-  <tr>
-    <td>likes</td>
-    <td>INTEGER</td>
-    <td>Cantidad de me gusta que recibió el comentario</td>
+    <td>fecha_registo</td>
+    <td>DATE NOT NULL DEFAULT CURRENT_DATE</td>
+    <td>Fecha en la que se realizó el comentario, la agrega automaticamente.</td>
   </tr>
   <tr>
     <td>meme_id</td>
-    <td>INTEGER</td>
-    <td>FK a <code>meme_id</code></td>
+    <td>INT NOT NULL REFERENCES memes (id_meme)</td>
+    <td>FK a <code>id_meme</code></td>
   </tr>
   <tr>
     <td>usuario_id</td>
-    <td>INTEGER</td>
-    <td>FK a <code>usuario_id</code></td>
+    <td>INT NOT NULL REFERENCES usuarios (id_usuario)</td>
+    <td>FK a <code>id_usuario</code></td>
   </tr>
 </table>
 

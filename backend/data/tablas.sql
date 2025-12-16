@@ -12,7 +12,7 @@ create table usuarios (
 
 create table categorias (
     id_categoria SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
     descripcion TEXT
 )
 
@@ -29,7 +29,15 @@ create table memes (
     media_url TEXT NOT NULL,
     descripcion TEXT NOT NULL,
     protagonistas VARCHAR(200),
-    usuario_id INT REFERENCES usuarios (id_usuario),
+    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
     categoria_id INT REFERENCES categorias (id_categoria),
     context_id INT REFERENCES contextos (id_contexto)
+)
+
+create table comentarios (
+    id_comentario SERIAL PRIMARY KEY,
+    contenido TEXT,
+    fecha_registro DATE NOT NULL DEFAULT CURRENT_DATE,
+    meme_id INT NOT NULL REFERENCES memes (id_meme),
+    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario)
 )
