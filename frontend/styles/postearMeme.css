@@ -28,13 +28,23 @@ form {
     gap: 10px;
 }
 
-form input {
+form input, form select {
     width: 100%;
     padding: 3px;
     font-size: 15px;
     border-radius: 5px;
     border: 1px solid #aaa;
+    box-sizing: border-box;
 }
+
+form select {
+    color: #888;
+}
+
+form select:valid {
+    color: #000;
+}
+
 
 form button {
     width: 50%;
