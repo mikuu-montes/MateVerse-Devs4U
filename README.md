@@ -45,7 +45,7 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr>
 </table>
 
-## Categoría
+## Categorías
 
 <table border="1" cellpadding="5" cellspacing="0">
   <tr>
@@ -70,7 +70,7 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr>
 </table>
 
-## Contexto
+## Contextos
 <table border="1" cellpadding="5" cellspacing="0">
   <tr>
     <th>Campo</th>
@@ -100,7 +100,7 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
 </table>
 
 
-## Meme
+## Memes
 <table border="1" cellpadding="5" cellspacing="0">
   <tr>
     <th>Campo</th>
@@ -135,18 +135,18 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr>
   <tr>
     <td>usuario_id</td>
-    <td>INT REFERENCES usuarios (usuario_id) </td>
-    <td>FK a <code>usuario_id</code></td>
+    <td>INT REFERENCES usuarios (id_usuario) </td>
+    <td>FK a <code>id_usuario</code></td>
   </tr>
   <tr>
     <td>categoria_id</td>
-    <td>INT</td>
-    <td>FK a <code>categoria_id</code></td>
+    <td>INT REFERENCES categorias (id_categoria)</td>
+    <td>FK a <code>id_categoria</code></td>
   </tr>
   <tr>
     <td>contexto_id</td>
-    <td>INT</td>
-    <td>FK a <code>contexto_id</code></td>
+    <td>INT REFERENCES contextos (id_contexto)</td>
+    <td>FK a <code>id_contexto</code></td>
   </tr> 
 </table>
 

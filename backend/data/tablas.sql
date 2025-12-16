@@ -16,9 +16,20 @@ create table categorias (
     descripcion TEXT
 )
 
-create table contexto (
+create table contextos (
     id_contexto SERIAL PRIMARY KEY,
     origen VARCHAR(100) NOT NULL,
     medio_fuente VARCHAR(100),
     fecha_original DATE
+)
+
+create table memes (
+    id_meme SERIAL PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    media_url TEXT NOT NULL,
+    descripcion TEXT NOT NULL,
+    protagonistas VARCHAR(200),
+    usuario_id INT REFERENCES usuarios (id_usuario),
+    categoria_id INT REFERENCES categorias (id_categoria),
+    context_id INT REFERENCES contextos (id_contexto)
 )
