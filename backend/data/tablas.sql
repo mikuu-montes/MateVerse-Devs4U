@@ -59,3 +59,9 @@ create table usuarios_categorias_favs (
     categoria_id INT NOT NULL REFERENCES categorias (id_categoria),
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario)
 )
+
+create table usuarios_memes_guardados (
+    id_meme_guardado SERIAL PRIMARY KEY,
+    meme_id INT NOT NULL REFERENCES memes (id_meme),
+    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario)
+)

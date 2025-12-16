@@ -286,7 +286,7 @@ Tabla intermedia entre Usuario y Meme, para luego armar un ranking de los memes 
   </tr>
 </table>
 
-## Usuario_meme_guardado
+## usuarios_memes_guardados
 <table border="1" cellpadding="5" cellspacing="0">
   <tr>
     <th>Campo</th>
@@ -295,18 +295,18 @@ Tabla intermedia entre Usuario y Meme, para luego armar un ranking de los memes 
   </tr>
   <tr>
     <td>id_meme_guardado</td>
-    <td>SERIAL</td>
-    <td>Identificador único del meme guardado(Primary Key)</td>
+    <td>SERIAL PRIMARY KEY</td>
+    <td>Identificador único del meme guardado autogenerado.</td>
   </tr>
   <tr>
     <td>meme_id</td>
-    <td>INTEGER</td>
-    <td>FK a <code>meme_id</code></td>
+    <td>INT NOT NULL REFERENCES memes (id_meme)</td>
+    <td>FK a <code>id_meme</code></td>
   </tr>
   <tr>
     <td>usuario_id</td>
-    <td>INTEGER</td>
-    <td>FK a <code>usuario_id</code></td>
+    <td>INT NOT NULL REFERENCES usuarios (id_usuario)</td>
+    <td>FK a <code>id_usuario</code></td>
   </tr>
 </table>
 
