@@ -140,6 +140,20 @@ html {
     transition: 0.2s;
 }
 
+.urlVideo{
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4184a6;
+    padding: 6px 8px;
+    background-color: #acd5ea33;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+
+
 /* PIE DE PAGINA*/
 .usuarioDatos {
     display: flex;
