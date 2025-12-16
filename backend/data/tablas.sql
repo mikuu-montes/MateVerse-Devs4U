@@ -34,6 +34,11 @@ create table memes (
     context_id INT REFERENCES contextos (id_contexto)
 )
 
+CREATE TABLE likes_comentarios (
+    usuario_id INT NOT NULL REFERENCES usuarios(id_usuario),
+    comentario_id INT NOT NULL REFERENCES comentarios(id_comentario)
+);
+
 create table comentarios (
     id_comentario SERIAL PRIMARY KEY,
     contenido TEXT,

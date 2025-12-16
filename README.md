@@ -150,6 +150,26 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
   </tr> 
 </table>
 
+
+## likes_comentarios
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr>
+    <th>Campo</th>
+    <th>Tipo de dato</th>
+    <th>Descripción</th>
+  </tr>
+  <tr>
+    <td>usuario_id</td>
+    <td>INT NOT NULL REFERENCES usuarios(id_usuario)</td>
+    <td>FK a <code>id_usuario</code></td>
+  </tr>
+  <tr>
+    <td>comentario_id</td>
+    <td>INT NOT NULL REFERENCES comentarios(id_comentario)</td>
+    <td>FK a <code>id_comentario</code></td>
+  </tr>
+</table>
+
 ## Comentarios
 <table border="1" cellpadding="5" cellspacing="0">
   <tr>
