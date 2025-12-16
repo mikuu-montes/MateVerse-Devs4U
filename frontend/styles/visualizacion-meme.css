@@ -203,8 +203,10 @@ html {
     background-color: #2f6f8f;
 }
 
+
 .ratingContenedor {
     margin-top: 15px;
+    margin-bottom: 30px;
 }
 
 /* Contenedor de estrellas */
@@ -305,3 +307,28 @@ html {
     font-size: 13px;
     color: #555;
 }
+
+.estadoComentario{
+   font-size: 14px;
+    font-weight: 600;
+    color: #4184a6;
+    padding: 6px 8px;
+    background-color: #acd5ea33;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botones_comentario {
+    display: flex;
+    gap: 15px;
+   margin-top: 15px;
+}
+.editarComentario:hover {
+    background-color: #2f6f8f;
+}
+
+.eliminarComentario:hover {
+    background-color: #2f6f8f;
+}
+
