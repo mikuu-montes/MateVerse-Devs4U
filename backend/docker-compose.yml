@@ -1,15 +1,17 @@
 services:
   db:
-    image: postgres:16
+    image: postgres:17
     container_name: database
     environment:
       - POSTGRES_USER=Devs4
       - POSTGRES_PASSWORD=mate
       - POSTGRES_DB=mateverse
     ports:
-      - 55432:5432
+      - 5432:5432
     volumes:
-      - ./psql_data/:/var/lib/postgresql/data
+      - ./.volumes/postgres/data:/var/lib/postgresql/data/
+
+
 #¿Como levantar la imagen de postgres(docker compose)?
 #docker run -p 55432:5432 -e POSTGRES_PASSWORD=mate -e POSTGRES_DB=mateverse -d --rm postgres:16
 
