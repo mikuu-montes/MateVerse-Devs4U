@@ -10,6 +10,7 @@ create table usuarios (
     foto_perfil TEXT
 );
 
-/*CURRENT_DATE automaticamente la bdd lo agrega*/
+
+/*CURRENT_DATE automaticamente la bdd lo a
 
 CREATE TABLE meme(id_meme INT PRIMARY KEY, titulo VARCHAR(100), imagen_url TEXT, descripcion TEXT, protagonistas VARCHAR(200), id_usuario INT FOREIGN KEY, id_categoria INT FOREIGN KEY, id_contexto INT FOREIGN KEY);
