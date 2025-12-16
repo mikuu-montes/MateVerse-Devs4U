@@ -23,6 +23,13 @@ create table contextos (
     fecha_original DATE
 )
 
+create table calificaciones (
+    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
+    meme_id INT NOT NULL REFERENCES memes (id_meme),
+    estrellas INT NOT NULL CHECK (estrellas BETWEEN 1 AND 5),
+    fecha_cracion DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
 create table memes (
     id_meme SERIAL PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
@@ -35,8 +42,8 @@ create table memes (
 )
 
 CREATE TABLE likes_comentarios (
-    usuario_id INT NOT NULL REFERENCES usuarios(id_usuario),
-    comentario_id INT NOT NULL REFERENCES comentarios(id_comentario)
+    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario),
+    comentario_id INT NOT NULL REFERENCES comentarios (id_comentario)
 );
 
 create table comentarios (
