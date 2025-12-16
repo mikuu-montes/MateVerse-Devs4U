@@ -341,7 +341,12 @@ Tabla intermedia entre Usuario y Meme, para luego armar un ranking de los memes 
   - Tener git instalado.
   - Tener postgreSQL instalado.
 
-Para levantar el backend debes:
+Para levantar el backend completo debes:
   - Estar parado en la carpeta base (MateVerse-Devs4U).
   - Debes correr: 
   ``` make run-backend ```
+
+Si solo se quiere levantar la base de datos, debes:
+  - Estar parado en la carpeta base (MateVerse-Devs4U).
+  - Debes correr: 
+  ``` make start-database ```
