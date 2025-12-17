@@ -147,6 +147,13 @@ Mateverse es un sitio web colaborativo donde los usuarios pueden descubrir, subi
     <td>INTEGER</td>
     <td>FK a <code>contexto_id</code></td>
   </tr> 
+  
+  <tr>
+    <td>fecha_publicacion</td>
+    <td>DATE</td>
+    <td>Fecha en que se publico el meme</td>
+  </tr> 
+
 </table>
 
 ## Puntuaciones_memes
