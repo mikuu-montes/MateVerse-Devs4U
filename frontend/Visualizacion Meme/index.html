@@ -181,9 +181,7 @@
 
                     <img class="fotoPerfil" src="../imagenes/medallas.png">
 
-                    <span class="iconoEditar">
-                        <i class="far fa-edit"></i>
-                    </span>
+
 
                 </figure>
 
@@ -254,22 +252,7 @@
                     </div>
 
                 </form>
-
-                <h2 style="font-weight: bold" ;="">ESTADO DE TU COMENTARIO</h2>
-                <div class="estadoComentario">
-                    <h3 class="estadoComentario textoEditable" id="estado_comentario">
-                        Estado del comentario
-                    </h3>
-
-                    <input type="text" class="inputEditar" style="display:none;">
-
-                </div>
-                 <div class="botones_comentario">
-                    <button class="editarComentario">Editar</button>
-                    <button class="eliminarComentario">Eliminar</button>
-        
-                
-                </div>
+                 
 
             </div>
     
@@ -285,47 +268,60 @@
                         <p class="comentarioTexto">
                             JAJAA este meme me representa totalmente 😂
                         </p>
+                        
+                        <div class="comentarioAcciones">
+                            
+                            <div class="indicadorEditado">Editado</div>
 
-                        <div class="likeContenedor">
+                            <div class="likeContenedor">
+                                
+                                <!-- input que JS va a escuchar -->
+                                <input 
+                                    type="checkbox"
+                                    class="likeInput"
+                                    id="likeComentario1"
+                                    data-comentario-id="1"
+                                >
 
-                            <!-- input que JS va a escuchar -->
-                            <input 
-                                type="checkbox"
-                                class="likeInput"
-                                id="likeComentario1"
-                                data-comentario-id="1"
-                            >
+                                <!-- estrella clickeable -->
+                                <label 
+                                    for="likeComentario1"
+                                    class="likeEstrellas"
+                                    title="Me gusta">
+                                    ★
+                                </label>
 
-                            <!-- estrella clickeable -->
-                            <label 
-                                for="likeComentario1"
-                                class="likeEstrellas"
-                                title="Me gusta">
-                                ★
-                            </label>
+                                <!-- contador manipulable por JS -->
+                                <span 
+                                    class="likeContador"
+                                    data-like-contador="1">
+                                    12
+                                </span>
 
-                            <!-- contador manipulable por JS -->
-                            <span 
-                                class="likeContador"
-                                data-like-contador="1">
-                                12
-                            </span>
+                            </div>
+
+                            <div class="botones_comentario">
+                                <button class="editarComentario">Editar</button>
+                                <button class="eliminarComentario">Eliminar</button>
+                            </div>
 
                         </div>
 
                     </div>
-
                     <!-- COMENTARIO -->
-                    <div class="comentarioItem" data-comentario-id="2">
+                    <div class="comentarioItem" data-comentario-id="1">
 
-                        <div class="comentarioItem">
-
-                            <p class="comentarioTexto">
-                                Muy bueno 😂
-                            </p>
+                        <p class="comentarioTexto">
+                            Muy bueno 😂
+                        </p>
+                        
+                        <div class="comentarioAcciones">
+                            
+                            <div class="indicadorEditado">Editado</div>
 
                             <div class="likeContenedor">
-
+                                
+                                <!-- input que JS va a escuchar -->
                                 <input 
                                     type="checkbox"
                                     class="likeInput"
@@ -333,12 +329,15 @@
                                     data-comentario-id="2"
                                 >
 
+                                <!-- estrella clickeable -->
                                 <label 
                                     for="likeComentario2"
-                                    class="likeEstrellas">
+                                    class="likeEstrellas"
+                                    title="Me gusta">
                                     ★
                                 </label>
 
+                                <!-- contador manipulable por JS -->
                                 <span 
                                     class="likeContador"
                                     data-like-contador="2">
@@ -347,68 +346,14 @@
 
                             </div>
 
-                        </div>
-
-                    </div>
-
-                    <!-- COMENTARIO -->
-                    <div class="comentarioItem" data-comentario-id="3">
-
-                        <div class="comentarioItem">
-
-                            <p class="comentarioTexto">
-                                Clásico meme
-                            </p>
-
-                            <div class="likeContenedor">
-
-                                <input 
-                                    type="checkbox"
-                                    class="likeInput"
-                                    id="likeComentario3"
-                                    data-comentario-id="3"
-                                >
-
-                                <label 
-                                    for="likeComentario3"
-                                    class="likeEstrellas">
-                                    ★
-                                </label>
-
-                                <span 
-                                    class="likeContador"
-                                    data-like-contador="3">
-                                    5
-                                </span>
-
+                            <div class="botones_comentario">
+                                <button class="editarComentario">Editar</button>
+                                <button class="eliminarComentario">Eliminar</button>
                             </div>
 
                         </div>
 
                     </div>
-
-                    <div class="comentarioItem">
-
-                        <p class="comentarioTexto">Nunca falla</p>
-
-                        <div class="likeContenedor">
-
-                            <input type="checkbox" id="like4" class="likeInput">
-
-                            <label for="like4" class="likeEstrellas">★</label>
-
-                            <span class="likeContador">3</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-                
-
-                <button class="verMasComentarios">Ver más comentarios</button>
-                <div class="acciones_comentario">
-               
 
             </div>
 
