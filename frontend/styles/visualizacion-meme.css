@@ -59,6 +59,29 @@ html {
     margin-left: 30px;
 }
 
+.containerGuardarMeme {
+    width: 80%;
+    flex: 1;
+    display: flex;
+    align-items: start;
+    justify-content: end;
+    flex-direction: column;
+}
+
+.iconoGuardar {
+    height: 60px;
+    width: 60px;
+    cursor: pointer;
+}
+
+.guardarMemeCheck {
+    display: none;
+}
+
+.guardarMemeCheck:checked + label .iconoGuardar {
+    content: url("../imagenes/archivoRelleno.png");
+}
+
 .descripcion {
     font-size: 14px;
     font-weight: 600;
@@ -152,8 +175,6 @@ html {
     transition: 0.2s;
 }
 
-
-
 /* PIE DE PAGINA*/
 .usuarioDatos {
     display: flex;
@@ -217,7 +238,6 @@ html {
     background-color: #2f6f8f;
 }
 
-
 .ratingContenedor {
     margin-top: 15px;
     margin-bottom: 30px;
@@ -279,12 +299,15 @@ html {
 
 /* CAJA DE CADA COMENTARIO */
 .comentarioItem {
+    height: auto;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     padding: 10px 12px;
     border-bottom: 1px solid #ddd;
 }
+
 .comentarioAcciones {
     display: flex;
     flex-direction: column;
@@ -292,11 +315,26 @@ html {
     gap: 4px;
 }
 
-
 .indicadorEditado{
-  display: none;  
-  justify-self: center;
-  font-size: 12px;
+    height: 30px;
+    width: 100%;
+    display: flex;  
+    justify-self: center;
+    font-size: 12px;
+}
+
+.textoEditado {
+    color:gray;
+}
+
+/* Texto por defecto */
+.comentarioItem .textoEditado::before {
+    content: "Original";
+}
+
+/* Si está editado */
+.comentarioItem[data-editado="true"] .textoEditado::before {
+    content: "Editado";
 }
 
 .botones_comentario {  
@@ -321,7 +359,6 @@ html {
 .eliminarComentario:hover {
     background-color: #2f6f8f;
 }
-
 
 .comentarioTexto {
     font-size: 14px;
@@ -358,7 +395,3 @@ html {
     font-size: 13px;
     color: #555;
 }
-
-
-
-

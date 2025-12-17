@@ -80,6 +80,22 @@
                     <input type="text" class="inputEditar" style="display:none;">
                     
                 </div>
+
+                <div class="containerGuardarMeme">
+
+                    <input 
+                        type="checkbox" 
+                        id="guardarMemeCheck"
+                        class="guardarMemeCheck"
+                    >
+                
+                    <label for="guardarMemeCheck">
+                        <img src="../imagenes/archivo.png" class="iconoGuardar" title="Guardar Meme">
+                    </label>
+                
+                </div>
+                
+
             </div>
     
             <!-- COLUMNA DERECHA DEL MEME -->
@@ -274,16 +290,20 @@
                 <div class="listaComentarios">
 
                     <!-- COMENTARIO -->
-                    <div class="comentarioItem" data-comentario-id="1">
+                    <div class="comentarioItem" data-comentario-id="1" data-editado="false">
 
                         <p class="comentarioTexto">
                             JAJAA este meme me representa totalmente 😂
                         </p>
                         
                         <div class="comentarioAcciones">
-                            
-                            <div class="indicadorEditado">Editado</div>
 
+                            <div class="indicadorEditado">
+
+                                <p class="textoEditado"></p>
+
+                            </div>
+                    
                             <div class="likeContenedor">
                                 
                                 <!-- input que JS va a escuchar -->
@@ -320,7 +340,7 @@
 
                     </div>
                     <!-- COMENTARIO -->
-                    <div class="comentarioItem" data-comentario-id="1">
+                    <div class="comentarioItem" data-comentario-id="2" data-editado="true">
 
                         <p class="comentarioTexto">
                             Muy bueno 😂
@@ -328,7 +348,11 @@
                         
                         <div class="comentarioAcciones">
                             
-                            <div class="indicadorEditado">Editado</div>
+                            <div class="indicadorEditado">
+
+                                <p class="textoEditado"></p>
+
+                            </div>
 
                             <div class="likeContenedor">
                                 
