@@ -37,20 +37,17 @@ const {
 const {
   buscarMemes
 } = require("./db/busqueda.js");
-
 const {
     guardarMeme,
     eliminarMemeGuardado,
     obtenerMemesGuardados,
     usuarioGuardoMeme
 } = require ("./db/memeGuardado.js")
-
 const {
     puntuarMeme,
     actualizarPuntajeMeme,
     usuarioPuntuoMeme
 } = require('./db/puntuacionMeme.js');
-
 
 //MEMES 
 
@@ -59,66 +56,63 @@ app.get("/api/v1/memes", async (req, res) => {
   try {
 
     const busqueda = req.query.busqueda;
-
     if (busqueda){
-
-        const memes = await buscarMemes(`%${busqueda}%`);
-        return res.json(memes);
+      const memes = await buscarMemes(`%${busqueda}%`);
+      return res.json(memes);
     }
-
-
     const memes = await getAllMemes();
     res.json(memes);
 
   } catch (err) {
+
     console.error(err);
     res.status(500).json({ error: "Error al obtener los memes" });
+
   }
 });
 
 //Un solo meme con sus comentarios.
 app.get("/api/v1/meme/:id", async (req, res) => {
   try {
-    const id_meme = req.params.id;
 
+    const id_meme = req.params.id;
     if(!id_meme){
       return res.status(400).json({ error: "Id de meme inválido. "});
     }
-
     const meme= await getMeme(id_meme);
-
     if (!meme){
-        return res.status(404).json({error: "Meme no encontrado"})
+      return res.status(404).json({error: "Meme no encontrado"})
     }
-
     const comentarios = await obtenerTodosLosComentariosPorMeme(id_meme) || [];
-
     if (!comentarios){
       return res.status(404).json({Error: "Comentarios no encontrados." });
     }
-
     res.json({
       ...meme,
       comentarios
     });
 
   } catch (err) {
+
     console.error(err);
     res.status(500).json({ error: "Error al obtener el meme y sus comentarios." });
+
   }
 });
 
-// Memes publicados por un usuario particualr (para ponerlos en el perfil)
+// Memes publicados por un usuario particular (para ponerlos en el perfil)
 app.get("/api/v1/usuarios/:id/memes", async (req, res) => {
   try {
+
     const usuario_id = req.params.id;
-
     const memes = await getMemesDeUsuario(usuario_id);
-
     res.json(memes);
+
   } catch (error) {
+
     console.error(error);
     res.status(500).json({ error: "Error al obtener los memes del usuario" });
+    
   }
 });
 
@@ -505,42 +499,30 @@ app.get("/memes-guardados/:id", async (req, res) => {
   }
 });
 
-
-
 //PUNTUACION DE MEME
-
 app.post("/api/v1/meme/:id/puntuar", async (req, res) => {
   try {
     const id_meme = req.params.id;
     const id_usuario = req.body.usuario_id;
     const puntaje = req.body.puntaje;
-
+    if (!yaPuntuado){
     const yaPuntuado = await usuarioPuntuoMeme(id_meme, id_usuario)
-
+      await actualizarPuntajeMeme(id_meme, id_usuario, puntaje)
     if (!yaPuntuado){
         await puntuarMeme(id_meme, id_usuario, puntaje);
     } else {
-
+    }
       await actualizarPuntajeMeme(id_meme, id_usuario, puntaje)
     }
     
 
     res.json({ puntaje });
-
+  console.log(`\nRecibido ${signal}. Cerrando servidor...`);
   } catch (err) {
-    console.error(err);
+    console.log('Servidor cerrado, puerto liberado');
     res.status(500).json({ error: err.message });
-  }
-});
-
-
-
-
-//FUNCIONES ANONIMAS
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-
+  });
+}
 const server = app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 });
