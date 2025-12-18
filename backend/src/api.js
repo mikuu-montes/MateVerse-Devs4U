@@ -38,19 +38,19 @@ const {
 //ENDPOINTS USUARIOS
 
 //GET ALL USUARIOS
-app.get('/usuarios', async(req, res) => {
+app.get('/api/v1/usuarios', async(req, res) => {
     const usuarios = await getAllUsuarios();
   res.json(usuarios);
 });
 
 //GET USUARIO
-app.get('/usuarios/:id', async(req, res) => {
+app.get('/api/v1/usuarios/:id', async(req, res) => {
   const id= await getUsuario(req.params.id);
   res.json(id);
 });
 
 //POST USUARIO
-app.post('/usuarios', async(req, res) => {
+app.post('/api/v1/usuarios', async(req, res) => {
   if (req.body === undefined) {
     return res.status(400).send("No se proporciono un body");
   }
@@ -90,7 +90,7 @@ app.post('/usuarios', async(req, res) => {
 });
 
 //DELETE USUARIO
-app.delete('/usuarios/:id', (req, res) => {
+app.delete('/api/v1/usuarios/:id', (req, res) => {
   const usuario = getUsuario(req.params.id);
   if (usuario === undefined) {
     res.status(404)
@@ -100,7 +100,7 @@ app.delete('/usuarios/:id', (req, res) => {
 })
 
 //PUT USUARIO
-app.put('/usuarios/:id', (req, res) => {
+app.put('/api/v1/usuarios/:id', (req, res) => {
   let usuario = getUsuario(req.params.id);
   if (usuario === undefined) {
     res.status(404)
@@ -142,7 +142,7 @@ app.put('/usuarios/:id', (req, res) => {
 //MEMES 
 
 // Todos los memes (faltaria agregar si se filtra para buscar)
-app.get("/memes", async (req, res) => {
+app.get("/api/v1/memes", async (req, res) => {
   try {
 
 
@@ -157,7 +157,7 @@ app.get("/memes", async (req, res) => {
 });
 
 //Un solo meme con sus comentarios.
-app.get("/meme/:id", async (req, res) => {
+app.get("/api/v1/meme/:id", async (req, res) => {
   try {
     const id_meme = req.params.id;
 
@@ -189,7 +189,7 @@ app.get("/meme/:id", async (req, res) => {
 });
 
 // Memes publicados por un usuario particualr (para ponerlos en el perfil)
-app.get("/usuarios/:id/memes", async (req, res) => {
+app.get("/api/v1/usuarios/:id/memes", async (req, res) => {
   try {
     const usuario_id = req.params.id;
 
@@ -204,7 +204,7 @@ app.get("/usuarios/:id/memes", async (req, res) => {
 
 
 // Categorias favoritas para poner en el perfil
-app.get("/usuarios/:id/categorias-favoritas", async (req, res) => {
+app.get("/api/v1/usuarios/:id/categorias-favoritas", async (req, res) => {
   try {
     const usuario_id = req.params.id;
 
@@ -220,7 +220,7 @@ app.get("/usuarios/:id/categorias-favoritas", async (req, res) => {
 
 //Ranking memes
 
-app.get("/ranking", async (req, res) => {
+app.get("/api/v1/ranking", async (req, res) => {
   try {
     const ranking = await getRankingMemes();
     res.json(ranking);
@@ -232,7 +232,7 @@ app.get("/ranking", async (req, res) => {
 
 //Publicar meme
 
-app.post("/memes", async (req, res) => {
+app.post("/api/v1/memes", async (req, res) => {
     try{
         const memeCreado = await publicarMeme(req.body);
         res.status(201).json(memeCreado);
@@ -244,7 +244,7 @@ app.post("/memes", async (req, res) => {
 
 
 //Editar meme
-app.put("/meme/:id", async (req, res) => {
+app.put("/api/v1/meme/:id", async (req, res) => {
   try {
     const id_meme = req.params.id;
     const usuario_id = req.body.usuario_id; 
@@ -259,7 +259,7 @@ app.put("/meme/:id", async (req, res) => {
 
 //Borrar meme
 
-app.delete("/meme/:id", async (req, res) => {
+app.delete("/api/v1/meme/:id", async (req, res) => {
   try {
     const id_meme = req.params.id;
     const usuario_id = req.body.usuario_id;
@@ -275,7 +275,6 @@ app.delete("/meme/:id", async (req, res) => {
 
 
 
-//Endpoints comentarios
 //ENDPOINTS COMENTARIOS:
 
 //Crear comentario.
