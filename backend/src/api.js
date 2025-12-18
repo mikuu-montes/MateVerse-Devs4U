@@ -419,7 +419,12 @@ app.post("/api/v1/meme/:id/puntuar", async (req, res) => {
     if (puntaje < 1 || puntaje > 5) {
       return res.status(400).json({ error: "El puntaje debe estar entre 1 y 5" });
     }
-    await puntuarMeme(id_meme, id_usuario, puntaje);
+    const yaPuntuado = await usuarioPuntuoMeme(id_meme, id_usuario);
+    if(!yaPuntuado){
+      await puntuarMeme(id_meme, id_usuario, puntaje);
+    } else {
+      await actualizarPuntajeMeme(id_meme, id_usuario, puntaje);
+    }
 
     res.json({ puntaje });
 
