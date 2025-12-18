@@ -1,7 +1,7 @@
 const express = require('express'); //importar express
 const app = express();
 const port = 3000;
-const { getAllMemes, getMemeConComentarios, getMemesDeUsuario, getCategoriasFavoritas, getRankingMemes, getMemesGuardados, buscarMemes, publicarMeme, editarMeme, eliminarMeme } = require("./db/memes.js");
+const { getAllMemes, getMemesDeUsuario, getCategoriasFavoritas, getRankingMemes, publicarMeme, editarMeme, eliminarMeme } = require("./db/memes.js");
 const { getAllUsuarios, getUsuario, createUsuario, removeUsuario, updateUsuario} =require("./db/usuarios.js");
 app.use(express.json());
 
@@ -113,17 +113,11 @@ app.put('/usuarios/:id', (req, res) => {
 
 //MEMES 
 
-// Todos los memes o los buscados
+// Todos los memes (faltaria agregar si se filtra para buscar)
 app.get("/memes", async (req, res) => {
   try {
 
-    const busqueda = req.query;
 
-    if (busqueda){
-
-        const memes = await buscarMemes('%${busqueda}%');
-        res.json(memes);
-    }
 
     const memes = await getAllMemes();
     res.json(memes);
@@ -134,14 +128,14 @@ app.get("/memes", async (req, res) => {
   }
 });
 
-//Un solo meme
+//Un solo meme (faltaria agregarle los comentarios)
 app.get("/meme/:id", async (req, res) => {
   try {
-    const memeConComentarios= await getMemeConComentarios(req.params.id);
-    if (!memeConComentarios.meme){
+    const meme= await getMemeConComentarios(req.params.id);
+    if (!meme){
         return res.status(404).json({error: "Meme no encontrado"})
     }
-    res.json(memeConComentarios);
+    res.json(meme);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error al obtener el meme" });
@@ -189,21 +183,6 @@ app.get("/ranking", async (req, res) => {
     res.status(500).json({ error: "Error al obtener el ranking" });
   }
 });
-
-
-//Memes guardados
-
-app.get("/memes-guardados/:id", async (req, res) => {
-  try {
-    const usuario_id = req.params.id;
-    const memes = await getMemesGuardados(usuario_id);
-    res.json(memes);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error al obtener memes guardados" });
-  }
-});
-
 
 //Publicar meme
 

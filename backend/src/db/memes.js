@@ -34,7 +34,7 @@ async function getAllMemes() {
 
 //Función para visualizar un meme 
 
-async function getMemeConComentarios(id){
+async function getMeme(id){
 
   // Datos del meme
   const memeQuery = `
@@ -57,29 +57,11 @@ async function getMemeConComentarios(id){
 
   const resultado = await dbClient.query(memeQuery, [id]);
   if (resultado.rows.length === 0) {
-  return { meme: null, comentarios: [] };
+  return { meme: null};
   }
   const meme = resultado.rows[0];
 
-
-  // Comentarios del meme
-  const commentsQuery = `
-    SELECT 
-      id_comentario,
-      contenido,
-      fecha_creacion,
-      editado,
-      usuario_id
-    FROM comentarios
-    WHERE meme_id = $1
-    ORDER BY fecha_creacion DESC;
-  `;
-  const respuesta= await dbClient.query(commentsQuery, [id]);
-  const comentarios = respuesta.rows;
-
-
-  // Devuelve un objeto con el meme y sus comentarios
-  return { meme, comentarios };
+  return meme;
 }
 
 async function getMemesDeUsuario(usuario_id) {
@@ -140,49 +122,6 @@ async function getRankingMemes() {
   const resultado = await dbClient.query(query);
   return resultado.rows;
 }
-
-//Filtrar memes guardados
-
-
-async function getMemesGuardados(usuario_id) {
-  const query = `
-    SELECT 
-      m.id_meme,
-      m.titulo,
-      m.imagen_url
-    FROM usuarios_memes_guardados umg
-    INNER JOIN memes m ON umg.meme_id = m.id_meme
-    WHERE umg.usuario_id = $1
-    ORDER BY m.id_meme DESC;
-  `;
-
-  const resultado = await dbClient.query(query, [usuario_id]);
-  return resultado.rows;
-}
-
-//Buscar memes
-
-async function buscarMemes(texto) {
-        const query = `
-        SELECT 
-            m.id_meme,
-            m.titulo,
-            m.imagen_url,
-            m.fecha_publicacion,
-            COALESCE(AVG(p.puntaje), 0) AS promedio_puntaje, 
-            COUNT( c.id_comentario) AS cantidad_comentarios
-        FROM memes m
-        LEFT JOIN puntuaciones_memes p ON m.id_meme = p.meme_id
-        LEFT JOIN comentarios c ON m.id_meme = c.meme_id
-        WHERE m.titulo ILIKE $1 
-        OR m.descripcion ILIKE $1
-        GROUP BY m.id_meme
-        ORDER BY m.fecha_publicacion DESC;
-        `;
-        const result = await dbClient.query(query, [texto]);
-        return result.rows;
-} 
-
 
 
 //Función para postear un meme 
@@ -312,12 +251,10 @@ async function eliminarMeme(id_meme, usuario_id) {
 // Exporto las funciones para poder usarlas en otros archivos
 module.exports = { 
     getAllMemes, 
-    getMemeConComentarios, 
+    getMeme, 
     getMemesDeUsuario, 
     getCategoriasFavoritas, 
-    getRankingMemes, 
-    getMemesGuardados, 
-    buscarMemes, 
+    getRankingMemes,  
     publicarMeme, 
     editarMeme, 
     eliminarMeme };
