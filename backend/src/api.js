@@ -175,7 +175,7 @@ app.get("/api/v1/meme/:id", async (req, res) => {
       return res.status(400).json({ error: "Id de meme inválido. "});
     }
 
-    const meme= await getMemeConComentarios(id_meme);
+    const meme= await getMeme(id_meme);
 
     if (!meme){
         return res.status(404).json({error: "Meme no encontrado"})
