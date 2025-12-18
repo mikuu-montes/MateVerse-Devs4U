@@ -39,15 +39,15 @@ const {
   buscarMemes
 } = require("./db/busqueda.js");
 const {
-    guardarMeme,
-    eliminarMemeGuardado,
-    obtenerMemesGuardados,
-    usuarioGuardoMeme
+  guardarMeme,
+  eliminarMemeGuardado,
+  obtenerMemesGuardados,
+  usuarioGuardoMeme
 } = require ("./db/memeGuardado.js")
 const {
-    puntuarMeme,
-    actualizarPuntajeMeme,
-    usuarioPuntuoMeme
+  puntuarMeme,
+  actualizarPuntajeMeme,
+  usuarioPuntuoMeme
 } = require('./db/puntuacionMeme.js');
 
 //MEMES 
