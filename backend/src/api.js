@@ -45,6 +45,12 @@ const {
     usuarioGuardoMeme
 } = require ("./db/memeGuardado.js")
 
+const {
+    puntuarMeme,
+    actualizarPuntajeMeme,
+    usuarioPuntuoMeme
+} = require('./db/puntuacionMeme.js');
+
 
 //MEMES 
 
@@ -500,6 +506,36 @@ app.get("/memes-guardados/:id", async (req, res) => {
 });
 
 
+
+//PUNTUACION DE MEME
+
+app.post("/api/v1/meme/:id/puntuar", async (req, res) => {
+  try {
+    const id_meme = req.params.id;
+    const id_usuario = req.body.usuario_id;
+    const puntaje = req.body.puntaje;
+
+    const yaPuntuado = await usuarioPuntuoMeme(id_meme, id_usuario)
+
+    if (!yaPuntuado){
+        await puntuarMeme(id_meme, id_usuario, puntaje);
+    } else {
+
+      await actualizarPuntajeMeme(id_meme, id_usuario, puntaje)
+    }
+    
+
+    res.json({ puntaje });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+
 //FUNCIONES ANONIMAS
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
@@ -518,67 +554,7 @@ function handleExit(signal) {
   });
 }
 
-// Señales de salida
-process.on('SIGINT', handleExit);   // CTRL+C
-process.on('SIGTERM', handleExit);  // kill
+//Señales de salida
 
-
-
-
-  if(!idComentario){
-    return res.status(400).json({ error: "Id de comentario inválido. "});
-  }
-  if(!idUsuario){
-    return res.status(400).json({ error: "Id de usuario inválido. "});
-  }
-
-  try{
-    const comentarioYaLikeado = await usuarioLikeoComentario(idUsuario, idComentario);
-
-    if (comentarioYaLikeado){
-      await sacarLikeComentario(idComentario, idUsuario);
-    } else {
-      await darLikeComentario(idComentario, idUsuario);
-    }
-    const totalLikes = await contarLikesComentario(idComentario);
-
-    return res.json({ 
-      idAgregado: idComentario,
-      likeado: !comentarioYaLikeado,
-      totalLikes
-    });
-
-  }catch(err){
-    console.error(err);
-    return res.status(500).json({ error: "Error al likear/des-likear el comentario."});
-  }
-});
-
-//Se fija si el comentario fue likeado por el usuario.
-app.get('/api/v1/comentarios/:idComentario/like/:idUsuario', async (req, res) => {
-  const idComentario = req.params.idComentario;
-  const idUsuario = req.params.idUsuario;
-
-  if(!idComentario){
-    return res.status(400).json({ error: "Id de comentario inválido. "});
-  }
-  const comentario = await obtenerComentarioPorId(idComentario); // función que devuelve un solo comentario
-  if (!comentario) {
-      return res.status(404).json({ error: "Comentario no encontrado" });
-  }
-  if(!idUsuario){
-    return res.status(400).json({ error: "Id de usuario inválido. "});
-  }
-  const usuario = await getUsuario(idUsuario);
-  if (!usuario) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-  }
-
-  const comentarioLikeado = await usuarioLikeoComentario(idUsuario, idComentario);
-  res.json({ Likeado: comentarioLikeado});
-});
-
-//FUNCIONES ANONIMAS
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+process.on('SIGINT', handleExit); // CTRL+C 
+process.on('SIGTERM', handleExit); // kill

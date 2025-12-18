@@ -19,23 +19,15 @@ async function puntuarMeme(id_meme, id_usuario, puntaje){
     );
 }
 
-//Devuelve el promedio de los puntajes que tiene el meme. Si no tiene puntajes devuelve null.
-async function puntajePromedioMeme(id_meme) {
-    const promedioMeme = await dbClient.query(`
-        SELECT AVG(puntaje) AS promedio 
-        FROM puntuaciones_memes
-        WHERE meme_id = $1`, [id_meme]
-    );
 
-    return promedioMeme.rows[0].promedio;
-}
 
-//Eliminar el puntaje que el usuario realizo al meme.
-async function eliminarPuntajeMeme(id_meme, id_usuario) {
+//Actualizar el puntaje que el usuario realizo al meme.
+async function actualizarPuntajeMeme(id_meme, id_usuario, nuevoPuntaje) {
     await dbClient.query(`
-        DELETE FROM puntuaciones_memes
+        UPDATE puntuaciones_memes
+        SET puntaje =$3
         WHERE meme_id = $1
-        AND usuario_id = $2`, [id_meme, id_usuario]
+        AND usuario_id = $2`, [id_meme, id_usuario, nuevoPuntaje]
     );
 }
 
@@ -48,16 +40,15 @@ async function usuarioPuntuoMeme(id_meme, id_usuario) {
         AND usuario_id = $2`, [id_meme, id_usuario]
     );
 
-    if (result.rows.length === 0) {
+    if (puntaje.rows.length === 0) {
         return null;
     }
-
-    return result.rows[0].puntaje;
+    
+    return puntaje.rows[0].puntaje;
 }
 
 module.exports = {
     puntuarMeme,
-    puntajePromedioMeme,
-    eliminarPuntajeMeme,
+    actualizarPuntajeMeme,
     usuarioPuntuoMeme
 }
