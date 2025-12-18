@@ -24,6 +24,7 @@ app.get('/usuarios/:id', async(req, res) => {
   const id= await getUsuario(req.params.id);
   res.json(id);
 });
+
 //POST USUARIO
 app.post('/usuarios', async(req, res) => {
   if (req.body === undefined) {
@@ -134,14 +135,32 @@ app.get("/memes", async (req, res) => {
 //Un solo meme (faltaria agregarle los comentarios)
 app.get("/meme/:id", async (req, res) => {
   try {
-    const meme= await getMemeConComentarios(req.params.id);
+    const id_meme = req.params.id;
+
+    if(!id_meme){
+      return res.status(400).json({ error: "Id de meme inválido. "});
+    }
+
+    const meme= await getMemeConComentarios(id_meme);
+
     if (!meme){
         return res.status(404).json({error: "Meme no encontrado"})
     }
-    res.json(meme);
+
+    const comentarios = await obtenerTodosLosComentariosPorMeme(id_meme);
+
+    if (!comentarios){
+      return res.status(404).json({Error: "Comentarios no encontrados." });
+    }
+
+    res.json({
+      ...meme,
+      comentarios
+    });
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Error al obtener el meme" });
+    res.status(500).json({ error: "Error al obtener el meme y sus comentarios." });
   }
 });
 
@@ -232,6 +251,18 @@ app.delete("/meme/:id", async (req, res) => {
 
 
 
+//Endpoints comentarios
+//ENDPOINTS COMENTARIOS:
+
+//Trae todos los comentarios del meme
+app.get('/api/v1/comentarios/:id_meme', async (req, res) =>{
+  
+});
+
+//Crear comentario.
+app.post('/api/v1/comentarios', async (req, res) => {
+  console.log('Llegaste\n');
+});
 
 
 
