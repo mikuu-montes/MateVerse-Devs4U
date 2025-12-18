@@ -156,7 +156,7 @@ app.get("/memes", async (req, res) => {
   }
 });
 
-//Un solo meme (faltaria agregarle los comentarios)
+//Un solo meme con sus comentarios.
 app.get("/meme/:id", async (req, res) => {
   try {
     const id_meme = req.params.id;
@@ -283,8 +283,24 @@ app.post('/api/v1/comentarios/:id_meme', async (req, res) => {
   try {
     const id_meme = req.params.id_meme;
     const { id_usuario, contenido } = req.body;
-  } catch (err){
 
+    if(!id_meme){
+      return res.status(400).json({ error: "Id de meme inválido. "});
+    }
+    if(!id_usuario){
+      return res.status(400).json({ error: "Id de usuario inválido. "});
+    }
+    if(!contenido){
+      return res.status(400).json({ error: "El contenido no puede estar vacío. "});
+    }
+
+    const comentario = await crearComentarioEnMeme(id_meme, id_usuario, contenido);
+    comentario.likes = 0;
+    res.status(201).json(comentario);
+
+  } catch (err){
+    console.error(err);
+    return res.status(500).json({ error: "Error al crear el comentario."});
   }
 });
 
