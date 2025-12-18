@@ -31,6 +31,7 @@ const {
     editarComentario,
     darLikeComentario,
     sacarLikeComentario,
+    contarLikesComentario,
     usuarioLikeoComentario
 } = require("./db/comentarios.js");
 const {
@@ -364,10 +365,10 @@ app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
   }
 });
 
-//Dar like a un comentario.
-app.put('/api/v1/comentarios/:idComentario/like', async (req, res) => {
+//Dar like o dis-like a un comentario. Retorna la cantidad de likes que tiene el comentario.
+app.post('/api/v1/comentarios/:idComentario/like', async (req, res) => {
   const idComentario = req.params.idComentario;
-  const idUsuario = req.body;
+  const { idUsuario } = req.body;
 
   if(!idComentario){
     return res.status(400).json({ error: "Id de comentario inválido. "});
@@ -377,34 +378,26 @@ app.put('/api/v1/comentarios/:idComentario/like', async (req, res) => {
   }
 
   try{
-    await darLikeComentario(idComentario, idUsuario);
-    return res.json({ mensaje: "Like agregado."});
+    const comentarioYaLikeado = await usuarioLikeoComentario(idUsuario, idComentario);
+
+    if (comentarioYaLikeado){
+      await sacarLikeComentario(idComentario, idUsuario);
+    } else {
+      await darLikeComentario(idComentario, idUsuario);
+    }
+    const totalLikes = await contarLikesComentario(idComentario);
+
+    return res.json({ 
+      idAgregado: idComentario,
+      likeado: !comentarioYaLikeado,
+      totalLikes
+    });
+
   }catch(err){
     console.error(err);
-    return res.status(500).json({ error: "Error al likear el comentario."});
+    return res.status(500).json({ error: "Error al likear/des-likear el comentario."});
   }
 });
-
-//Sacar like de un comentario.
-app.delete('/api/v1/comentarios/:idComentario/like', async (req, res) => {
-  const idComentario = req.params.idComentario;
-  const idUsuario = req.body;
-
-  if(!idComentario){
-    return res.status(400).json({ error: "Id de comentario inválido. "});
-  }
-  if(!idUsuario){
-    return res.status(400).json({ error: "Id de usuario inválido. "});
-  }
-
-  try{
-    await sacarLikeComentario(idComentario, idUsuario);
-    return res.json({ Mensaje: "Like removido."});
-  }catch(err){
-    console.error(err);
-    return res.status(500).json({ error: "Error al Des-likear el comentario."});
-  }
-})
 
 //FUNCIONES ANONIMAS
 app.listen(port, () => {

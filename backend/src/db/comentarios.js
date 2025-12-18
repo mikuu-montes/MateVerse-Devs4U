@@ -93,6 +93,17 @@ async function sacarLikeComentario(id_comentario, id_usuario) {
     );
 }
 
+// Devuelve la cantidad de likes de un comentario
+async function contarLikesComentario(id_comentario) {
+    const result = await dbClient.query(`
+        SELECT COUNT(*) AS likes
+        FROM likes_comentarios
+        WHERE comentario_id = $1`, [id_comentario]
+    );
+
+    return result.rows[0].likes;
+}
+
 //Devuelve true si el usuario le dio like al comentario, false si no.
 async function usuarioLikeoComentario(id_usuario, id_comentario) {
     const devolucion = await dbClient.query(`
@@ -111,5 +122,6 @@ module.exports = {
     editarComentario,
     darLikeComentario,
     sacarLikeComentario,
+    contarLikesComentario,
     usuarioLikeoComentario
 }
