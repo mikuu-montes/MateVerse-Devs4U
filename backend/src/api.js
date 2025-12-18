@@ -310,6 +310,30 @@ app.post('/api/v1/comentarios/:id_meme', async (req, res) => {
   }
 });
 
+//Eliminar un solo comentario.
+app.delete('/api/v1/comentario/:id_comentario', async (req, res) => {
+  const id_comentario = req.params.id_comentario;
+  const id_usuario = req.body;
+
+  if(!id_comentario){
+    return res.status(400).json({ error: "Id de comentario inválido. "});
+  }
+  if(!id_usuario){
+    return res.status(400).json({ error: "Id de usuario inválido. "});
+  }
+
+  try{
+    const idComentarioEliminado = await eliminarComentario(id_comentario, id_usuario);
+    if (!idComentarioEliminado){
+      return res.status(403).json({ Error: "No tienes permiso para eliminar este comentario."});
+    }
+    return res.json({id_comentario: idComentarioEliminado, mensaje: "Comentario eliminado correctamente."});
+  }catch(err){
+  console.error(err);
+    return res.status(500).json({ error: "Error al eliminar el comentario."});
+  }
+});
+
 
 
 
