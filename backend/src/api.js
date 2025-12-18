@@ -1,6 +1,7 @@
 const express = require('express'); //importar express
 const app = express();
 const port = 3000;
+const { getAllMemes, getMemesDeUsuario, getCategoriasFavoritas, getRankingMemes, publicarMeme, editarMeme, eliminarMeme } = require("./db/memes.js");
 const { getAllUsuarios, getUsuario, createUsuario, removeUsuario, updateUsuario} =require("./db/usuarios.js");
 app.use(express.json());
 
@@ -107,6 +108,129 @@ app.put('/usuarios/:id', (req, res) => {
   res.status(201).json(usuario);
 
 })
+
+
+
+//MEMES 
+
+// Todos los memes (faltaria agregar si se filtra para buscar)
+app.get("/memes", async (req, res) => {
+  try {
+
+
+
+    const memes = await getAllMemes();
+    res.json(memes);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al obtener los memes" });
+  }
+});
+
+//Un solo meme (faltaria agregarle los comentarios)
+app.get("/meme/:id", async (req, res) => {
+  try {
+    const meme= await getMemeConComentarios(req.params.id);
+    if (!meme){
+        return res.status(404).json({error: "Meme no encontrado"})
+    }
+    res.json(meme);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al obtener el meme" });
+  }
+});
+
+// Memes publicados por un usuario particualr (para ponerlos en el perfil)
+app.get("/usuarios/:id/memes", async (req, res) => {
+  try {
+    const usuario_id = req.params.id;
+
+    const memes = await getMemesDeUsuario(usuario_id);
+
+    res.json(memes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener los memes del usuario" });
+  }
+});
+
+
+// Categorias favoritas para poner en el perfil
+app.get("/usuarios/:id/categorias-favoritas", async (req, res) => {
+  try {
+    const usuario_id = req.params.id;
+
+    const categorias = await getCategoriasFavoritas(usuario_id);
+
+    res.json(categorias);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener categorías favoritas" });
+  }
+});
+
+
+//Ranking memes
+
+app.get("/ranking", async (req, res) => {
+  try {
+    const ranking = await getRankingMemes();
+    res.json(ranking);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener el ranking" });
+  }
+});
+
+//Publicar meme
+
+app.post("/memes", async (req, res) => {
+    try{
+        const memeCreado = await publicarMeme(req.body);
+        res.status(201).json(memeCreado);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({error: "Error al publicar el meme"});
+    }
+});
+
+
+//Editar meme
+app.put("/meme/:id", async (req, res) => {
+  try {
+    const id_meme = req.params.id;
+    const usuario_id = req.body.usuario_id; 
+
+    const memeActualizado = await editarMeme(id_meme, usuario_id, req.body);
+    res.json(memeActualizado);
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ error: err.message });
+  }
+});
+
+//Borrar meme
+
+app.delete("/meme/:id", async (req, res) => {
+  try {
+    const id_meme = req.params.id;
+    const usuario_id = req.body.usuario_id;
+
+    const resultado = await eliminarMeme(id_meme, usuario_id);
+
+    res.json(resultado);
+  } catch (err) {
+    console.error(err);
+    res.status(403).json({ error: err.message });
+  }
+});
+
+
+
+
+
 
 
 //FUNCIONES ANONIMAS
