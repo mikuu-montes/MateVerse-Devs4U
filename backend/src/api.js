@@ -9,6 +9,15 @@ app.use(cors());
 
 const { getAllMemes, getMemesDeUsuario, getCategoriasFavoritas, getRankingMemes, publicarMeme, editarMeme, eliminarMeme } = require("./db/memes.js");
 const { getAllUsuarios, getUsuario, createUsuario, removeUsuario, updateUsuario} =require("./db/usuarios.js");
+const {
+    obtenerTodosLosComentariosPorMeme,
+    crearComentarioEnMeme,
+    eliminarComentario,
+    editarComentario,
+    darLikeComentario,
+    sacarLikeComentario,
+    usuarioLikeoComentario
+} = require("./db/comentarios.js");
 
 
 //ENDPOINTS USUARIOS
@@ -254,14 +263,14 @@ app.delete("/meme/:id", async (req, res) => {
 //Endpoints comentarios
 //ENDPOINTS COMENTARIOS:
 
-//Trae todos los comentarios del meme
-app.get('/api/v1/comentarios/:id_meme', async (req, res) =>{
-  
-});
-
 //Crear comentario.
-app.post('/api/v1/comentarios', async (req, res) => {
-  console.log('Llegaste\n');
+app.post('/api/v1/comentarios/:id_meme', async (req, res) => {
+  try {
+    const id_meme = req.params.id_meme;
+    const { id_usuario, contenido } = req.body;
+  } catch (err){
+
+  }
 });
 
 
