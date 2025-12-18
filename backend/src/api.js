@@ -10,6 +10,9 @@ app.use(cors());
 const { getAllMemes, getMemesDeUsuario, getCategoriasFavoritas, getRankingMemes, publicarMeme, editarMeme, eliminarMeme } = require("./db/memes.js");
 const { getAllUsuarios, getUsuario, createUsuario, removeUsuario, updateUsuario} =require("./db/usuarios.js");
 
+
+//ENDPOINTS USUARIOS
+
 //GET ALL USUARIOS
 app.get('/usuarios', async(req, res) => {
     const usuarios = await getAllUsuarios();
