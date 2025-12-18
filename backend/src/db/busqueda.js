@@ -1,7 +1,7 @@
 const { Pool } = require("pg");
  
 const dbClient = new Pool({
-  user: 'devs4',
+  user: 'Devs4U',
   password: 'mate',
   host: 'localhost',
   port: 55432,
