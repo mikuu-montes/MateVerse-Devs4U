@@ -10,11 +10,6 @@ app.use(cors());
 const { getAllMemes, getMemesDeUsuario, getCategoriasFavoritas, getRankingMemes, publicarMeme, editarMeme, eliminarMeme } = require("./db/memes.js");
 const { getAllUsuarios, getUsuario, createUsuario, removeUsuario, updateUsuario} =require("./db/usuarios.js");
 
-//primer endpoint 
-app.get('/', (req, res) => {
-  res.send('MATE VERSE chicas \n');
-});
-
 //GET ALL USUARIOS
 app.get('/usuarios', async(req, res) => {
     const usuarios = await getAllUsuarios();
