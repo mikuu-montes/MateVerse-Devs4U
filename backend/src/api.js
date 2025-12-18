@@ -1,9 +1,14 @@
 const express = require('express'); //importar express
+const cors = require('cors');
+
 const app = express();
 const port = 3000;
+
+app.use(express.json());
+app.use(cors());
+
 const { getAllMemes, getMemesDeUsuario, getCategoriasFavoritas, getRankingMemes, publicarMeme, editarMeme, eliminarMeme } = require("./db/memes.js");
 const { getAllUsuarios, getUsuario, createUsuario, removeUsuario, updateUsuario} =require("./db/usuarios.js");
-app.use(express.json());
 
 //primer endpoint 
 app.get('/', (req, res) => {

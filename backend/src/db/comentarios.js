@@ -4,7 +4,7 @@ const dbClient = new Pool({
     user: 'Devs4U',
     password: 'mate',
     host: 'localhost',
-    port: 5432,
+    port: 55432,
     database: 'mateverse',
 });
 
