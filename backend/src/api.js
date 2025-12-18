@@ -141,10 +141,17 @@ app.put('/api/v1/usuarios/:id', (req, res) => {
 
 //MEMES 
 
-// Todos los memes (faltaria agregar si se filtra para buscar)
+// Todos los memes , filtrados si hay busqueda
 app.get("/api/v1/memes", async (req, res) => {
   try {
 
+    const busqueda = req.query.busqueda;
+
+    if (busqueda){
+
+        const memes = await buscarMemes(`%${busqueda}%`);
+        return res.json(memes);
+    }
 
 
     const memes = await getAllMemes();
