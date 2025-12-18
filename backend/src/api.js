@@ -33,6 +33,9 @@ const {
     sacarLikeComentario,
     usuarioLikeoComentario
 } = require("./db/comentarios.js");
+const {
+  buscarMemes
+} = require("./db/busqueda.js");
 
 
 //ENDPOINTS USUARIOS
