@@ -8,35 +8,31 @@ const dbClient = new Pool({
   database: 'mateverse',
 });
 
-
 // Función para traer todos los memes para la página de inicio
 //COALESCE reemplza NULL por 0 si el meme no tiene puntaje
+//Devuelve todos los memes, con el promedio de puntaje de cada y la cantidad de comentarios.
 async function getAllMemes() {
-        const query = `
-        SELECT 
-            m.id_meme,
-            m.titulo,
-            m.imagen_url,
-            m.fecha_publicacion,
-            COALESCE(AVG(p.puntaje), 0) AS promedio_puntaje, 
-            COUNT( c.id_comentario) AS cantidad_comentarios
-        FROM memes m
-        LEFT JOIN puntuaciones_memes p ON m.id_meme = p.meme_id
-        LEFT JOIN comentarios c ON m.id_meme = c.meme_id
-        GROUP BY m.id_meme
-        ORDER BY m.fecha_publicacion DESC;
-        `;
-        const result = await dbClient.query(query);
-        return result.rows;
+  const query = `
+    SELECT 
+      m.id_meme,
+      m.titulo,
+      m.imagen_url,
+      m.fecha_publicacion,
+    COALESCE(AVG(p.puntaje), 0) AS promedio_puntaje, 
+    COUNT(c.id_comentario) AS cantidad_comentarios
+    FROM memes m
+    LEFT JOIN puntuaciones_memes p ON m.id_meme = p.meme_id
+    LEFT JOIN comentarios c ON m.id_meme = c.meme_id
+    GROUP BY m.id_meme
+    ORDER BY m.fecha_publicacion DESC;
+  `;
+  const result = await dbClient.query(query);
+  return result.rows;
 } 
 
-
-
 //Función para visualizar un meme 
-
+//Devuelve todo el contenido del meme, si no existe devuelve null.
 async function getMeme(id){
-
-  // Datos del meme
   const memeQuery = `
     SELECT 
       m.id_meme,
@@ -57,13 +53,14 @@ async function getMeme(id){
 
   const resultado = await dbClient.query(memeQuery, [id]);
   if (resultado.rows.length === 0) {
-  return { meme: null};
+  return null;
   }
   const meme = resultado.rows[0];
-
   return meme;
 }
 
+//Trae todos los memes de un usuario. Desde los mas recientes hasta los mas viejos.
+//Devuelve [] si no tiene memes.
 async function getMemesDeUsuario(usuario_id) {
   const query = `
     SELECT 
@@ -78,9 +75,8 @@ async function getMemesDeUsuario(usuario_id) {
   return resultado.rows;
 }
 
-
-// Categorias favoritas 
-
+// Devuelve hasta 3 categorias favortias del usuario segun los puntajes que dio. 
+//Devuelve [] si no tine favoritos.
 async function getCategoriasFavoritas(usuario_id) {
   const query = `
     SELECT 
@@ -100,10 +96,7 @@ async function getCategoriasFavoritas(usuario_id) {
   return resultado.rows;
 }
 
-
-// Obtener ranking de memes
-
-
+//Devuelve los 10 mejores memes segun las puntuaciones de los usuarios.
 async function getRankingMemes() {
   const query = `
     SELECT 
@@ -123,69 +116,64 @@ async function getRankingMemes() {
   return resultado.rows;
 }
 
+//Publica un nuevo meme en la base de datos, junto con su contexto.
+//Retorna el meme recien creado o error si faltan campos oblgatorios.
+async function publicarMeme({ 
+  titulo, imagen_url, video_url, descripcion, protagonistas, categoria_id, 
+  fecha_original, fecha_publicacion,origen, medio_fuente, usuario_id,}){
 
-//Función para postear un meme 
+  if (!titulo || !imagen_url || !descripcion || !categoria_id || !usuario_id) {
+    throw new Error();
+  }
 
-async function publicarMeme({
-
-    titulo, imagen_url, video_url, descripcion, protagonistas, categoria_id, 
-    fecha_original, fecha_publicacion,origen, medio_fuente, usuario_id,
-
-}){
-    if (!titulo || !imagen_url || !descripcion || !categoria_id || !usuario_id) {
-        throw new Error();
-    }
-    // Insertar el contexto en la tabla contextos
-
-    const contextoQuery = `
+  // Insertar el contexto en la tabla contextos
+  const contextoQuery = `
     INSERT INTO contextos(origen, medio_fuente,fecha_original)
     VALUES ($1, $2, $3)
     RETURNING id_contexto;
-    `;
+  `;
+  const ctxtResultado =  await dbClient.query(contextoQuery, [origen, medio_fuente, fecha_original])
+  const contexto_id = ctxtResultado.rows[0].id_contexto;
 
-    const ctxtResultado =  await dbClient.query(contextoQuery, [origen, medio_fuente, fecha_original])
-    const contexto_id = ctxtResultado.rows[0].id_contexto;
-
-
-    //Insertar el meme en la tabla memes
-
-    const memeQuery = `
+  //Insertar el meme en la tabla memes
+  const memeQuery = `
     INSERT INTO memes (titulo, imagen_url, video_url, descripcion, 
     protagonistas, usuario_id, categoria_id, contexto_id, fecha_publicacion )
     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,CURRENT_DATE)
     RETURNING *;
-    `;
-    
-    const memeResultado = await dbClient.query(memeQuery, [titulo, imagen_url, video_url, descripcion, 
-    protagonistas, usuario_id, categoria_id, contexto_id])
+  `;
+  const memeResultado = await dbClient.query(memeQuery, [titulo, imagen_url, video_url, descripcion, 
+  protagonistas, usuario_id, categoria_id, contexto_id])
 
-    return memeResultado.rows[0]; 
-
+  return memeResultado.rows[0]; 
 }
 
+//Edita un meme existente y su contexto asociado, solo si el usuario tiene permiso.
+//Retorna el meme actualizado, en caso de falta de permisos retorna error 403, o error 404 si el meme no existe. 
 async function editarMeme(id_meme, usuario_id,{
-    titulo, imagen_url, descripcion, protagonistas,
-    categoria_id, origen, medio_fuente,fecha_original
-}){
-    // Obtener el meme y su contexto
+  titulo, imagen_url, descripcion, protagonistas,
+  categoria_id, origen, medio_fuente,fecha_original}){
+
+  // Obtener el meme y su contexto
   const memeResultado = await dbClient.query(
     `SELECT contexto_id, usuario_id FROM memes WHERE id_meme = $1`,
     [id_meme]
   );
 
   if (memeResultado.rows.length === 0) {
-    throw new Error("El meme no existe");
+    const error = new Error("El meme no existe");
+    error.status = 404
+    throw error
   }
-
-   const meme = memeResultado.rows[0];
-
+  const meme = memeResultado.rows[0];
   if (meme.usuario_id !== usuario_id) {
-    throw new Error("No tenés permiso para editar este meme");
+    const error = new Error("No tenés permiso para editar este meme");
+    error.status = 403
+    throw error
   }
+  const contexto_id = meme.contexto_id;
 
-   const contexto_id = meme.contexto_id;
-
-   // Actualizar la tabla contextos
+  // Actualizar la tabla contextos
   await dbClient.query(
     `UPDATE contextos
      SET origen = $1,
@@ -207,7 +195,7 @@ async function editarMeme(id_meme, usuario_id,{
     RETURNING *;
   `;
 
-   const result = await dbClient.query(updateQuery, [
+  const result = await dbClient.query(updateQuery, [
     titulo,
     imagen_url,
     descripcion,
@@ -217,21 +205,28 @@ async function editarMeme(id_meme, usuario_id,{
   ]);
 
   return result.rows[0];
-
 }
 
+//Elimina el meme, solo si el usuario tiene permiso.
+//Devuelve un mensaje confirmacion, error 404 si el meme no existe o error 403 si el usuario no tiene permisos.
 async function eliminarMeme(id_meme, usuario_id) {
   // Verificar que el meme pertenece al usuario
   const checkQuery = `
-    SELECT id_meme
+    SELECT id_meme, usuario_id
     FROM memes
     WHERE id_meme = $1 AND usuario_id = $2;
   `;
-
   const checkResultado = await dbClient.query(checkQuery, [id_meme, usuario_id]);
 
   if (checkResultado.rows.length === 0) {
-    throw new Error("No tenés permiso para eliminar este meme");
+    const error = new Error("El meme no existe");
+    error.status = 404;
+    throw error;
+  }
+  if (checkResultado.rows[0].usuario_id !== usuario_id) {
+    const error = new Error("No tenés permiso para eliminar este meme");
+    error.status = 403
+    throw error
   }
 
   // Borrar el meme
@@ -245,16 +240,13 @@ async function eliminarMeme(id_meme, usuario_id) {
   return { mensaje: "Meme eliminado correctamente" };
 }
 
-
-
-
-// Exporto las funciones para poder usarlas en otros archivos
 module.exports = { 
-    getAllMemes, 
-    getMeme, 
-    getMemesDeUsuario, 
-    getCategoriasFavoritas, 
-    getRankingMemes,  
-    publicarMeme, 
-    editarMeme, 
-    eliminarMeme };
+  getAllMemes, 
+  getMeme, 
+  getMemesDeUsuario, 
+  getCategoriasFavoritas, 
+  getRankingMemes,  
+  publicarMeme, 
+  editarMeme, 
+  eliminarMeme 
+};
