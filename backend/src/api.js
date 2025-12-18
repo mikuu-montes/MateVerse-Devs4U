@@ -285,22 +285,22 @@ app.delete("/api/v1/meme/:id", async (req, res) => {
 //ENDPOINTS COMENTARIOS:
 
 //Crear comentario.
-app.post('/api/v1/comentarios/:id_meme', async (req, res) => {
+app.post('/api/v1/comentarios/:idMeme', async (req, res) => {
   try {
-    const id_meme = req.params.id_meme;
-    const { id_usuario, contenido } = req.body;
+    const idMeme = req.params.idMeme;
+    const { idUsuario, contenido } = req.body;
 
-    if(!id_meme){
+    if(!idMeme){
       return res.status(400).json({ error: "Id de meme inválido. "});
     }
-    if(!id_usuario){
+    if(!idUsuario){
       return res.status(400).json({ error: "Id de usuario inválido. "});
     }
     if(!contenido){
       return res.status(400).json({ error: "El contenido no puede estar vacío. "});
     }
 
-    const comentario = await crearComentarioEnMeme(id_meme, id_usuario, contenido);
+    const comentario = await crearComentarioEnMeme(idMeme, idUsuario, contenido);
     comentario.likes = 0;
     res.status(201).json(comentario);
 
@@ -311,23 +311,23 @@ app.post('/api/v1/comentarios/:id_meme', async (req, res) => {
 });
 
 //Eliminar un solo comentario.
-app.delete('/api/v1/comentario/:id_comentario', async (req, res) => {
-  const id_comentario = req.params.id_comentario;
-  const id_usuario = req.body;
+app.delete('/api/v1/comentario/:idComentario', async (req, res) => {
+  const idComentario = req.params.idComentario;
+  const idUsuario = req.body;
 
-  if(!id_comentario){
+  if(!idComentario){
     return res.status(400).json({ error: "Id de comentario inválido. "});
   }
-  if(!id_usuario){
+  if(!idUsuario){
     return res.status(400).json({ error: "Id de usuario inválido. "});
   }
 
   try{
-    const idComentarioEliminado = await eliminarComentario(id_comentario, id_usuario);
+    const idComentarioEliminado = await eliminarComentario(idComentario, idUsuario);
     if (!idComentarioEliminado){
       return res.status(403).json({ Error: "No tienes permisos para eliminar este comentario."});
     }
-    return res.json({id_comentario: idComentarioEliminado, mensaje: "Comentario eliminado correctamente."});
+    return res.json({idComentario: idComentarioEliminado, mensaje: "Comentario eliminado correctamente."});
   }catch(err){
     console.error(err);
     return res.status(500).json({ error: "Error al eliminar el comentario."});
@@ -336,7 +336,7 @@ app.delete('/api/v1/comentario/:id_comentario', async (req, res) => {
 
 //Editar un solo comentario.
 app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
-  const idComentario = req.params.id_comentario;
+  const idComentario = req.params.idComentario;
   const { idUsuario, nuevoContenido} = req.body;
 
   if(!idComentario){
@@ -361,6 +361,26 @@ app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
   }
 });
 
+//Dar like a un comentario.
+app.put('/api/v1/comentarios/:idComentario/like', async (req, res) => {
+  const idComentario = req.params.idComentario;
+  const idUsuario = req.body;
+
+  if(!idComentario){
+    return res.status(400).json({ error: "Id de comentario inválido. "});
+  }
+  if(!idUsuario){
+    return res.status(400).json({ error: "Id de usuario inválido. "});
+  }
+
+  try{
+    await darLikeComentario(idComentario, idUsuario);
+    return res.json({ mensaje: "Like agregado."});
+  }catch(err){
+    console.error(err);
+    return res.status(500).json({ error: "Error al likear el comentario."});
+  }
+});
 
 
 
