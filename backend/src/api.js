@@ -80,7 +80,7 @@ app.get("/api/v1/meme/:id", async (req, res) => {
         return res.status(404).json({error: "Meme no encontrado"})
     }
 
-    const comentarios = await obtenerTodosLosComentariosPorMeme(id_meme);
+    const comentarios = await obtenerTodosLosComentariosPorMeme(id_meme) || [];
 
     if (!comentarios){
       return res.status(404).json({Error: "Comentarios no encontrados." });
