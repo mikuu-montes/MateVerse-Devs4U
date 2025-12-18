@@ -311,7 +311,6 @@ app.post('/api/v1/usuarios', async (req, res) => {
   }
 });
 
-
 //DELETE USUARIO
 app.delete('/api/v1/usuarios/:id', async (req, res) => {
   const id = req.params.id;
