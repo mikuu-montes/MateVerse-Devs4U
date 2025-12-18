@@ -9,6 +9,7 @@ const dbClient = new Pool({
 });
 
 //Devuelve todos los comentarios que tiene un meme junto con la cantidad de likes que tienen cada uno.
+//Retorna [] si no hay comentarios.
 async function obtenerTodosLosComentariosPorMeme(id_meme) {
     const comentarios = await dbClient.query(`
         SELECT c.id_comentario, c.contenido, c.fecha_creacion, c.editado, c.usuario_id, COUNT(lk.comentario_id) AS likes 

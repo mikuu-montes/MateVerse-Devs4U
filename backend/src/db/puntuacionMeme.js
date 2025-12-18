@@ -8,7 +8,7 @@ const dbClient = new Pool({
     database: 'mateverse',
 });
 
-//Guarda la puntuación que el usuario le da al meme, si el usuario ya habua hecho una puntuacion, se actualiza.
+//Guarda la puntuación que el usuario le da al meme, si el usuario ya habia hecho una puntuacion, se actualiza.
 //No retorna nada.
 async function puntuarMeme(id_meme, id_usuario, puntaje){
     await dbClient.query(`
@@ -18,8 +18,6 @@ async function puntuarMeme(id_meme, id_usuario, puntaje){
         DO UPDATE SET puntaje = EXCLUDED.puntaje`, [id_meme, id_usuario, puntaje]
     );
 }
-
-
 
 //Actualizar el puntaje que el usuario realizo al meme.
 async function actualizarPuntajeMeme(id_meme, id_usuario, nuevoPuntaje) {

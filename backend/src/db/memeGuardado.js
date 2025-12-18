@@ -26,7 +26,7 @@ async function eliminarMemeGuardado(id_meme, id_usuario) {
     );
 }
 
-//Devuelve todos los memes guardados por el usuario.
+//Devuelve todos los memes guardados por el usuario o un [] si no tiene ninguno.
 async function obtenerMemesGuardados(usuario_id) {
     const resultado = await dbClient.query(`
         SELECT m.id_meme, m.titulo, m.imagen_url
