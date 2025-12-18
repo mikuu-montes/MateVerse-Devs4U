@@ -263,7 +263,7 @@ app.put("/api/v1/meme/:id", async (req, res) => {
     res.json(memeActualizado);
   } catch (err) {
     console.error(err);
-    res.status(400).json({ error: err.message });
+    res.status(err.status || 500).json({ error: err.message });
   }
 });
 
@@ -279,7 +279,7 @@ app.delete("/api/v1/meme/:id", async (req, res) => {
     res.json(resultado);
   } catch (err) {
     console.error(err);
-    res.status(403).json({ error: err.message });
+    res.status(err.status || 500).json({ error: err.message });
   }
 });
 

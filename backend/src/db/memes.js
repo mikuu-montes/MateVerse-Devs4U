@@ -174,13 +174,21 @@ async function editarMeme(id_meme, usuario_id,{
   );
 
   if (memeResultado.rows.length === 0) {
-    throw new Error("El meme no existe");
+    
+    const error = new Error("El meme no existe");
+    error.status = 404
+    throw error
+
   }
 
    const meme = memeResultado.rows[0];
 
+
   if (meme.usuario_id !== usuario_id) {
-    throw new Error("No tenés permiso para editar este meme");
+    
+    const error = new Error("No tenés permiso para editar este meme");
+    error.status = 403
+    throw error
   }
 
    const contexto_id = meme.contexto_id;
@@ -223,15 +231,24 @@ async function editarMeme(id_meme, usuario_id,{
 async function eliminarMeme(id_meme, usuario_id) {
   // Verificar que el meme pertenece al usuario
   const checkQuery = `
-    SELECT id_meme
+    SELECT id_meme, usuario_id
     FROM memes
     WHERE id_meme = $1 AND usuario_id = $2;
   `;
 
   const checkResultado = await dbClient.query(checkQuery, [id_meme, usuario_id]);
 
+
   if (checkResultado.rows.length === 0) {
-    throw new Error("No tenés permiso para eliminar este meme");
+    const error = new Error("El meme no existe");
+    error.status = 404;
+    throw error;
+  }
+
+  if (checkResultado.rows[0].usuario_id !== usuario_id) {
+    const error = new Error("No tenés permiso para eliminar este meme");
+    error.status = 403
+    throw error
   }
 
   // Borrar el meme
