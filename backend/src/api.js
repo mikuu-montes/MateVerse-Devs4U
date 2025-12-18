@@ -325,12 +325,39 @@ app.delete('/api/v1/comentario/:id_comentario', async (req, res) => {
   try{
     const idComentarioEliminado = await eliminarComentario(id_comentario, id_usuario);
     if (!idComentarioEliminado){
-      return res.status(403).json({ Error: "No tienes permiso para eliminar este comentario."});
+      return res.status(403).json({ Error: "No tienes permisos para eliminar este comentario."});
     }
     return res.json({id_comentario: idComentarioEliminado, mensaje: "Comentario eliminado correctamente."});
   }catch(err){
-  console.error(err);
+    console.error(err);
     return res.status(500).json({ error: "Error al eliminar el comentario."});
+  }
+});
+
+//Editar un solo comentario.
+app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
+  const idComentario = req.params.id_comentario;
+  const { idUsuario, nuevoContenido} = req.body;
+
+  if(!idComentario){
+    return res.status(400).json({ error: "Id de comentario inválido. "});
+  }
+  if(!idUsuario){
+    return res.status(400).json({ error: "Id de usuario inválido. "});
+  }
+  if(!nuevoContenido){
+    return res.status(400).json({ error: "Nuevo contenido inválido. "});
+  }
+
+  try {
+    const comentarioModificado = await editarComentario(idComentario, idUsuario, nuevoContenido);
+    if(!comentarioModificado){
+      return res.status(403).json({ Error: "No tienes permisos para editar este comentario."});
+    }
+    return res.json(comentarioModificado);
+  }catch(err){
+    console.error(err);
+    return res.status(500).json({ error: "Error al editar el comentario."});
   }
 });
 
