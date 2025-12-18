@@ -198,6 +198,10 @@ app.post('/api/v1/comentarios/:idMeme', async (req, res) => {
     if(!idUsuario){
       return res.status(400).json({ error: "Id de usuario inválido. "});
     }
+    const usuario = await getUsuario(idUsuario);
+    if (!usuario) {
+        return res.status(404).json({ error: "Usuario no encontrado" });
+    }
     if(!contenido){
       return res.status(400).json({ error: "El contenido no puede estar vacío. "});
     }
@@ -215,13 +219,21 @@ app.post('/api/v1/comentarios/:idMeme', async (req, res) => {
 //Eliminar un solo comentario.
 app.delete('/api/v1/comentario/:idComentario', async (req, res) => {
   const idComentario = req.params.idComentario;
-  const idUsuario = req.body;
+  const { idUsuario } = req.body;
 
   if(!idComentario){
     return res.status(400).json({ error: "Id de comentario inválido. "});
   }
+  const comentario = await obtenerComentarioPorId(idComentario); // función que devuelve un solo comentario
+  if (!comentario) {
+      return res.status(404).json({ error: "Comentario no encontrado" });
+  }
   if(!idUsuario){
     return res.status(400).json({ error: "Id de usuario inválido. "});
+  }
+  const usuario = await getUsuario(idUsuario);
+  if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
   }
 
   try{
@@ -244,9 +256,18 @@ app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
   if(!idComentario){
     return res.status(400).json({ error: "Id de comentario inválido. "});
   }
+  const comentario = await obtenerComentarioPorId(idComentario); // función que devuelve un solo comentario
+  if (!comentario) {
+      return res.status(404).json({ error: "Comentario no encontrado" });
+  }
   if(!idUsuario){
     return res.status(400).json({ error: "Id de usuario inválido. "});
   }
+  const usuario = await getUsuario(idUsuario);
+  if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+  }
+
   if(!nuevoContenido){
     return res.status(400).json({ error: "Nuevo contenido inválido. "});
   }
@@ -271,8 +292,17 @@ app.post('/api/v1/comentarios/:idComentario/like', async (req, res) => {
   if(!idComentario){
     return res.status(400).json({ error: "Id de comentario inválido. "});
   }
+  const comentario = await obtenerComentarioPorId(idComentario); // función que devuelve un solo comentario
+  if (!comentario) {
+      return res.status(404).json({ error: "Comentario no encontrado" });
+  }
+
   if(!idUsuario){
     return res.status(400).json({ error: "Id de usuario inválido. "});
+  }
+  const usuario = await getUsuario(idUsuario);
+  if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
   }
 
   try{
@@ -295,6 +325,30 @@ app.post('/api/v1/comentarios/:idComentario/like', async (req, res) => {
     console.error(err);
     return res.status(500).json({ error: "Error al likear/des-likear el comentario."});
   }
+});
+
+//Se fija si el comentario fue likeado por el usuario.
+app.get('/api/v1/comentarios/:idComentario/like/:idUsuario', async (req, res) => {
+  const idComentario = req.params.idComentario;
+  const idUsuario = req.params.idUsuario;
+
+  if(!idComentario){
+    return res.status(400).json({ error: "Id de comentario inválido. "});
+  }
+  const comentario = await obtenerComentarioPorId(idComentario); // función que devuelve un solo comentario
+  if (!comentario) {
+      return res.status(404).json({ error: "Comentario no encontrado" });
+  }
+  if(!idUsuario){
+    return res.status(400).json({ error: "Id de usuario inválido. "});
+  }
+  const usuario = await getUsuario(idUsuario);
+  if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+  }
+
+  const comentarioLikeado = await usuarioLikeoComentario(idUsuario, idComentario);
+  res.json({ Likeado: comentarioLikeado});
 });
 
 //FUNCIONES ANONIMAS
