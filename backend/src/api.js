@@ -376,8 +376,7 @@ app.put('/api/v1/comentarios/:idComentario/like', async (req, res) => {
     return res.status(400).json({ error: "Id de usuario inválido. "});
   }
 
-  try{
-    await darLikeComentario(idComentario, idUsuario);
+  try{    await darLikeComentario(idComentario, idUsuario);
     return res.json({ mensaje: "Like agregado."});
   }catch(err){
     console.error(err);
@@ -385,6 +384,10 @@ app.put('/api/v1/comentarios/:idComentario/like', async (req, res) => {
   }
 });
 
+//Sacar like de un comentario.
+app.delete('/api/v1/comentarios/:idComentario/like', async (req, res) => {
+  const idComentario = req.params.idComentario;
+  const idUsuario = req.body;
 
 //GET ALL USUARIOS
 app.get('/api/v1/usuarios', async (req, res) => {
@@ -546,6 +549,22 @@ process.on('SIGTERM', handleExit);  // kill
 
 
 
+
+  if(!idComentario){
+    return res.status(400).json({ error: "Id de comentario inválido. "});
+  }
+  if(!idUsuario){
+    return res.status(400).json({ error: "Id de usuario inválido. "});
+  }
+
+  try{
+    await sacarLikeComentario(idComentario, idUsuario);
+    return res.json({ Mensaje: "Like removido."});
+  }catch(err){
+    console.error(err);
+    return res.status(500).json({ error: "Error al Des-likear el comentario."});
+  }
+})
 
 
 //FUNCIONES ANONIMAS
