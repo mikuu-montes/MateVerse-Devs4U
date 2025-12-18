@@ -7,8 +7,23 @@ const port = 3000;
 app.use(express.json());
 app.use(cors());
 
-const { getAllMemes, getMemesDeUsuario, getCategoriasFavoritas, getRankingMemes, publicarMeme, editarMeme, eliminarMeme } = require("./db/memes.js");
-const { getAllUsuarios, getUsuario, createUsuario, removeUsuario, updateUsuario} =require("./db/usuarios.js");
+const { 
+  getAllMemes, 
+  getMeme, 
+  getMemesDeUsuario, 
+  getCategoriasFavoritas, 
+  getRankingMemes,  
+  publicarMeme, 
+  editarMeme, 
+  eliminarMeme 
+} = require("./db/memes.js");
+const {
+  getAllUsuarios,
+  getUsuario,
+  createUsuario,
+  removeUsuario,
+  updateUsuario,
+} = require("./db/usuarios.js");
 const {
     obtenerTodosLosComentariosPorMeme,
     crearComentarioEnMeme,

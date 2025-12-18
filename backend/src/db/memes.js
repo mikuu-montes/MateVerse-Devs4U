@@ -250,11 +250,12 @@ async function eliminarMeme(id_meme, usuario_id) {
 
 // Exporto las funciones para poder usarlas en otros archivos
 module.exports = { 
-    getAllMemes, 
-    getMeme, 
-    getMemesDeUsuario, 
-    getCategoriasFavoritas, 
-    getRankingMemes,  
-    publicarMeme, 
-    editarMeme, 
-    eliminarMeme };
+  getAllMemes, 
+  getMeme, 
+  getMemesDeUsuario, 
+  getCategoriasFavoritas, 
+  getRankingMemes,  
+  publicarMeme, 
+  editarMeme, 
+  eliminarMeme 
+};
