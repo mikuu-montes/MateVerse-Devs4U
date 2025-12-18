@@ -3,5 +3,5 @@ function guardarUsuarioId(usuario_id){
 }
 
 function obtenerIdUsuarioLogueado (){
-    return SpeechSynthesisErrorEvent.Storage.getitem("usuario_id")
+    return sessionStorage.getItem("usuario_id")
 }
