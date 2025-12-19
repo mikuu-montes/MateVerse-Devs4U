@@ -187,38 +187,19 @@ app.post("/api/v1/memes", async (req, res) => {
 });
 
 //Editar meme
-app.put("/api/v1/meme/:id", async (req, res) => {
-  try {
-    const id_meme = req.params.id;
-    const { usuario_id, titulo, descripcion, categoria_id, imagen_url } = req.body;
+// Express
+app.put('/api/v1/memes/:id', async (req, res) => {
+    const { id } = req.params;
+    const { foto, titulo, descripcion, protagonista, categoria, medio, fechaSurgio } = req.body;
 
-    if (!id_meme) {
-      return res.status(400).json({ error: "Id de meme inválido" });
+    try {
+        // Aquí tu lógica para actualizar el meme en la base de datos
+        await actualizarMemeEnBDD(id, { foto, titulo, descripcion, protagonista, categoria, medio, fechaSurgio });
+        res.status(200).json({ message: "Meme actualizado correctamente" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al actualizar el meme" });
     }
-    if (!usuario_id) {
-      return res.status(400).json({ error: "usuario_id inválido" });
-    }
-    if (!titulo && !descripcion && !categoria_id && !imagen_url) {
-      return res.status(400).json({ error: "No hay campos para actualizar" });
-    }
-
-    const memeActualizado = await editarMeme(id_meme, usuario_id, { titulo, descripcion, categoria_id, imagen_url });
-
-    if (!memeActualizado) {
-      return res.status(404).json({ error: "Meme no encontrado o sin permisos" });
-    }
-
-    res.json(memeActualizado);
-
-  } catch (err) {
-    console.error(err);
-
-    if (err.message === "NO_AUTORIZADO") {
-      return res.status(403).json({ error: "No tenés permisos para editar este meme" });
-    }
-
-    res.status(500).json({ error: "Error al editar el meme" });
-  }
 });
 
 //Borrar meme
