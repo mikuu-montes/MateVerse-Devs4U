@@ -39,7 +39,8 @@ async function getUsuarioPorId(id_usuario) {
 //Crea un nuevo usuario.
 //Retorna el usuario recien creado, o error si el nombre de usuario o el email ya existen.
 async function createUsuario(nombre_completo, nombre_usuario, email, contrasenia, foto_perfil) {
-  try {
+    console.log(nombre_usuario, email);
+    try {
 
     const response = await dbClient.query(
       `INSERT INTO usuarios 

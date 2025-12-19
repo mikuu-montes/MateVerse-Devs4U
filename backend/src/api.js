@@ -282,7 +282,7 @@ app.get('/api/v1/usuarios/:id', async (req, res) => {
   }
 });
 
-//POST USUARIO
+//POST USUARIO (LOGIN)
 app.post('/api/v1/usuarios', async (req, res) => {
   const {
     nombre_completo,
@@ -305,11 +305,36 @@ app.post('/api/v1/usuarios', async (req, res) => {
       foto_perfil
     );
 
+    delete usuario.contrasenia;
     res.status(201).json(usuario);
   } catch (err) {
-    res.status(400).json({ error: "El usuario o email ya existe" });
+    res.status(400).json({ error: "Usuario o email ya existe" });
   }
 });
+
+
+// INICIAR SESION POST
+app.post('/api/v1/login', async (req, res) => {
+  const { nombre_usuario, contrasenia } = req.body;
+
+  if (!nombre_usuario || !contrasenia) {
+    return res.status(400).json({ error: "Faltan datos" });
+  }
+
+  try {
+    const usuario = await getUsuario(nombre_usuario, contrasenia);
+
+    if (!usuario) {
+      return res.status(401).json({ error: "Credenciales incorrectas" });
+    }
+
+    delete usuario.contrasenia;
+    res.json(usuario);
+  } catch (err) {
+    res.status(500).json({ error: "Error al iniciar sesión" });
+  }
+});
+
 
 //DELETE USUARIO
 app.delete('/api/v1/usuarios/:id', async (req, res) => {
