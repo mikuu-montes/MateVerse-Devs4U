@@ -32,7 +32,7 @@ create table memes (
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario) ON DELETE CASCADE,
     categoria_id INT NOT NULL REFERENCES categorias (id_categoria),
     contexto_id INT NOT NULL REFERENCES contextos (id_contexto) ON DELETE CASCADE,
-    fecha_publicacion DATE NOT NULL
+    fecha_publicacion DATE NOT NULL CURRENT_DATE
 );
 
 create table puntuaciones_memes (
@@ -67,3 +67,26 @@ create table usuarios_memes_guardados (
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario) ON DELETE CASCADE,
     PRIMARY KEY (meme_id, usuario_id)
 );
+
+insert into usuarios (nombre_completo, nombre_usuario, email, contrasenia) values 
+('Macarena Perez', 'maca_pp', 'macarena@gmail.com', 'maca.perez.1988'),
+('Hernan Ortiz', 'primo_hernan', 'delovski@gmail.com', 'Hernyan_lost'),
+('Nazareno Baez', 'nazaB_', 'cuentaNotOficial@gmail.com', '11093892'),
+('Elsa Pato', 'zapatilla', 'botines@gmail.com', 'tu_zapatito');
+
+insert into categorias (nombre) values
+('Tv Argentina'),
+('TikTok'),
+('Medios'),
+('Deporte'),
+('Idolos');
+
+insert into contextos (origen, medio_fuente, fecha_original) values 
+('Tv Sports', 'Mundial 2022', '2022-12-09'),
+('Tv', 'Movil Televisivo', '2011-10-01'),
+('Redes', 'TikTok', '2020-06-10'),
+('Tv', 'Asado Familiar', '2012-06-30'),
+('Tv', 'Movil Televisivo', '2014-08-22');
+
+insert into memes (titulo, imagen_url, video_url, descripcion, protagonistas, usuario_id, categoria_id, contexto_id) values
+('Que mira bobo?', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA_bIp-DnNmgcAgsIqT5CJ3JhfYSHZUqdLiA&s', 'https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.youtube.com/watch%3Fv%3DGqnx36dR5Xk&ved=2ahUKEwj25eS9tMqRAxX4P7kGHaLLNkoQtwJ6BAgTEAI&usg=AOvVaw2kn-0QajN5wh4E4zSsIzp3', 'Ante la euforia de ver pasar a su contrincante, messi suelta la tan conocida frase "que mira bobo?, anda, anda pa` lla bobo!.', 'messi', 4, 1),
