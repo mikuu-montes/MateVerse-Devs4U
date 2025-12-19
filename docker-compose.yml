@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:17
+    container_name: database
+    environment:
+      - POSTGRES_USER=Devs4U
+      - POSTGRES_PASSWORD=mate
+      - POSTGRES_DB=mateverse
+    ports:
+      - "55432:5432"
+    volumes:
+      - ./psql_data/:/var/lib/postgresql/data
+      - ./backend/data:/docker-entrypoint-initdb.d
+  backend:
+    build:
+      context: ./backend
+    container_name: container_backend
+    ports:
+      - "3000:3000"
+  frontend:
+    build:
+      context: ./frontend
+    container_name: container_frontend
+    ports:
+      - "8000:80"
