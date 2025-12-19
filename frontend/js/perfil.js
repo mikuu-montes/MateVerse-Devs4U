@@ -1,11 +1,11 @@
 // Revisa si hay un usuario logueado
-const usuarioId = obtenerIdUsuarioLogueado() || 5;
+const usuarioId = obtenerIdUsuarioLogueado();
 
-//DESCOMENTAR AL TERMINAR.
+
 //Si no esta logueado lo muevo a otro template.
-//if (!usuarioId) {
-//    window.location.href = "../Login Usuario/index.html";
-//}
+if (!usuarioId) {
+    window.location.href = "../Login Usuario/index.html";
+}
 
 
 const urlPerfil = `http://localhost:3000/api/v1/usuarios/${usuarioId}`;
