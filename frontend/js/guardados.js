@@ -14,8 +14,6 @@
      const memesGuardados = await respuesta.json();
 
   
-
-
     memesGuardados.forEach (meme => {
 
       const tarjeta = document.createElement('div');
