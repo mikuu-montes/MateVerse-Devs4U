@@ -24,7 +24,6 @@ async function cargarMemes(contenidoABuscar = "") {
             alert("No se pudieron cargar los memes (╥﹏╥)\n Intente recargar la página.");
             return;
         }
-
         const memes = await response.json();
 
         //Sobreescrivoel innerHTML
@@ -36,7 +35,7 @@ async function cargarMemes(contenidoABuscar = "") {
             postMeme.href = '../Visualizacion Meme/index.html';
             postMeme.className = 'linkContainerPost';
             
-            // Redirige el id del meme junto con la ventana de la página.
+            // Redirige el id del meme junto con la ventana de la página si hacen click sobre el.
             postMeme.addEventListener('click', (e) => {
                 sessionStorage.setItem('idMemeSeleccionado', meme.id_meme);
                 window.location.href = "../Visualizacion Meme/index.html";
