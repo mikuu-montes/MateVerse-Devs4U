@@ -1,5 +1,5 @@
 // Revisa si hay un usuario logueado
-const usuarioId = obtenerIdUsuarioLogueado() || 4;
+const usuarioId = obtenerIdUsuarioLogueado() || 5;
 
 //DESCOMENTAR AL TERMINAR.
 //Si no esta logueado lo muevo a otro template.
