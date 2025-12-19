@@ -110,7 +110,7 @@ app.get("/api/v1/usuarios/:id/memes", async (req, res) => {
       return res.status(400).json({ error: "Id de usuario inválido" });
     }
 
-    const usuario = await getUsuarioById(usuario_id);
+    const usuario = await getUsuarioPorId(usuario_id);
     if (!usuario) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
@@ -133,7 +133,7 @@ app.get("/api/v1/usuarios/:id/categorias-favoritas", async (req, res) => {
       return res.status(400).json({ error: "Id de usuario inválido" });
     }
 
-    const usuario = await getUsuarioById(usuario_id);
+    const usuario = await getUsuarioPorId(usuario_id);
     if (!usuario) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
@@ -167,7 +167,7 @@ app.post("/api/v1/memes", async (req, res) => {
       return res.status(400).json({ error: "Faltan datos obligatorios" });
     }
 
-    const usuario = await getUsuarioById(usuario_id);
+    const usuario = await getUsuarioPorId(usuario_id);
     if (!usuario) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
