@@ -3,8 +3,8 @@ const { Pool } = require("pg");
 const dbClient = new Pool({
   user: 'Devs4U',
   password: 'mate',
-  host: 'localhost',
-  port: 55432,
+  host: 'db',
+  port: 5432,
   database: 'mateverse',
 });
 
