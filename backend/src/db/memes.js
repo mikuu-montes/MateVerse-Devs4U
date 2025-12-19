@@ -16,6 +16,7 @@ async function getAllMemes() {
     SELECT 
       m.id_meme,
       m.titulo,
+      m.descripcion,
       m.imagen_url,
       m.fecha_publicacion,
     COALESCE(AVG(p.puntaje), 0) AS promedio_puntaje, 
@@ -103,10 +104,10 @@ async function getRankingMemes() {
       m.id_meme,
       m.titulo,
       m.imagen_url,
-      AVG(p.puntaje) AS promedio_puntaje,
-      COUNT(*) AS cantidad_votos
+      COALESCE(AVG(p.puntaje), 0) AS promedio_puntaje,
+      COUNT(p.puntaje) AS cantidad_votos
     FROM memes m
-    INNER JOIN puntuaciones_memes p ON m.id_meme = p.meme_id
+    LEFT JOIN puntuaciones_memes p ON m.id_meme = p.meme_id
     GROUP BY m.id_meme
     ORDER BY promedio_puntaje DESC, cantidad_votos DESC
     LIMIT 10;
