@@ -20,7 +20,7 @@ formIniciarSesion.addEventListener("submit", async (e) => {
     console.log("Login OK:", usuario);
 
     alert("Sesión iniciada");
-    // acá después podés redirigir
+    window.location.href = "../Inicio/index.html";
 
   } catch (error) {
     alert(error.message);
