@@ -44,7 +44,7 @@ form.addEventListener("submit", async (e) => {
 
 
     alert("Usuario registrado con éxito");
-    form.reset();
+    window.location.href = "../Iniciar Sesion/index.html";
 
   } catch (error) {
     console.error(error);
