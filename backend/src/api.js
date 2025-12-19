@@ -331,9 +331,9 @@ app.delete('/api/v1/usuarios/:id', async (req, res) => {
 //PUT USUARIO
 app.put('/api/v1/usuarios/:id', async (req, res) => {
   const id = req.params.id;
-  const { nombre_completo, nombre_usuario, email } = req.body;
+  const { nombre_completo, nombre_usuario, email, contrasenia} = req.body;
 
-  if (!nombre_completo || !nombre_usuario || !email) {
+  if (!nombre_completo || !nombre_usuario || !email || !contrasenia) {
     return res.status(400).json({ error: "Faltan datos" });
   }
 
@@ -346,7 +346,8 @@ app.put('/api/v1/usuarios/:id', async (req, res) => {
     id,
     nombre_completo,
     nombre_usuario,
-    email
+    email,
+    contrasenia
   );
 
   if (!usuarioActualizado) {

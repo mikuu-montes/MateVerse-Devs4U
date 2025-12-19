@@ -77,14 +77,14 @@ async function removeUsuario(id_usuario) {
 
 //Actualiza al usuario
 //Si el id existe, retorna el usuario actualizado, si el usuario no existe u ocurre un error retorna undefined
-async function updateUsuario(id_usuario, nombre_completo, nombre_usuario, email) {
+async function updateUsuario(id_usuario, nombre_completo, nombre_usuario, email, contrasenia) {
   try {
     const result = await dbClient.query(
       `UPDATE usuarios 
-       SET nombre_completo = $2, nombre_usuario = $3, email = $4
+       SET nombre_completo = $2, nombre_usuario = $3, email = $4, contrasenia = $5
        WHERE id_usuario = $1
        RETURNING *`,
-      [id_usuario, nombre_completo, nombre_usuario, email]
+      [id_usuario, nombre_completo, nombre_usuario, email, contrasenia]
     );
 
     if (result.rowCount === 0) {
