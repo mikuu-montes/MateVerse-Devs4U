@@ -5,7 +5,7 @@
     
     const idUsuarioLogueado = obtenerIdUsuarioLogueado()
 
-    const url = `/api/v1/usuarios/${idUsuarioLogueado}/memes-guardados`;
+    const url = `http://localhost:3000/api/v1/usuarios/${idUsuarioLogueado}/memes-guardados`;
 
   try {  
     
