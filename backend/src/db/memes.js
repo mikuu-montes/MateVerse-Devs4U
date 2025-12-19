@@ -16,6 +16,7 @@ async function getAllMemes() {
     SELECT 
       m.id_meme,
       m.titulo,
+      m.descripcion,
       m.imagen_url,
       m.fecha_publicacion,
     COALESCE(AVG(p.puntaje), 0) AS promedio_puntaje, 

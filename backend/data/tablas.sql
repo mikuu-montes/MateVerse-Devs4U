@@ -43,7 +43,6 @@ create table puntuaciones_memes (
     
 );
 
-
 create table comentarios (
     id_comentario SERIAL PRIMARY KEY,
     contenido TEXT NOT NULL,
@@ -59,8 +58,6 @@ create table likes_comentarios (
     comentario_id INT NOT NULL REFERENCES comentarios (id_comentario) ON DELETE CASCADE,
     PRIMARY KEY (usuario_id, comentario_id)
 );
-
-
 
 create table usuarios_memes_guardados (
     meme_id INT NOT NULL REFERENCES memes (id_meme) ON DELETE CASCADE,
