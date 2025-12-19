@@ -12,6 +12,10 @@
     const respuesta = await fetch(url);
 
      const memesGuardados = await respuesta.json();
+     
+console.log("📦 memesGuardados:", memesGuardados);
+console.log("📦 tipo:", typeof memesGuardados);
+
 
   
 
