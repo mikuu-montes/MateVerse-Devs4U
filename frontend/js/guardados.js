@@ -1,9 +1,14 @@
 
-
   document.addEventListener('DOMContentLoaded', async () => {
     const contenedor = document.querySelector('.contenedorMemesGuardados');
     
     const idUsuarioLogueado = obtenerIdUsuarioLogueado()
+
+    //Si no esta logueado lo muevo a otro template.
+    if (!idUsuarioLogueado) {
+      window.location.href = "../Login Usuario/index.html";
+    }
+
 
     const url = `http://localhost:3000/api/v1/usuarios/${idUsuarioLogueado}/memes-guardados`;
 

@@ -11,6 +11,7 @@
 .postIzquierda, .postDerecha {
     width: 90%;
     max-width: 900px;
+    min-width: 900px;
     background-color: #e5f7f0;
     border-radius: 10px;
     display: flex;
@@ -107,6 +108,10 @@
     font-size: 20px;
 }
 
+.error {
+    background-color: #9bd4bf;
+    border-radius: 10px;
+}
 
 
 
