@@ -88,10 +88,7 @@ app.get("/api/v1/meme/:id", async (req, res) => {
     if (!comentarios){
       return res.status(404).json({Error: "Comentarios no encontrados." });
     }
-    res.json({
-      ...meme,
-      comentarios
-    });
+    res.json({ meme,comentarios });
 
   } catch (err) {
 
@@ -384,6 +381,7 @@ app.put('/api/v1/usuarios/:id', async (req, res) => {
 
 //GUARDADO DE MEMES
 
+
 //Si el suuario toca el boton de guardar revisa el estado del meme. Si el meme ya esta guardado lo quita de alli y si no, lo guarda.
 //devuelve guardado : true o guardado: false para poder luego en el forntend poner el logo de guardado pintado o no segun corrresponda.
 app.post('/api/v1/meme/:id/guardar', async (req, res) => {
@@ -433,6 +431,32 @@ app.get('/api/v1/usuarios/:id/memes-guardados', async (req, res) => {
 
 //PUNTUACION DE MEME
 
+//devuelve la puntuacion que un usuario le dio al meme
+app.get(`/api/v1/usuario/:usuarioId/meme/:memeId/puntaje`, async (req,res) => {
+  try {
+    const usuario_id = req.params.usuarioId;
+    const meme_id = req.body.memeId;
+
+    if (!usuario_id || !meme_id ) {
+      return res.status(400).json({ error: "Datos inválidos" });
+    }
+  
+
+    const puntaje = await usuarioPuntuoMeme(meme_id, usuario_id);
+
+    res.json({puntaje});
+
+
+  } catch (err){
+
+    console.error(err);
+    res.status(500).json({ error: "Error al cargar puntaje del meme" });
+  
+  }
+})
+
+
+//agrega u actualiza puntuacion
 app.post("/api/v1/meme/:id/puntuar", async (req, res) => {
   try {
     const id_meme = req.params.id;
@@ -458,6 +482,7 @@ app.post("/api/v1/meme/:id/puntuar", async (req, res) => {
     res.status(500).json({ error: "Error al puntuar el meme" });
   }
 });
+
 
 //ENDPOINTS COMENTARIOS:
 
