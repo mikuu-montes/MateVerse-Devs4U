@@ -38,6 +38,7 @@ async function getMeme(id){
     SELECT 
       m.id_meme,
       m.titulo,
+      m.descripcion,
       m.imagen_url,
       m.video_url,
       m.protagonistas,
