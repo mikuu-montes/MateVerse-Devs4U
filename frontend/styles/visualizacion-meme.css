@@ -337,28 +337,22 @@ html {
     content: "Editado";
 }
 
-.botones_comentario {  
-    display: flex;
+.botonesComentario {  
+    display: none;
     gap: 6px;
     margin-top: 6px;
+    justify-self: center;
 }
 
-.botones_comentario button {
-    display: none;
+.botonesComentario button {
     padding: 3px 8px;      
     font-size: 11px;       
     border-radius: 5px;
     border: none;
     cursor: pointer;
-}
-
-.editarComentario:hover {
     background-color: #2f6f8f;
 }
 
-.eliminarComentario:hover {
-    background-color: #2f6f8f;
-}
 
 .comentarioTexto {
     font-size: 14px;
