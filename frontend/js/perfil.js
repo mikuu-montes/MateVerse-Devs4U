@@ -25,6 +25,8 @@ const fotoPerfil = document.querySelector(".fotoPerfil")
 const filaPosts = document.querySelector(".filaPosts");
 const contenedorCat = document.querySelector(".contenedorCat");
 const botonEliminarUsuario = document.querySelector(".botonEliminarUsuario");
+const botonSalirCuenta = document.querySelector(".botonSalirCuenta");
+
 
 //Cargar los datos del usuario dentro del perfil
 async function cargarUsuario() {
@@ -294,6 +296,27 @@ botonEliminarUsuario.addEventListener("click", async () => {
     } catch (err) {
         console.error(err);
         alert("⚠️ Hubo un error, por favor recarga la página.⚠️");
+    }
+});
+
+//Cierro sesion de perfil
+botonSalirCuenta.addEventListener("click", async () => {
+    if(!confirm("¿Seguro que queres cerrar sesion?, mira que despúes tenes que acordarte la contraseña.")){
+        return;
+    }
+    try{
+        cerrarSesion();
+
+        const sigueLogueado = obtenerIdUsuarioLogueado();
+        if(sigueLogueado){
+            alert("No se pudo cerrar la sesion, por favor intente de nuevo.");
+            return;
+        }
+
+        window.location.href = "../Login Usuario/index.html";
+    } catch (err) {
+        console.error("Error al intentar cerrar sesion:", err);
+        alert("Ocurrio algo inesperado intentando cerrar sesion, disculpe.");
     }
 });
 
