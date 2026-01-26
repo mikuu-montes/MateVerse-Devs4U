@@ -18,6 +18,9 @@ services:
     ports:
       - "3000:3000"
   frontend:
+    image: mateverse-devs4u-frontend     #eliminar despues
+    volumes:                             #eliminar despues
+      - ./frontend:/usr/share/nginx/html #eliminar despues
     build:
       context: ./frontend
     container_name: container_frontend

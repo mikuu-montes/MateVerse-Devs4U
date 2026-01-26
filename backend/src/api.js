@@ -24,6 +24,7 @@ const {
   createUsuario,
   removeUsuario,
   updateUsuario,
+  updateFotoPerfil,
 } = require("./db/usuarios.js");
 const {
     obtenerTodosLosComentariosPorMeme,
@@ -312,7 +313,6 @@ app.post('/api/v1/usuarios', async (req, res) => {
   }
 });
 
-
 // INICIAR SESION POST
 app.post('/api/v1/login', async (req, res) => {
   const { nombre_usuario, contrasenia } = req.body;
@@ -335,7 +335,6 @@ app.post('/api/v1/login', async (req, res) => {
   }
 });
 
-
 //DELETE USUARIO
 app.delete('/api/v1/usuarios/:id', async (req, res) => {
   const id = req.params.id;
@@ -356,15 +355,15 @@ app.delete('/api/v1/usuarios/:id', async (req, res) => {
 //PUT USUARIO
 app.put('/api/v1/usuarios/:id', async (req, res) => {
   const id = req.params.id;
-  const { nombre_completo, nombre_usuario, email, contrasenia} = req.body;
+  const {
+    nombre_completo,
+    nombre_usuario,
+    email,
+    contrasenia
+  } = req.body;
 
   if (!nombre_completo || !nombre_usuario || !email || !contrasenia) {
     return res.status(400).json({ error: "Faltan datos" });
-  }
-
-  const usuarioExistente = await getUsuarioPorId(id);
-  if (!usuarioExistente) {
-    return res.status(404).json({ error: "Usuario no encontrado" });
   }
 
   const usuarioActualizado = await updateUsuario(
@@ -377,6 +376,24 @@ app.put('/api/v1/usuarios/:id', async (req, res) => {
 
   if (!usuarioActualizado) {
     return res.status(500).json({ error: "No se pudo actualizar" });
+  }
+
+  res.json(usuarioActualizado);
+});
+
+// PUT FOTO DE PERFIL
+app.put('/api/v1/usuarios/:id/foto', async (req, res) => {
+  const idUsuario = req.params.id;
+  const { foto_perfil } = req.body;
+
+  if (!foto_perfil) {
+    return res.status(400).json({ error: "Falta la foto" });
+  }
+
+  const usuarioActualizado = await updateFotoPerfil(idUsuario, foto_perfil);
+
+  if (!usuarioActualizado) {
+    return res.status(404).json({ error: "Usuario no encontrado" });
   }
 
   res.json(usuarioActualizado);

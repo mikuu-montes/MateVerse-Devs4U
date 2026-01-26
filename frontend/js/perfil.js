@@ -1,12 +1,10 @@
 // Revisa si hay un usuario logueado
 const usuarioId = obtenerIdUsuarioLogueado();
 
-
 //Si no esta logueado lo muevo a otro template.
 if (!usuarioId) {
     window.location.href = "../Login Usuario/index.html";
 }
-
 
 const urlPerfil = `http://localhost:3000/api/v1/usuarios/${usuarioId}`;
 const urlCategorias = `http://localhost:3000/api/v1/usuarios/${usuarioId}/categorias-favoritas`;
@@ -50,24 +48,93 @@ async function cargarUsuario() {
     }
 }
 
+//Edita la foto de perfil si el usuario asi lo quisiera
+function habilitarEdicionFotoPerfil() {
+
+    fotoPerfil.addEventListener("click", (e) => {
+        e.stopPropagation();
+        inputFoto.style.display = "block";
+        inputFoto.focus();
+    });
+
+    // Cerrar el input si se hace click fuera
+    document.addEventListener("click", () => {
+        inputFoto.style.display = "none";
+        inputFoto.value = "";
+    });
+
+    // Evita que el click en el input lo cierre
+    inputFoto.addEventListener("click", (e) => {
+        e.stopPropagation();
+    });
+
+    inputFoto.addEventListener("change", async () => {
+        const nuevaUrl = inputFoto.value.trim();
+        if (!nuevaUrl) return;
+
+        if (!nuevaUrl.match(/\.(jpg|jpeg|png|webp)$/i)) {
+            alert("La imagen debe ser JPG, PNG o WEBP");
+            inputFoto.value = "";
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/v1/usuarios/${usuarioId}/foto`,
+                {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ foto_perfil: nuevaUrl })
+                }
+            );
+
+            if (!response.ok) {
+                alert("No se pudo actualizar la foto de perfil");
+                return;
+            }
+
+            const usuarioActualizado = await response.json();
+            fotoPerfil.src = `${usuarioActualizado.foto_perfil}?t=${Date.now()}`;
+
+            inputFoto.value = "";
+            inputFoto.style.display = "none";
+
+        } catch (err) {
+            console.error(err);
+            alert("Error al actualizar la foto");
+        }
+    });
+}
+
 //Edita los campos si el usuario lo necesita.
-function hacerEdicion(h2, input, campoNombre) {
-    //oculta el contenido original del input
-    h2.addEventListener("click", () => {
-        input.value = campoNombre === "clave" ? "" : h2.textContent.replace("@", "");
-        h2.style.display = "none";
-        input.style.display = "block";
+function hacerEdicion(texto, input, campoNombre) {
+
+    let valorAnterior = "";
+
+    texto.addEventListener("click", () => {
+        valorAnterior = texto.textContent;
+
+        if (campoNombre === "clave") {
+            input.value = "";
+        } else if (campoNombre === "nombre_usuario") {
+            input.value = texto.textContent.replace("@", "");
+        } else {
+            input.value = texto.textContent;
+        }
+        texto.classList.add("oculto");
+        input.classList.add("activo");
         input.focus();
     });
 
-    //Modifico ls datos wue agregi el usuario
     input.addEventListener("keydown", async (e) => {
         if (e.key !== "Enter") return;
+        e.preventDefault();
 
-        h2.style.display = "block";
-        input.style.display = "none";
+        const nuevoValor = input.value.trim();
+        if (!nuevoValor && campoNombre !== "clave") {
+            alert("El campo no puede estar vacío");
+            return;
+        }
 
-        // Construimos el objeto completo con los valores actuales
         const datos = {
             nombre_usuario: cambiarUsuario.value || nombreUsuario.textContent.replace("@", ""),
             nombre_completo: cambiarNombre.value || nombreCompleto.textContent,
@@ -75,75 +142,50 @@ function hacerEdicion(h2, input, campoNombre) {
             contrasenia: cambiarClave.value || "123456"
         };
 
-        // Si el campo que se edita es clave, reemplazamos
-        if (campoNombre === "clave") datos.contrasenia = input.value;
+        if (campoNombre === "clave") {
+            datos.contrasenia = nuevoValor;
+        } else if (campoNombre === "nombre_usuario") {
+            datos.nombre_usuario = nuevoValor;
+        } else if (campoNombre === "nombre_completo") {
+            datos.nombre_completo = nuevoValor;
+        } else if (campoNombre === "email") {
+            datos.email = nuevoValor;
+        }
 
         try {
-            //Solicito la edicion del campo.
             const response = await fetch(urlPerfil, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(datos)
             });
-            if (!response.ok){
-                alert("No se pudieron actualizar el campo (╥﹏╥)\n Intente recargar la página.");
-                return;
+
+            if (!response.ok) {
+                throw new Error("Error backend");
             }
 
-            //Modifico los datos de pantalla con los nuevos
             const usuarioActualizado = await response.json();
-            nombreUsuario.textContent = `@${usuarioActualizado.nombre_usuario}`;
-            nombreCompleto.textContent = usuarioActualizado.nombre_completo;
-            mail.textContent = usuarioActualizado.email;
-            if (campoNombre === "clave") clave.textContent = "******";
+
+            if (campoNombre === "clave") {
+                texto.textContent = "******";
+            } else if (campoNombre === "nombre_usuario") {
+                texto.textContent = `@${usuarioActualizado.nombre_usuario}`;
+            } else {
+                texto.textContent = usuarioActualizado[campoNombre];
+            }
 
         } catch (err) {
-            console.error(err);
-            alert("⚠️ Hubo un error, por favor recarga la página.⚠️ ");
+            texto.textContent = valorAnterior;
+            alert("No se pudo guardar el cambio");
         }
+        texto.classList.remove("oculto");
+        input.classList.remove("activo");
     });
 
-    //Si toca otra parte de la pantalla, se muestra el contenido original
     input.addEventListener("blur", () => {
-        h2.style.display = "block";
-        input.style.display = "none";
+        texto.classList.remove("oculto");
+        input.classList.remove("activo");
     });
 }
-
-//Muestra opcion de editar foto.
-fotoPerfil.addEventListener("click", () => {
-    inputFoto.style.display = "block";
-    inputFoto.focus();
-});
-
-//Actualiza la foto de perfil.
-inputFoto.addEventListener("keydown", async (e) => {
-    if (e.key !== "Enter") return;
-    fotoPerfil.src = inputFoto.value;
-
-    try {
-        //Edito foto
-        const response = await fetch(urlPerfil, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                foto_perfil: inputFoto.value,
-                nombre_usuario: nombreUsuario.textContent.replace("@", ""),
-                nombre_completo: nombreCompleto.textContent,
-                email: mail.textContent
-            })
-        });
-        if (!response.ok){
-            alert("No se pudieron actualizar la foto (╥﹏╥)\n Intente recargar la página.");
-            return;
-        }
-    } catch (err) {
-        console.error(err);
-        alert("⚠️ Hubo un error, por favor recarga la página.⚠️");
-    }
-
-    inputFoto.style.display = "none";
-});
 
 //Muestra categorias favoritas
 async function cargarCategorias() {
@@ -266,4 +308,5 @@ window.addEventListener("DOMContentLoaded", () => {
     cargarUsuario();
     cargarCategorias();
     cargarMemes();
+    habilitarEdicionFotoPerfil();
 });
