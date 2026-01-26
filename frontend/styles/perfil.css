@@ -41,6 +41,11 @@ html, body{
     background-color: #e74c3c;
 }
 
+.botonSalirCuenta {
+    top: 60px;
+    background-color: green;
+}
+
 .botonEliminarUsuario:hover{
     background-color: #c0392b;
 }
