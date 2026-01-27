@@ -80,20 +80,40 @@ async function removeUsuario(id_usuario) {
 //Si el id existe, retorna el usuario actualizado, si el usuario no existe u ocurre un error retorna undefined
 async function updateUsuario(id_usuario, nombre_completo, nombre_usuario, email, contrasenia) {
   try {
-    const result = await dbClient.query(
+    const resultado = await dbClient.query(
       `UPDATE usuarios 
-       SET nombre_completo = $2, nombre_usuario = $3, email = $4, contrasenia = $5
+       SET nombre_completo = $2,
+           nombre_usuario = $3,
+           email = $4,
+           contrasenia = $5
        WHERE id_usuario = $1
        RETURNING *`,
-      [id_usuario, nombre_completo, nombre_usuario, email, contrasenia]
+      [id_usuario, nombre_completo, nombre_usuario, email, contrasenia]);    
+
+    if (resultado.rowCount === 0) return undefined;
+    return resultado.rows[0];
+  } catch (err) {
+    console.error(err);
+    return undefined;
+  }
+}
+
+//Actualiza la foto de perfil.
+//Si se pudo completar, devuelve el usuario con la foto actualizada, si no retorna undefined.
+async function updateFotoPerfil(id_usuario, foto_perfil){
+  try {
+    const resultado = await dbClient.query(
+      `UPDATE usuarios
+       SET foto_perfil = $2
+       WHERE id_usuario = $1
+       RETURNING *`,
+      [id_usuario, foto_perfil]
     );
 
-    if (result.rowCount === 0) {
-      return undefined;
-    }
-
-    return result.rows[0];
-  } catch {
+    if (resultado.rowCount === 0) return undefined;
+    return resultado.rows[0];
+  } catch (err) {
+    console.error(err);
     return undefined;
   }
 }
@@ -105,4 +125,5 @@ module.exports = {
   createUsuario,
   removeUsuario,
   updateUsuario,
+  updateFotoPerfil,
 };

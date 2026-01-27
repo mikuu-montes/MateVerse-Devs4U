@@ -3,7 +3,6 @@ html, body{
     height: auto;
 }
 
-
 .paginaPerfil{
     position: relative;
     min-height: 100vh;
@@ -24,26 +23,37 @@ html, body{
     padding: 15px;
 }
 
-.botonEliminarUsuario {
-
+.botonEliminarUsuario, .botonSalirCuenta {
     position: absolute;
-    top: 15px;
     right: 15px;
-
-    background-color: #e74c3c;
     color: white;
     border: none;
     border-radius: 8px;
     padding: 8px 14px;
     font-weight: bold;
     cursor: pointer;
-
     transition: 0.2s;
+    width: 150px;
 }
 
-.botonEliminarUsuario:hover {
+.botonEliminarUsuario {
+    top:15px;
+    background-color: #e74c3c;
+}
+
+.botonSalirCuenta {
+    top: 60px;
+    background-color: green;
+}
+
+.botonEliminarUsuario:hover{
     background-color: #c0392b;
 }
+
+.botonSalirCuenta:hover {
+    background-color: rgb(1, 92, 1);
+}
+
 .fotoContenedor {
     width:256px;
     height:256px;    
@@ -85,24 +95,48 @@ html, body{
     opacity: 1;
 }
 
-#inputFoto{
-    position: absolute; 
-    top: 50%; 
-    left: 50%;
-    transform: translate(60%, -50%);
-    width: 100%; 
-    padding: 5px;
-    z-index: 10;
+#inputFoto {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 110%;          /* 👈 lo manda al costado derecho */
+    transform: translateY(-50%);
+    width: 220px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 2px solid #acd5ea;
+    z-index: 20;
+    background-color: white;
+}
+
+#inputFoto.activo {
+    display: block;
 }
 
 .contenedorCampoEditable {
-    display: inline-flex;
-    height: fit-content;
+    display: flex;
+    align-items: center;
+    height: 42px;
+    position: relative;        
+    width: 100%;
 }
 
 .textoEditable {
     cursor: pointer;
     transition: 0.2s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 42px;
+    line-height: 42px;
+    width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+    margin: 0;
+    font-weight: bold;
+    opacity: 1;
+    pointer-events: auto;
+    display: block;
 }
 
 .textoEditable:hover {
@@ -111,17 +145,29 @@ html, body{
 
 .inputEditar {
     margin-top: 15px;
-    height: min-content;
     font-weight: bold;
     background-color: #acd5ea55;
     border: 2px solid #acd5ea;
     border-radius: 8px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 42px;
+    line-height: 42px;
+    width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .usuarioContenedor{
+    margin: 15px;
     grid-area:usuario;
-    justify-self:center;
-    width: fit-content;
+    width: auto;
+    justify-content: center;
+    text-align: center;
 }
 
 .nombreUsuario{
@@ -219,7 +265,7 @@ html, body{
   display: flex; 
   flex-direction: row;
   gap: 20px;    
-  flex-wrap: wrap; /* si no entran, bajan a la siguiente fila */
+  flex-wrap: wrap
 }
 
 .memeBox {
@@ -249,4 +295,17 @@ html, body{
   font-size: 18px;
   margin-left: 10px;
   transition: transform 0.2s;
+}
+
+.inputEditar.activo {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.textoEditable.oculto {
+    opacity: 0;
+}
+
+.usuarioContenedor .textoEditable, .usuarioContenedor .inputEditar {
+    text-align: center;
 }
