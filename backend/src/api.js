@@ -435,7 +435,7 @@ app.get('/api/v1/usuarios/:id/memes-guardados', async (req, res) => {
 app.get(`/api/v1/usuario/:usuarioId/meme/:memeId/puntaje`, async (req,res) => {
   try {
     const usuario_id = req.params.usuarioId;
-    const meme_id = req.body.memeId;
+    const meme_id = req.params.memeId;
 
     if (!usuario_id || !meme_id ) {
       return res.status(400).json({ error: "Datos inválidos" });

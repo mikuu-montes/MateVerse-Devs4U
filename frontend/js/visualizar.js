@@ -1,5 +1,15 @@
 
 const idUsuarioLogueado = obtenerIdUsuarioLogueado();
+console.log(idUsuarioLogueado);
+
+const idMeme = sessionStorage.getItem('idMemeSeleccionado');
+console.log(idMeme);
+
+if (!idMeme) {
+  alert("No se encontró el meme seleccionado");
+}
+
+
 
 async function obtenerDatosUsuarioLogueado (idUsuarioLogueado){
 
@@ -35,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     
 
-    const url = `http://localhost:3000/api/v1/meme/${idUsuarioLogueado}`;
+    const url = `http://localhost:3000/api/v1/meme/${idMeme}`;
 
     try{
 
@@ -43,6 +53,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const info =  await respuesta.json();
 
         const meme = info.meme;
+
+        console.log(meme);
 
         const comentarios =  info.comentarios;
 
@@ -71,7 +83,7 @@ async function  memeEstaGuardado (meme){
         );
 
         if (!respuesta.ok) {
-            throw new Error("Error al obtener memes guardados");
+            throw new Error("Error al buscar memes guardados");
         }
 
         const memesGuardados = await respuesta.json();
@@ -343,7 +355,7 @@ async function nuevoComentario(meme){
 
         try {
             const respuesta = await fetch(
-                `/api/v1/comentarios`,
+                `/api/v1/comentarios/${meme.id_meme}`,
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
