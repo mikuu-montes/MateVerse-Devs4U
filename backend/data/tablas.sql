@@ -32,7 +32,7 @@ create table memes (
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario) ON DELETE CASCADE,
     categoria_id INT NOT NULL REFERENCES categorias (id_categoria),
     contexto_id INT NOT NULL REFERENCES contextos (id_contexto) ON DELETE CASCADE,
-    fecha_publicacion DATE NOT NULL CURRENT_DATE
+    fecha_publicacion DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 create table puntuaciones_memes (
