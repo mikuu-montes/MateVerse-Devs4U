@@ -38,7 +38,7 @@ create table memes (
 create table puntuaciones_memes (
     meme_id INT NOT NULL REFERENCES memes (id_meme) ON DELETE CASCADE,
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario) ON DELETE CASCADE,
-    puntaje DECIMAL(2,1) NOT NULL,
+    puntaje INT NOT NULL,
     PRIMARY KEY (meme_id, usuario_id)
     
 );

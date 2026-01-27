@@ -1,20 +1,11 @@
+let idUsuarioLogueado;
+let idMeme;
+let guardarMemeCheck;
 
-const idUsuarioLogueado = obtenerIdUsuarioLogueado();
-console.log(idUsuarioLogueado);
-
-const idMeme = sessionStorage.getItem('idMemeSeleccionado');
-console.log(idMeme);
-
-if (!idMeme) {
-  alert("No se encontró el meme seleccionado");
-}
-
-
-
-async function obtenerDatosUsuarioLogueado (idUsuarioLogueado){
+async function obtenerDatosUsuarioLogueado (idUsuario){
 
     try{
-        const url = `/api/v1/usuarios/${idUsuarioLogueado}`;
+        const url = `http://localhost:3000/api/v1/usuarios/${idUsuario}`;
 
         const respuesta = await fetch (url);
 
@@ -39,12 +30,19 @@ async function obtenerDatosUsuarioLogueado (idUsuarioLogueado){
     
 }
 
-let guardarMemeCheck;
 
 document.addEventListener('DOMContentLoaded', async () => {
     
     
+    idUsuarioLogueado = Number(obtenerIdUsuarioLogueado());
+    console.log("id del usuario logueado:", idUsuarioLogueado);
 
+    idMeme = Number(sessionStorage.getItem('idMemeSeleccionado'));
+    console.log("id del meme:", idMeme);
+
+    if (!idMeme) {
+    alert("No se encontró el meme seleccionado");
+    }
     const url = `http://localhost:3000/api/v1/meme/${idMeme}`;
 
     try{
@@ -79,7 +77,7 @@ async function  memeEstaGuardado (meme){
     //verifica si el meme esta guardado o no para poner el logo correcto
     try {
         const respuesta = await fetch(
-            `/api/v1/usuarios/${idUsuarioLogueado}/memes-guardados`
+            `http://localhost:3000/api/v1/usuarios/${idUsuarioLogueado}/memes-guardados`
         );
 
         if (!respuesta.ok) {
@@ -106,7 +104,7 @@ async function guardarMeme (meme){
 
             const respuesta = await fetch(
 
-                `/api/v1/meme/${meme.id_meme}/guardar`,
+                `http://localhost:3000/api/v1/meme/${meme.id_meme}/guardar`,
                 {
                     method: `POST`,
                     headers: { 'Content-Type': 'application/json' },
@@ -209,7 +207,7 @@ async function cargarComentario(comentario){
     //Verifica si el usuario likeo o no el comentario para mostrar la estrella pintada si lo hizo
     try {
         const respuesta = await fetch( 
-            `/api/v1/comentarios/${comentario.id_comentario}/like/${idUsuarioLogueado}`
+            `http://localhost:3000/api/v1/comentarios/${comentario.id_comentario}/like/${idUsuarioLogueado}`
         );
 
         if (!respuesta.ok) {
@@ -228,7 +226,7 @@ async function cargarComentario(comentario){
     likeInput.addEventListener('change', async () => {
         try {
             const respuesta = await fetch(
-                `/api/v1/comentarios/${comentario.id_comentario}/like`,
+                `http://localhost:3000/api/v1/comentarios/${comentario.id_comentario}/like`,
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -244,8 +242,8 @@ async function cargarComentario(comentario){
 
             const data = await respuesta.json();
 
-            likeContador.textContent = data.Likes;
-            likeInput.checked = data.Likeado;
+            likeContador.textContent = data.likes;
+            likeInput.checked = data.likeado;
 
         } catch (error) {
             console.error(error);
@@ -264,7 +262,7 @@ async function cargarComentario(comentario){
         if (nuevoContenido && nuevoContenido.trim() !== "") {
 
             try{
-                const respuesta =  await fetch (`/api/v1/comentarios/${comentario.id_comentario}`,
+                const respuesta =  await fetch (`http://localhost:3000/api/v1/comentarios/${comentario.id_comentario}`,
                     {
                         method: 'PUT',
                         headers: {'Content-Type': `application/json`},
@@ -311,7 +309,7 @@ async function cargarComentario(comentario){
 
         try {
             const respuesta = await fetch(
-                `/api/v1/comentarios/${comentario.id_comentario}`,
+                `http://localhost:3000/api/v1/comentarios/${comentario.id_comentario}`,
                 {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
@@ -355,7 +353,7 @@ async function nuevoComentario(meme){
 
         try {
             const respuesta = await fetch(
-                `/api/v1/comentarios/${meme.id_meme}`,
+                `http://localhost:3000/api/v1/comentarios/${meme.id_meme}`,
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -391,11 +389,11 @@ async function puntuarMeme(meme){
 
     estrellas.forEach(estrella => {
         estrella.addEventListener ('change', async () =>{
-            const valor = estrella.value;
+            const valor = Number(estrella.value);
 
             try {
                 const respuesta = await fetch(
-                    `/api/v1/meme/${meme.id_meme}/puntuar`,
+                    `http://localhost:3000/api/v1/meme/${meme.id_meme}/puntuar`,
                     {
                         method: `POST`,
                         headers: { 'Content-Type': 'application/json' },
@@ -422,7 +420,7 @@ async function puntuarMeme(meme){
 //Cargar puntaje meme
 async function puntajeMeme(memeId, usuarioId){
     try {
-        const respuesta = await fetch (`/api/v1/usuario/${usuarioId}/meme/${memeId}/puntaje`);
+        const respuesta = await fetch (`http://localhost:3000/api/v1/usuario/${usuarioId}/meme/${memeId}/puntaje`);
 
         if (!respuesta.ok){
             throw new Error("Error al cargar calificacion del meme");
@@ -430,9 +428,9 @@ async function puntajeMeme(memeId, usuarioId){
 
         const data = await respuesta.json();
 
-        if (data.puntaje){
+        if (data.puntaje !== undefined && data.punatje !== null){
 
-            const estrella = document.querySelector(`.rating[value = ${data.puntaje}]`);
+            const estrella = document.querySelector(`.rating[value="${data.puntaje}"]`);
 
             if (estrella){
                 estrella.checked = true;

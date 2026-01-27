@@ -1,3 +1,4 @@
+
 const express = require('express'); //importar express
 const cors = require('cors');
 
@@ -50,6 +51,8 @@ const {
   actualizarPuntajeMeme,
   usuarioPuntuoMeme
 } = require('./db/puntuacionMeme.js');
+
+
 
 //MEMES 
 
@@ -260,7 +263,7 @@ app.delete("/api/v1/meme/:id", async (req, res) => {
 
 //GET USUARIO
 app.get('/api/v1/usuarios/:id', async (req, res) => {
-  const id = req.params.id;
+  const id = Number(req.params.id);
 
   if (!id) {
     return res.status(400).json({ error: "Id inválido" });
@@ -412,16 +415,10 @@ app.post('/api/v1/meme/:id/guardar', async (req, res) => {
     const estaGuardado = await usuarioGuardoMeme(id_usuario, id_meme);
 
     if (estaGuardado) {
-      const eliminado = await eliminarMemeGuardado(id_meme, id_usuario);
-      if (!eliminado) {
-        return res.status(500).json({ error: "No se pudo quitar el meme guardado" });
-      }
+      await eliminarMemeGuardado(id_meme, id_usuario);
       return res.json({ guardado: false });
     } else {
-      const guardado = await guardarMeme(id_meme, id_usuario);
-      if (!guardado) {
-        return res.status(500).json({ error: "No se pudo guardar el meme" });
-      }
+      await guardarMeme(id_meme, id_usuario);
       return res.json({ guardado: true });
     }
 
@@ -434,7 +431,7 @@ app.post('/api/v1/meme/:id/guardar', async (req, res) => {
 //Memes guardados por el usuario
 app.get('/api/v1/usuarios/:id/memes-guardados', async (req, res) => {
   try {
-    const usuario_id = req.params.id;
+    const usuario_id = Number(req.params.id);
     if (!usuario_id) {
       return res.status(400).json({ error: "Id de usuario inválido" });
     }
@@ -451,8 +448,8 @@ app.get('/api/v1/usuarios/:id/memes-guardados', async (req, res) => {
 //devuelve la puntuacion que un usuario le dio al meme
 app.get(`/api/v1/usuario/:usuarioId/meme/:memeId/puntaje`, async (req,res) => {
   try {
-    const usuario_id = req.params.usuarioId;
-    const meme_id = req.params.memeId;
+    const usuario_id = Number(req.params.usuarioId);
+    const meme_id = Number(req.params.memeId);
 
     if (!usuario_id || !meme_id ) {
       return res.status(400).json({ error: "Datos inválidos" });
@@ -476,9 +473,9 @@ app.get(`/api/v1/usuario/:usuarioId/meme/:memeId/puntaje`, async (req,res) => {
 //agrega u actualiza puntuacion
 app.post("/api/v1/meme/:id/puntuar", async (req, res) => {
   try {
-    const id_meme = req.params.id;
-    const id_usuario = req.body.usuario_id;
-    const puntaje = req.body.puntaje;
+    const id_meme = Number(req.params.id);
+    const id_usuario = Number(req.body.usuario_id);
+    const puntaje = Number(req.body.puntaje);
     if (!id_meme || !id_usuario || !puntaje) {
       return res.status(400).json({ error: "Datos inválidos" });
     }
@@ -556,12 +553,7 @@ app.delete('/api/v1/comentarios/:idComentario', async (req, res) => {
     if (!usuario_id) {
       return res.status(400).json({ error: "Id de usuario inválido" });
     }
-
-    const comentario = await obtenerComentarioPorId(idComentario);
-    if (!comentario) {
-      return res.status(404).json({ error: "Comentario no encontrado" });
-    }
-
+    
     const idEliminado = await eliminarComentario(idComentario, usuario_id);
 
     if (!idEliminado) {
@@ -597,11 +589,6 @@ app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
       return res.status(400).json({ error: "El contenido no puede estar vacío" });
     }
 
-    const comentario = await obtenerComentarioPorId(idComentario);
-    if (!comentario) {
-      return res.status(404).json({ error: "Comentario no encontrado" });
-    }
-
     const comentarioModificado = await editarComentario(
       idComentario,
       usuario_id,
@@ -622,19 +609,17 @@ app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
 
 //Dar like o dis-like a un comentario. Retorna la cantidad de likes que tiene el comentario.
 app.post('/api/v1/comentarios/:idComentario/like', async (req, res) => {
-  try {
-    const idComentario = req.params.idComentario;
-    const { usuario_id } = req.body;
 
-    if (!idComentario) {
+  try {
+
+    const idComentario = Number(req.params.idComentario);
+    const usuario_id  = Number(req.body.usuario_id);
+
+    if (Number.isNaN(idComentario)) {
       return res.status(400).json({ error: "Id de comentario inválido" });
     }
-    if (!usuario_id) {
+    if (Number.isNaN(usuario_id)){
       return res.status(400).json({ error: "Id de usuario inválido" });
-    }
-    const comentario = await obtenerComentarioPorId(idComentario);
-    if (!comentario) {
-      return res.status(404).json({ error: "Comentario no encontrado" });
     }
     const yaLikeado = await usuarioLikeoComentario(usuario_id, idComentario);
     if (yaLikeado) {
@@ -642,11 +627,13 @@ app.post('/api/v1/comentarios/:idComentario/like', async (req, res) => {
     } else {
       await darLikeComentario(idComentario, usuario_id);
     }
+
     const likes = await contarLikesComentario(idComentario);
-    res.json({ Likeado: !yaLikeado, Likes });
+
+    res.json({ likeado: !yaLikeado, likes });
 
   } catch (err) {
-    console.error(err);
+     console.error(err); 
     res.status(500).json({ error: "Error al procesar el like" });
   }
 });
