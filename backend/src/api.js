@@ -6,6 +6,20 @@ const port = 3000;
 
 app.use(express.json());
 app.use(cors());
+const { Pool } = require('pg');
+
+const pool = new Pool({
+    user: 'Devs4U',
+    host: 'db',
+    database: 'mateverse',
+    password: 'mate',
+    port: 5432
+});
+
+pool.query('SELECT NOW()')
+  .then(res => console.log('DB conectada:', res.rows[0]))
+  .catch(err => console.error('Error DB:', err));
+
 
 const { 
   getAllMemes, 
@@ -15,7 +29,8 @@ const {
   getRankingMemes,  
   publicarMeme, 
   editarMeme, 
-  eliminarMeme 
+  eliminarMeme,
+  obtenerContextoIdPorMeme
 } = require("./db/memes.js");
 const {
   getAllUsuarios,
@@ -70,6 +85,17 @@ app.get("/api/v1/memes", async (req, res) => {
     res.status(500).json({ error: "Error al obtener los memes" });
 
   }
+});
+app.get('/api/v1/categorias', async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT id_categoria, nombre FROM categorias ORDER BY nombre'
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error("Error obteniendo categorías:", error);
+        res.status(500).json({ message: 'Error al obtener categorías' });
+    }
 });
 
 //Un solo meme con sus comentarios.
@@ -159,51 +185,159 @@ app.get("/api/v1/ranking", async (req, res) => {
 });
 
 //Publicar meme
+// Endpoint para publicar memes
+// Endpoint para publicar memes
 app.post("/api/v1/memes", async (req, res) => {
   try {
-    const {titulo, imagen_url, descripcion, categoria_id, usuario_id} = req.body;
+    const {
+      titulo,
+      imagen_url,
+      video_url,
+      descripcion,
+      protagonistas,
+      categoria_id,
+      usuario_id,
+      origen,
+      medio_fuente,
+      fecha_original
+    } = req.body;
 
-    if (!titulo || !imagen_url || !descripcion || !categoria_id || !usuario_id) {
+    // Validar campos obligatorios
+    if (!titulo || !imagen_url || !descripcion || !categoria_id || !usuario_id || !origen || !medio_fuente || !fecha_original) {
       return res.status(400).json({ error: "Faltan datos obligatorios" });
     }
 
+    // Verificar que el usuario exista
     const usuario = await getUsuarioPorId(usuario_id);
     if (!usuario) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
-    const memeCreado = await publicarMeme(req.body);
+    // Publicar el meme (la función publica también el contexto)
+    const memeCreado = await publicarMeme({
+      titulo,
+      imagen_url,
+      video_url: video_url || null,
+      descripcion,
+      protagonistas,
+      categoria_id,
+      usuario_id,
+      origen,
+      medio_fuente,
+      fecha_original
+    });
+
     res.status(201).json(memeCreado);
 
   } catch (err) {
-    console.error(err);
-
-    if (err.message === "Datos incompletos") {
-      return res.status(400).json({ error: err.message });
-    }
-
+    console.error("Error en POST /memes:", err);
     res.status(500).json({ error: "Error al publicar el meme" });
   }
 });
 
+
+
+
 //Editar meme
 // Express
+// PUT para actualizar meme
+async function actualizarMemeEnBDD(id, datosActualizar) {
+    return pool.query(
+        `UPDATE memes 
+         SET imagen_url = $1,
+             titulo = $2,
+             descripcion = $3,
+             protagonistas = $4,
+             categoria_id = $5,
+             contexto_id = $6
+         WHERE id_meme = $7`,
+        [
+            datosActualizar.imagen_url,
+            datosActualizar.titulo,
+            datosActualizar.descripcion,
+            datosActualizar.protagonistas,
+            datosActualizar.categoria_id,
+            datosActualizar.contexto_id,
+            id
+        ]
+        
+    );
+}
+
+async function actualizarContextoEnBDD(contexto_id, datosActualizar) {
+    return pool.query(
+        `UPDATE contextos
+         SET origen = $1,
+             medio_fuente = $2,
+             fecha_original = $3
+         WHERE id_contexto = $4`,
+        [
+            datosActualizar.origen,
+            datosActualizar.medio_fuente,
+            datosActualizar.fecha_original,
+            contexto_id
+        ]
+    );
+}
+
+
 app.put('/api/v1/memes/:id', async (req, res) => {
     const { id } = req.params;
-    const { foto, titulo, descripcion, protagonista, categoria, medio, fechaSurgio } = req.body;
+
+    const {
+        imagen_url,
+        titulo,
+        descripcion,
+        protagonistas,
+        categoria_id,
+        origen,
+        medio_fuente,
+        fecha_original
+    } = req.body;
+
+    if (!categoria_id) {
+        return res.status(400).json({ message: "categoria_id es obligatorio" });
+    }
 
     try {
-        // Aquí tu lógica para actualizar el meme en la base de datos
-        await actualizarMemeEnBDD(id, { foto, titulo, descripcion, protagonista, categoria, medio, fechaSurgio });
-        res.status(200).json({ message: "Meme actualizado correctamente" });
+        const contexto_id = await obtenerContextoIdPorMeme(id);
+
+        if (!contexto_id) {
+            return res.status(404).json({ message: "Contexto no encontrado para el meme" });
+        }
+
+        const datosMeme = {
+            imagen_url,
+            titulo,
+            descripcion,
+            protagonistas,
+            categoria_id,
+            contexto_id
+        };
+
+        const datosContexto = {
+            origen,
+            medio_fuente,
+            fecha_original: fecha_original ? new Date(fecha_original) : null
+        };
+
+        await actualizarMemeEnBDD(id, datosMeme);
+        await actualizarContextoEnBDD(contexto_id, datosContexto);
+
+        res.status(200).json({ message: "Meme y contexto actualizados correctamente" });
+
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error al actualizar el meme" });
+        console.error("Error real al actualizar el meme:", error);
+        res.status(500).json({ message: error.message });
     }
 });
 
+
+
+
 //Borrar meme
-app.delete("/api/v1/meme/:id", async (req, res) => {
+app.delete("/api/v1/memes/:id", async (req, res) => {
+  console.log("DELETE request body:", req.body);
   try {
     const id_meme = req.params.id;
     const usuario_id = req.body.usuario_id;

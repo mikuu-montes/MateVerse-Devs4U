@@ -71,10 +71,10 @@
                 <!-- TÍTULO DEBAJO DE LA FOTO -->
                 <div class="nombreMemeContenedor">
 
-                    <h3 class="nombreMeme textoEditable" id="descripcion">
+                    <h3 class="nombreMeme textoEditable" id="nombreMeme">
                         Titulo del meme    
                     </h3>    
-                    <input type="text" id="input_tiutlo_meme" class="inputEditar">
+                    <input type="text" id="input_titulo_meme" class="inputEditar">
                     
                 </div>
             </div>
@@ -111,8 +111,8 @@
                 <div class="categoriaContenedor">
 
                     <h3 class="categoria textoEditable" id="categoria_meme">Categoría</h3>
+                    <select name="categoria" id="input_categoria" required></select>
 
-                    <input type="text" class="inputEditar" id="input_categoria">
 
                 </div>
             
@@ -124,7 +124,7 @@
                         Origen del meme
                     </h3>
 
-                    <input type="text" class="inputEditar">
+                    <input type="text" class="inputEditar" id="input_origen">
 
                 </div>
             
@@ -144,11 +144,11 @@
 
                 <div class="fechaSurgioContenedor">
 
-                    <h3 class="fechaSurgio textoEditable" id="categoria">
+                    <h3 class="fechaSurgio textoEditable" id="fechaSurgio_meme">
                         Fecha donde surgió
                     </h3>
 
-                    <input type="text" class="inputEditar" id="input_fechaSurgio">
+                    <input type="date" class="inputEditar" id="input_fechaSurgio">
 
                 </div>
                 
@@ -156,11 +156,14 @@
 
                 <div class="fechaCreacionContenedor">
 
-                    <h3 class="fechaCreacion textoEditable" id="categoria">
+                    <h3 class="fechaCreacion textoEditable" id="fechaCreacion_meme">
                         Fecha de creación
                     </h3>
+                    
 
                 </div>
+                <input type="hidden" id="input_contexto_id">
+
 
                 <button class='boton_guardar' id="guardado_de_cambios">Guardar Cambios</button>
 

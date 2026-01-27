@@ -74,7 +74,7 @@ async function cargarMemes(contenidoABuscar = "") {
 
     } catch (error) {
         console.error(error);
-        containerPosteos.innerHTML = '<p class="error">⚠️ Hubo un error, por favor recarga la página.⚠️ </p>';
+        containerPosteos.innerHTML = '<p class="error">Hubo un error, por favor recarga la página.</p>';
     }
 }
 

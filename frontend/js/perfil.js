@@ -173,7 +173,7 @@ async function cargarCategorias() {
     }
 }
 
-//Carga los memes que publico el usurio.
+//Carga los memes que publico el usuario.
 async function cargarMemes() {
     try {
         //obtengo info
@@ -191,43 +191,58 @@ async function cargarMemes() {
             const postMeme = document.createElement("div");
             postMeme.classList.add("memeBox");
             postMeme.innerHTML = `
-                <a href="../Visualizacion Meme/index.html" class="nombreMeme">${meme.titulo}</a>
-                <div class="botonesMeme">
-                    <button class="editar">✏️</button>
-                    <button class="eliminar">🗑️</button>
+                <a href="../Visualizacion Meme/index.html?id=${meme.id_meme}" class="nombreMeme">
+        ${meme.titulo}</a>
+            <div class="botonesMeme">
+                <button class="editar" data-id="${meme.id_meme}">✏️</button>
+                <button class="eliminar" data-id="${meme.id_meme}">🗑️</button>
                 </div>
             `;
             filaPosts.appendChild(postMeme);
 
+
+
+            
+
             // Si se quiere editar, redirige a otra página junto con el id de meme.
-            const botonEditar = postMeme.querySelector(".editar");
-            botonEditar.addEventListener("click", (e) => {
+            postMeme.querySelector(".editar").addEventListener("click", (e) => {
                 e.preventDefault();
-                sessionStorage.setItem("idMemeSeleccionado", meme.id_meme);
-                window.location.href = "../Editar Meme/index.html";
+                window.location.href = `../Editar Meme/index.html?id=${meme.id_meme}`;
             });
 
             // Si se aprieta el tachito de basura, se elimina el meme.
             const botonEliminar = postMeme.querySelector(".eliminar");
             botonEliminar.addEventListener("click", async (e) => {
-                e.preventDefault();
-                try {
-                    const response = await fetch(`http://localhost:3000/api/v1/meme/${meme.id_meme}`, {
+            e.preventDefault();
+
+            if (!confirm("¿Seguro que querés eliminar este meme?")) return;
+
+            const memeId = botonEliminar.dataset.id;
+
+            try {
+                const response = await fetch(
+                    `http://localhost:3000/api/v1/memes/${memeId}`,
+                    {
                         method: "DELETE",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ usuario_id: usuarioId })
-                    });
-                    if (!response.ok){
-                        alert("No se po eliminar el meme. (╥﹏╥)\n Intente recargar la página.");
-                        return;
                     }
-                    // Remuevo el meme del DOM
-                    postMeme.remove();
-                } catch (err) {
-                    console.error(err);
-                    alert("⚠️ Hubo un error, por favor recarga la página.⚠️");
+                );
+
+                if (!response.ok) {
+                    alert("No se pudo eliminar el meme.");
+                    return;
                 }
-            });
+
+                postMeme.style.opacity = "0";
+                setTimeout(() => postMeme.remove(), 300);
+
+            } catch (err) {
+                console.error(err);
+                alert("⚠️ Error inesperado.");
+            }
+        });
+
         });
 
     } catch (err) {
@@ -236,7 +251,7 @@ async function cargarMemes() {
     }
 }
 
-//limino el usuario
+//Elimino el usuario
 botonEliminarUsuario.addEventListener("click", async () => {
     if (!confirm("¿Seguro querés eliminar tu cuenta? Esta acción es irreversible.")) {
         return;

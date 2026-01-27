@@ -30,6 +30,14 @@ async function getAllMemes() {
   const result = await dbClient.query(query);
   return result.rows;
 } 
+//Consulta la tabla meme
+async function obtenerContextoIdPorMeme(id_meme) {
+    const result = await dbClient.query(
+        'SELECT contexto_id FROM memes WHERE id_meme = $1',
+        [id_meme]
+    );
+    return result.rows[0]?.contexto_id;
+}
 
 //Función para visualizar un meme 
 //Devuelve todo el contenido del meme, si no existe devuelve null.
@@ -38,6 +46,7 @@ async function getMeme(id){
     SELECT 
       m.id_meme,
       m.titulo,
+      m.descripcion,
       m.imagen_url,
       m.video_url,
       m.protagonistas,
@@ -121,33 +130,37 @@ async function getRankingMemes() {
 //Retorna el meme recien creado o error si faltan campos oblgatorios.
 async function publicarMeme({ 
   titulo, imagen_url, video_url, descripcion, protagonistas, categoria_id, 
-  fecha_original, fecha_publicacion,origen, medio_fuente, usuario_id,}){
-
+  fecha_original, origen, medio_fuente, usuario_id
+}){
   if (!titulo || !imagen_url || !descripcion || !categoria_id || !usuario_id) {
-    throw new Error();
+    throw new Error("Datos incompletos en publicarMeme");
   }
 
-  // Insertar el contexto en la tabla contextos
-  const contextoQuery = `
-    INSERT INTO contextos(origen, medio_fuente,fecha_original)
-    VALUES ($1, $2, $3)
-    RETURNING id_contexto;
-  `;
-  const ctxtResultado =  await dbClient.query(contextoQuery, [origen, medio_fuente, fecha_original])
-  const contexto_id = ctxtResultado.rows[0].id_contexto;
+  try {
+    const contextoQuery = `
+      INSERT INTO contextos(origen, medio_fuente, fecha_original)
+      VALUES ($1, $2, $3)
+      RETURNING id_contexto;
+    `;
+    const ctxtResultado =  await dbClient.query(contextoQuery, [origen, medio_fuente, fecha_original])
+    const contexto_id = ctxtResultado.rows[0].id_contexto;
 
-  //Insertar el meme en la tabla memes
-  const memeQuery = `
-    INSERT INTO memes (titulo, imagen_url, video_url, descripcion, 
-    protagonistas, usuario_id, categoria_id, contexto_id, fecha_publicacion )
-    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,CURRENT_DATE)
-    RETURNING *;
-  `;
-  const memeResultado = await dbClient.query(memeQuery, [titulo, imagen_url, video_url, descripcion, 
-  protagonistas, usuario_id, categoria_id, contexto_id])
+    const memeQuery = `
+      INSERT INTO memes (titulo, imagen_url, video_url, descripcion, 
+      protagonistas, usuario_id, categoria_id, contexto_id, fecha_publicacion )
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,CURRENT_DATE)
+      RETURNING *;
+    `;
+    const memeResultado = await dbClient.query(memeQuery, [titulo, imagen_url, video_url, descripcion, 
+    protagonistas, usuario_id, categoria_id, contexto_id])
 
-  return memeResultado.rows[0]; 
+    return memeResultado.rows[0]; 
+  } catch(err) {
+    console.error("Error en publicarMeme:", err);
+    throw err;
+  }
 }
+
 
 //Edita un meme existente y su contexto asociado, solo si el usuario tiene permiso.
 //Retorna el meme actualizado, en caso de falta de permisos retorna error 403, o error 404 si el meme no existe. 
@@ -248,6 +261,7 @@ module.exports = {
   getCategoriasFavoritas, 
   getRankingMemes,  
   publicarMeme, 
-  editarMeme, 
+  editarMeme,
+  obtenerContextoIdPorMeme, 
   eliminarMeme 
 };
