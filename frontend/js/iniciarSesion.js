@@ -18,8 +18,6 @@ formIniciarSesion.addEventListener("submit", async (e) => {
     const usuario = await response.json();
     guardarUsuarioId(usuario.id_usuario);
     console.log("Login OK:", usuario);
-
-    alert("Sesión iniciada");
     window.location.href = "../Inicio/index.html";
 
   } catch (error) {

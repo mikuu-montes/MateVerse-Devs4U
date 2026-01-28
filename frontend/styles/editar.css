@@ -1,5 +1,5 @@
 .inputEditar{
-    display: none;
+    display: block;
     margin-top: 15px;
     height: min-content;
     font-weight: bold;
