@@ -25,7 +25,8 @@ async function getAllMemes() {
     LEFT JOIN puntuaciones_memes p ON m.id_meme = p.meme_id
     LEFT JOIN comentarios c ON m.id_meme = c.meme_id
     GROUP BY m.id_meme
-    ORDER BY m.fecha_publicacion DESC;
+    ORDER BY m.fecha_publicacion DESC, m.id_meme DESC;
+
   `;
   const result = await dbClient.query(query);
   return result.rows;
@@ -78,7 +79,7 @@ async function getMemesDeUsuario(usuario_id) {
       titulo
     FROM memes
     WHERE usuario_id = $1
-    ORDER BY id_meme DESC;
+    ORDER BY fecha_publicacion DESC;
   `;
 
   const resultado = await dbClient.query(query, [usuario_id]);

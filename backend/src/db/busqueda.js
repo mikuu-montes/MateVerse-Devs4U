@@ -28,7 +28,8 @@ async function buscarMemes(texto) {
       OR m.descripcion ILIKE $1
       OR cat.nombre ILIKE $1
     GROUP BY m.id_meme
-    ORDER BY m.fecha_publicacion DESC;
+    ORDER BY m.fecha_publicacion DESC, m.id_meme DESC;
+
   `;
   const result = await dbClient.query(query, [`%${texto}%`]);
   return result.rows;
