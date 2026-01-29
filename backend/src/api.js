@@ -352,10 +352,6 @@ app.delete("/api/v1/memes/:id", async (req, res) => {
 
     const resultado = await eliminarMeme(id_meme, usuario_id);
 
-    if (!resultado) {
-      return res.status(404).json({ error: "Meme no encontrado" });
-    }
-
     res.json(resultado);
 
   } catch (err) {
@@ -363,10 +359,6 @@ app.delete("/api/v1/memes/:id", async (req, res) => {
 
     if (err.status === 403) {
       return res.status(403).json({ error: "No tenés permiso para borrar este meme" });
-    }
-
-    if (err.status === 404) {
-      return res.status(404).json({ error: "Meme no encontrado" });
     }
 
     res.status(500).json({ error: "Error al borrar el meme" });
