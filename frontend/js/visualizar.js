@@ -450,8 +450,8 @@ async function cargarContenedores(meme, comentarios) {
     document.querySelector(`.fotoMeme`).src = meme.imagen_url;
     document.querySelector(`.nombreMeme`).textContent = meme.titulo;
 
-    document.getElementById(`descripcion`).textContent = meme.descripcion;
-    document.getElementById(`protagonista`).textContent = meme.protagonistas;
+    document.getElementById(`descripcionMeme`).textContent = meme.descripcion;
+    document.getElementById(`protagonistaMeme`).textContent = meme.protagonistas;
     document.getElementById(`categoria`).textContent = meme.categoria;
     document.getElementById(`origen`).textContent = meme.origen;
     document.getElementById(`medioSurgimiento`).textContent = meme.medio_fuente
