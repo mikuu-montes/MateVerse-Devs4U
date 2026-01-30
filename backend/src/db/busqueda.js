@@ -29,13 +29,13 @@ async function buscarMemes(texto) {
     return result.rows;
   }
 
-  // Separamos el texto en palabras
+  // Separo el texto en palabras
   const palabras = texto.split(/\s+/).filter(Boolean);
 
-  // Creamos un array de patrones para cada palabra
+  // Creo un array de patrones para cada palabra
   const params = palabras.map(p => `%${p}%`);
 
-  // Construimos el WHERE simple con OR para todas las palabras usando unaccent
+  // Construyo un WHERE simple con OR para todas las palabras usando unaccent
   let where = '';
   for (let i = 0; i < palabras.length; i++) {
     if (i > 0) where += ' OR ';
@@ -69,7 +69,5 @@ async function buscarMemes(texto) {
   const result = await dbClient.query(query, params);
   return result.rows;
 }
-
-
 
 module.exports= {buscarMemes}
