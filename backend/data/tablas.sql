@@ -1,5 +1,7 @@
  /*Estructura de como estan creados las tablas de las entidades*/
 
+CREATE EXTENSION IF NOT EXISTS unaccent;
+
 create table usuarios (
     id_usuario SERIAL PRIMARY KEY,
     nombre_completo VARCHAR(100) NOT NULL,

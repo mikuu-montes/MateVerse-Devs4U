@@ -121,11 +121,12 @@
 }
 
 .highlight {
-    background-color: yellow;
-    font-weight: bold;
-    padding: 0 2px;
-    border-radius: 3px;
-}
+    background-color: skyblue;
+    color: inherit;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 0;
+}  
 
 
 
