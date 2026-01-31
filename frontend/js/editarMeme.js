@@ -1,155 +1,158 @@
-console.log("JS cargado");
+document.addEventListener('DOMContentLoaded', () => {
 
-// --- Obtener ID del meme desde la URL ---
-const params = new URLSearchParams(window.location.search);
-const idMeme = params.get('id');
-console.log("ID:", idMeme);
+    console.log("JS cargado");
 
-let currentMemeCategoriaId = null; // guardaremos la categoría actual del meme
-let currentMemeContextoId = null;  // guardaremos el contexto actual del meme
+    //  OBTENER ID DEL MEME
+    const params = new URLSearchParams(window.location.search);
+    const idMeme = params.get('id');
+    console.log("ID MEME:", idMeme);
 
-// --- Función para cargar categorías ---
-async function cargarCategorias() {
-    try {
-        const res = await fetch('http://localhost:3000/api/v1/categorias');
-        if (!res.ok) throw new Error("No se pudieron cargar las categorías");
-        const categorias = await res.json();
-
-        const select = document.getElementById('input_categoria');
-        select.innerHTML = ''; // borramos opciones existentes
-
-        categorias.forEach(cat => {
-            const option = document.createElement('option');
-            option.value = cat.id_categoria;
-            option.textContent = cat.nombre;
-            select.appendChild(option);
-        });
-
-        // Después de cargar todas las opciones, seleccionamos la categoría del meme
-        if (currentMemeCategoriaId) {
-            select.value = currentMemeCategoriaId;
-        }
-
-    } catch (error) {
-        console.error("Error cargando categorías:", error);
+    if (!idMeme) {
+        console.error("No llegó el ID del meme por la URL");
+        return;
     }
-}
 
-// --- Función para cargar datos del meme ---
-async function cargarMeme() {
-    try {
-        const response = await fetch(`http://localhost:3000/api/v1/meme/${idMeme}`);
-        const data = await response.json();
+    let currentMemeCategoriaId = null;
+    let currentMemeContextoId = null;
 
-        if (!response.ok) {
-            console.error("Error al obtener meme:", data);
-            return;
+    // CARGAR CATEGORÍAS
+    async function cargarCategorias() {
+        try {
+            const res = await fetch('http://localhost:3000/api/v1/categorias');
+            if (!res.ok) throw new Error("Error cargando categorías");
+
+            const categorias = await res.json();
+            const select = document.getElementById('input_categoria');
+            select.innerHTML = '';
+
+            categorias.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.id_categoria;
+                option.textContent = cat.nombre;
+                select.appendChild(option);
+            });
+
+            if (currentMemeCategoriaId) {
+                select.value = currentMemeCategoriaId;
+            }
+
+        } catch (error) {
+            console.error("Error categorías:", error);
         }
-
-        console.log("Datos del meme:", data);
-        console.log("Contexto ID recibido del backend:", data.contexto_id);
-
-        // Guardamos IDs para usar después
-        currentMemeCategoriaId = data.categoria_id;
-        currentMemeContextoId = data.contexto_id;
-
-        const fotoMeme = document.querySelector('.fotoMeme');
-        fotoMeme.src = data.imagen_url || "../imagenes/medallas.png";
-        document.getElementById('input_foto_meme').value = data.imagen_url || "";
-        
-        document.getElementById('nombreMeme').textContent = data.titulo || "";
-        document.getElementById('input_titulo_meme').value = data.titulo || "";
-
-        document.getElementById('descripcion').textContent = data.descripcion || "";
-        document.getElementById('input_descripcion').value = data.descripcion || "";
-
-        document.getElementById('protagonista').textContent = data.protagonistas || "";
-        document.getElementById('input_protagonista').value = data.protagonistas || "";
-
-        await cargarCategorias();
-
-        document.getElementById('medio_meme').textContent = data.medio_fuente || "";
-        document.getElementById('input_medio').value = data.medio_fuente || "";
-
-        document.getElementById('origen_meme').textContent = data.origen || "";
-        document.getElementById('input_origen').value = data.origen || "";
-
-        if (data.fecha_original) {
-            const fecha = new Date(data.fecha_original);
-            const fechaStr = fecha.toISOString().split('T')[0];
-            document.getElementById('fechaSurgio_meme').textContent = fechaStr;
-            document.getElementById('input_fechaSurgio').value = fechaStr;
-        }
-
-        if (data.fecha_publicacion) {
-            const fechaCreacion = new Date(data.fecha_publicacion);
-            document.getElementById('fechaCreacion_meme').textContent = fechaCreacion.toISOString().split('T')[0];
-        }
-
-    } catch (error) {
-        console.error("Error cargando el meme:", error);
     }
-}
+
+    //  CARGAR MEME 
+    async function cargarMeme() {
+        try {
+            const res = await fetch(`http://localhost:3000/api/v1/meme/${idMeme}`);
+            if (!res.ok) throw new Error("Error obteniendo meme");
+
+            const response = await res.json();
+            const meme = response.meme; 
+
+            console.log("MEME:", meme);
+
+            currentMemeCategoriaId = meme.categoria_id;
+            currentMemeContextoId = meme.contexto_id;
+
+            document.getElementById('nombreMeme').textContent = meme.titulo || '';
+            document.getElementById('descripcion').textContent = meme.descripcion || '';
+            document.getElementById('protagonista').textContent = meme.protagonistas || '';
+            document.getElementById('origen_meme').textContent = meme.origen || '';
+            document.getElementById('medio_meme').textContent = meme.medio_fuente || '';
 
 
-// --- Guardar cambios ---
-document.getElementById('guardado_de_cambios').addEventListener('click', async () => {
+            // Imagen
+            document.querySelector('.fotoMeme').src =
+                meme.imagen_url || "../imagenes/medallas.png";
+
+            
+            // Fechas
+            if (meme.fecha_original) {
+                document.getElementById('fechaSurgio_meme').textContent =
+                    meme.fecha_original.split('T')[0];
+            }
+
+
+
+            await cargarCategorias();
+
+        } catch (error) {
+            console.error("Error cargando meme:", error);
+        }
+    }
+
+    // GUARDAR CAMBIOS
+    async function guardarCambios() {
     try {
-        const categoriaVal = parseInt(document.getElementById('input_categoria').value);
+        const categoriaVal = parseInt(
+            document.getElementById('input_categoria').value
+        );
 
-        console.log("Categoria seleccionada:", categoriaVal);
-        
         if (!categoriaVal) {
-            alert("Debes seleccionar una categoría");
+            alert("Seleccioná una categoría");
             return;
         }
+
+        const fotoElem = document.querySelector('.fotoMeme');
+        if (!fotoElem) {
+            alert("No se encontró la imagen del meme.");
+            return;
+        }
+        const inputFotoElem = document.getElementById('input_foto_meme');
+        const inputFoto = inputFotoElem ? inputFotoElem.value.trim() : null;
+
+        const inputVideoElem = document.getElementById('input_video_meme');
+        const inputVideo = inputVideoElem ? inputVideoElem.value.trim() : null;
 
         const datosMeme = {
-            imagen_url: document.getElementById('input_foto_meme').value,
-            titulo: document.getElementById('input_titulo_meme').value,
-            descripcion: document.getElementById('input_descripcion').value,
-            protagonistas: document.getElementById('input_protagonista').value,
-            categoria_id: categoriaVal,  
-            contexto_id: currentMemeContextoId 
+            imagen_url: inputFoto || fotoElem.src, 
+            video_url: inputVideo || null,
+            titulo: document.getElementById('nombreMeme').textContent.trim(),
+            descripcion: document.getElementById('descripcion').textContent.trim(),
+            protagonistas: document.getElementById('protagonista').textContent.trim(),
+            categoria_id: categoriaVal,
+            contexto_id: currentMemeContextoId
         };
 
-        // Imprimir los datos para verificar antes de hacer el PUT
-        console.log("Datos del meme a guardar:", datosMeme);
-        console.log("Contexto ID enviado:", currentMemeContextoId);
 
         const datosContexto = {
-            origen: document.getElementById('input_origen').value,
-            medio_fuente: document.getElementById('input_medio').value,
-            fecha_original: document.getElementById('input_fechaSurgio').value || null
+            origen: document.getElementById('origen_meme').textContent.trim(),
+            medio_fuente: document.getElementById('medio_meme').textContent.trim(),
+            fecha_original: document.getElementById('fechaSurgio_meme').textContent.trim() || null
         };
 
-        const response = await fetch(`http://localhost:3000/api/v1/memes/${idMeme}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-            ...datosMeme,
-            ...datosContexto
-        })
+        console.log("ENVIANDO:", { ...datosMeme, ...datosContexto });
 
-        });
+        const res = await fetch(
+            `http://localhost:3000/api/v1/memes/${idMeme}`,
+            {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...datosMeme, ...datosContexto })
+            }
+        );
 
-        const result = await response.json();
+        const result = await res.json();
 
-        if (response.ok) {
-            alert('Meme actualizado correctamente');
-            await cargarMeme();  
+        if (res.ok) {
+            alert("Meme actualizado correctamente");
+            await cargarMeme();
         } else {
-            alert(`Error al actualizar: ${result.message || 'Error desconocido'}`);
+            alert(result.message || "Error al guardar");
             console.error(result);
         }
 
     } catch (error) {
-        console.error("Error al guardar cambios:", error);
+        console.error("Error guardando:", error);
     }
-});
+}
 
-// --- Inicialización ---
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log("DOMContentLoaded");
-    await cargarMeme();
+   
+    document
+        .getElementById('guardado_de_cambios')
+        .addEventListener('click', guardarCambios);
+
+   
+    cargarMeme();
 });
