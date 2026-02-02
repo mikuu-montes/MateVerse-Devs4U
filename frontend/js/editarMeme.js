@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 select.appendChild(option);
             });
 
-            if (currentMemeCategoriaId) {
-                select.value = currentMemeCategoriaId;
+            if (currentMemeCategoriaId != null) {
+                select.value = String(currentMemeCategoriaId);
             }
 
         } catch (error) {
@@ -51,9 +51,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const meme = response.meme; 
 
             console.log("MEME:", meme);
+            
 
             currentMemeCategoriaId = meme.categoria_id;
+            await cargarCategorias();
+
             currentMemeContextoId = meme.contexto_id;
+
+            console.log("Categoria meme:", currentMemeCategoriaId);
+
+            const select = document.getElementById('input_categoria');
+            console.log("Valor select:", select.value);
+
+
 
             document.getElementById('nombreMeme').textContent = meme.titulo || '';
             document.getElementById('descripcion').textContent = meme.descripcion || '';
@@ -62,20 +72,22 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('medio_meme').textContent = meme.medio_fuente || '';
 
 
-            // Imagen
-            document.querySelector('.fotoMeme').src =
-                meme.imagen_url || "../imagenes/medallas.png";
+            const imgUrl = meme.imagen_url || "../imagenes/medallas.png";
 
-            
+            // imagen
+            document.querySelector('.fotoMeme').src = imgUrl;
+            document.getElementById('input_foto_meme').value = meme.imagen_url || '';
+
+
+            // Video
+            document.getElementById('input_video_meme').value = meme.video_url || '';
             // Fechas
-            if (meme.fecha_original) {
-                document.getElementById('fechaSurgio_meme').textContent =
-                    meme.fecha_original.split('T')[0];
+            if (meme.fecha_publicacion) {
+                document.getElementById('fechaPublicacion_meme').value =
+                    meme.fecha_publicacion.split('T')[0];
             }
 
 
-
-            await cargarCategorias();
 
         } catch (error) {
             console.error("Error cargando meme:", error);
@@ -111,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
             titulo: document.getElementById('nombreMeme').textContent.trim(),
             descripcion: document.getElementById('descripcion').textContent.trim(),
             protagonistas: document.getElementById('protagonista').textContent.trim(),
+            fecha_publicacion: document.getElementById('fechaPublicacion_meme').value.trim(),
             categoria_id: categoriaVal,
             contexto_id: currentMemeContextoId
         };
@@ -119,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const datosContexto = {
             origen: document.getElementById('origen_meme').textContent.trim(),
             medio_fuente: document.getElementById('medio_meme').textContent.trim(),
-            fecha_original: document.getElementById('fechaSurgio_meme').textContent.trim() || null
+            
         };
 
         console.log("ENVIANDO:", { ...datosMeme, ...datosContexto });
@@ -142,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(result.message || "Error al guardar");
             console.error(result);
         }
+        window.location.href = "../Perfil Usuario/index.html";
 
     } catch (error) {
         console.error("Error guardando:", error);

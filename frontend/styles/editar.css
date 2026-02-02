@@ -19,12 +19,11 @@
     text-align: center;
 }
 #titulo {
-    margin-top:20px;
-    margin-bottom: 3px;
     text-align: center;
+    margin-top:20px;
 }
-#input_foto_meme{
-    margin-top: 20px;
+#link_imagen{
+    margin-top:20px;
 
 }
 .boton_guardar{

@@ -80,6 +80,7 @@ window.addEventListener("DOMContentLoaded", () => {
             console.log('Meme publicado:', result);
             alert('Meme publicado con éxito ');
             formCrearMeme.reset();
+            window.location.href = "../Inicio/index.html";
 
         } catch (error) {
             console.error('Error al publicar meme:', error);

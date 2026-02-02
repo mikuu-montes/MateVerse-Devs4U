@@ -250,8 +250,11 @@ async function actualizarMemeEnBDD(id, datosActualizar) {
              descripcion = $3,
              protagonistas = $4,
              categoria_id = $5,
-             contexto_id = $6
-         WHERE id_meme = $7`,
+             contexto_id = $6,
+             video_url = $7,
+            fecha_publicacion = $8
+
+         WHERE id_meme = $9`,
         [
             datosActualizar.imagen_url,
             datosActualizar.titulo,
@@ -259,6 +262,8 @@ async function actualizarMemeEnBDD(id, datosActualizar) {
             datosActualizar.protagonistas,
             datosActualizar.categoria_id,
             datosActualizar.contexto_id,
+            datosActualizar.video_url,
+            datosActualizar.fecha_publicacion,
             id
         ]
         
@@ -269,13 +274,11 @@ async function actualizarContextoEnBDD(contexto_id, datosActualizar) {
     return pool.query(
         `UPDATE contextos
          SET origen = $1,
-             medio_fuente = $2,
-             fecha_original = $3
-         WHERE id_contexto = $4`,
+             medio_fuente = $2
+         WHERE id_contexto = $3`,
         [
             datosActualizar.origen,
             datosActualizar.medio_fuente,
-            datosActualizar.fecha_original,
             contexto_id
         ]
     );
@@ -287,13 +290,14 @@ app.put('/api/v1/memes/:id', async (req, res) => {
 
     const {
         imagen_url,
+        video_url,
         titulo,
         descripcion,
         protagonistas,
         categoria_id,
         origen,
         medio_fuente,
-        fecha_original
+        fecha_publicacion
     } = req.body;
 
     if (!categoria_id) {
@@ -309,17 +313,18 @@ app.put('/api/v1/memes/:id', async (req, res) => {
 
         const datosMeme = {
             imagen_url,
+            video_url,
             titulo,
             descripcion,
             protagonistas,
             categoria_id,
-            contexto_id
+            contexto_id,
+            fecha_publicacion: fecha_publicacion ? new Date(fecha_publicacion) : null
         };
 
         const datosContexto = {
             origen,
             medio_fuente,
-            fecha_original: fecha_original ? new Date(fecha_original) : null
         };
 
         await actualizarMemeEnBDD(id, datosMeme);

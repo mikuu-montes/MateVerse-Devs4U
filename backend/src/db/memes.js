@@ -50,6 +50,8 @@ async function getMeme(id){
       m.imagen_url,
       m.video_url,
       m.protagonistas,
+      m.categoria_id,
+      m.contexto_id,
       c.nombre AS categoria,
       ctx.origen,
       ctx.medio_fuente,
@@ -165,8 +167,8 @@ async function publicarMeme({
 //Edita un meme existente y su contexto asociado, solo si el usuario tiene permiso.
 //Retorna el meme actualizado, en caso de falta de permisos retorna error 403, o error 404 si el meme no existe. 
 async function editarMeme(id_meme, usuario_id,{
-  titulo, imagen_url, descripcion, protagonistas,
-  categoria_id, origen, medio_fuente,fecha_original}){
+  titulo, imagen_url, video_url, descripcion, protagonistas,
+  categoria_id, origen, medio_fuente,fecha_publicacion}){
 
   // Obtener el meme y su contexto
   const memeResultado = await dbClient.query(
@@ -192,9 +194,8 @@ async function editarMeme(id_meme, usuario_id,{
     `UPDATE contextos
      SET origen = $1,
          medio_fuente = $2,
-         fecha_original = $3
-     WHERE id_contexto = $4`,
-    [origen, medio_fuente, fecha_original, contexto_id]
+     WHERE id_contexto = $3`,
+    [origen, medio_fuente, contexto_id]
   );
 
   // Actualizar la tabla memes
@@ -204,8 +205,10 @@ async function editarMeme(id_meme, usuario_id,{
         imagen_url = $2,
         descripcion = $3,
         protagonistas = $4,
-        categoria_id = $5
-    WHERE id_meme = $6
+        categoria_id = $5,
+        video_url = $6,
+        fecha_publicacion = $7
+    WHERE id_meme = $8
     RETURNING *;
   `;
 
@@ -215,6 +218,8 @@ async function editarMeme(id_meme, usuario_id,{
     descripcion,
     protagonistas,
     categoria_id,
+    video_url,
+    fecha_publicacion,
     id_meme
   ]);
 
