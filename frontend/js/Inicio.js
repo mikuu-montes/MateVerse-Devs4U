@@ -79,6 +79,7 @@ async function cargarMemes(contenidoABuscar = "") {
 
             const contenidoPost = document.createElement('div');
             contenidoPost.className = posicionPost;
+            const porcentajeEstrellas = (meme.promedio_puntaje / 5) * 100;
             contenidoPost.innerHTML = `
                 <div class="containerImgPost">
                     <img class="imgPost" alt="Imagen del Meme" src="${meme.imagen_url}">
@@ -90,7 +91,7 @@ async function cargarMemes(contenidoABuscar = "") {
                         <h6 class="fechaCreacion">Publicado: ${new Date(meme.fecha_publicacion).toLocaleDateString('es-ES', { day: 'numeric', month: 'numeric', year: 'numeric' })}</h6>
                         <div class="containerEstrellas">
                             <div class="estrellasVacias">
-                                <div class="estrellasLlenas" style="width:${meme.promedio_puntaje}"></div>
+                                <div class="estrellasLlenas" style="width:${porcentajeEstrellas}%"></div>
                             </div>
                         </div>
                         <h6 class="cantComentarios">${meme.cantidad_comentarios} comentarios</h6>
