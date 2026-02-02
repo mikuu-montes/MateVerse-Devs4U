@@ -6,7 +6,7 @@ function guardarUsuarioId(usuario_id){
 function obtenerIdUsuarioLogueado (){
     const id = sessionStorage.getItem("usuario_id");
     console.log("Obteniendo usuario_id desde sessionStorage:", id);
-    return id;
+    return Number(id);
 }
 
 function cerrarSesion(){

@@ -61,11 +61,14 @@
             <div class="columnaFoto">
 
                 <figure class="fotoContenedor">
-                    <img class="fotoMeme" src="../imagenes/medallas.png">
+                    <img class="fotoMeme">
                 </figure>
 
                 <!-- TÍTULO DEBAJO DE LA FOTO -->
                 <div class="nombreMemeContenedor">
+
+
+            
 
                     <h3 class="nombreMeme textoEditable" id="nombreMeme">
                         Titulo del meme
@@ -73,6 +76,7 @@
 
                     <input type="text" class="inputEditar" style="display:none;">
                     
+
                 </div>
 
                 <div class="containerGuardarMeme">
@@ -99,11 +103,13 @@
                    
                 <div class="descripcionContenedor">
 
+
                     <h3 class="descripcion textoEditable" id="descripcionMeme">
                         Descripción del meme
                     </h3>
 
                     <input type="text" class="inputEditar" style="display:none;">
+
 
                 </div>
 
@@ -111,11 +117,13 @@
 
                 <div class="protagonistaContenedor">
 
+
                     <h3 class="protagonista textoEditable" id="protagonistaMeme">
                         Protagonistas del meme 
                     </h3>
 
                     <input type="text" class="inputEditar" style="display:none;">
+
 
                 </div>
         
@@ -123,11 +131,7 @@
 
                 <div class="categoriaContenedor">
 
-                    <h3 class="categoria textoEditable" id="categoria">
-                        Categoría
-                    </h3>
-
-                    <input type="text" class="inputEditar" style="display:none;">
+                    <h3 class="categoria textoEditable" id="categoria"></h3>
 
                 </div>
             
@@ -135,11 +139,7 @@
 
                 <div class="origenContenedor">
 
-                    <h3 class="origen textoEditable" id="categoria">
-                        Origen del meme
-                    </h3>
-
-                    <input type="text" class="inputEditar" style="display:none;">
+                    <h3 class="origen textoEditable" id="origen"></h3>
 
                 </div>
             
@@ -147,11 +147,7 @@
 
                 <div class="medioContenedor">
 
-                    <h3 class="medio textoEditable" id="categoria">
-                        Medio del que surgió
-                    </h3>
-
-                    <input type="text" class="inputEditar" style="display:none;">
+                    <h3 class="medio textoEditable" id="medioSurgimiento"></h3>
 
                 </div>
 
@@ -159,11 +155,13 @@
 
                 <div class="fechaSurgioContenedor">
 
-                    <h3 class="fechaSurgio textoEditable" id="categoria">
+
+                    <h3 class="fechaSurgio textoEditable" id="fechaOriginal">
                         Fecha donde surgió
                     </h3>
 
                     <input type="date" class="inputEditar" style="display:none;">
+
 
                 </div>
                 
@@ -171,7 +169,8 @@
 
                 <div class="fechaCreacionContenedor">
 
-                    <h3 class="fechaCreacion textoEditable" id="categoria">
+
+                    <h3 class="fechaCreacion textoEditable" id="fechaPublicado">
                         Fecha de creación
                     </h3>
 
@@ -183,9 +182,7 @@
                 
                 <div class="linkVideoContenedor">
 
-                    <a class="urlVideo" id="video">
-                        video del meme
-                    </a>
+                    <a class="urlVideo" id="video"></a>
 
                 </div>
 
@@ -200,19 +197,13 @@
 
                 <figure class="fotoPerfilContenedor">
 
-                    <img class="fotoPerfil" src="../imagenes/medallas.png">
-
-
+                    <img class="fotoPerfil">
 
                 </figure>
 
                 <div class="nombreUsuarioContenedor">
 
-                    <h3 class="nombreUsuario textoEditable" id="nombreUsuario">
-                        Nombre del usuario
-                    </h3>
-
-                    <input type="text" class="inputEditar" style="display:none;">
+                    <h3 class="nombreUsuario textoEditable" id="nombreUsuario"></h3>
                     
                 </div>
 
@@ -239,40 +230,28 @@
 
                 </div>
 
-                <form action="/guardar_rating" method="POST" class="ratingContenedor">
-
-                    <input type="hidden" name="memeId" value="{{ meme.id }}">
+                <div class="ratingContenedor">
 
                     <div class="ratingEstrellas">
 
-                        <input type="radio" name="rating" id="star5" value="5"
-                            onchange="this.form.submit()">
-
+                        <input type="radio" name="star" class="rating" id="star5" value="5">
                         <label for="star5">★</label>
 
-                        <input type="radio" name="rating" id="star4" value="4"
-                            onchange="this.form.submit()">
-
+                        <input type="radio" name="star" class="rating" id="star4" value="4">
                         <label for="star4">★</label>
 
-                        <input type="radio" name="rating" id="star3" value="3"
-                            onchange="this.form.submit()">
-
+                        <input type="radio" name="star" class="rating" id="star3" value="3">
                         <label for="star3">★</label>
 
-                        <input type="radio" name="rating" id="star2" value="2"
-                            onchange="this.form.submit()">
-
+                        <input type="radio" name="star" class="rating" id="star2" value="2">
                         <label for="star2">★</label>
 
-                        <input type="radio" name="rating" id="star1" value="1"
-                            onchange="this.form.submit()">
-                            
+                        <input type="radio" name="star" class="rating" id="star1" value="1">
                         <label for="star1">★</label>
 
                     </div>
 
-                </form>
+                </div>
                  
 
             </div>
@@ -281,113 +260,17 @@
 
                 <label class="comentarioLabel">Comentarios del meme</label>
 
-                <div class="listaComentarios">
-
-                    <!-- COMENTARIO -->
-                    <div class="comentarioItem" data-comentario-id="1" data-editado="false">
-
-                        <p class="comentarioTexto">
-                            JAJAA este meme me representa totalmente 😂
-                        </p>
-                        
-                        <div class="comentarioAcciones">
-
-                            <div class="indicadorEditado">
-
-                                <p class="textoEditado"></p>
-
-                            </div>
-                    
-                            <div class="likeContenedor">
-                                
-                                <!-- input que JS va a escuchar -->
-                                <input 
-                                    type="checkbox"
-                                    class="likeInput"
-                                    id="likeComentario1"
-                                    data-comentario-id="1"
-                                >
-
-                                <!-- estrella clickeable -->
-                                <label 
-                                    for="likeComentario1"
-                                    class="likeEstrellas"
-                                    title="Me gusta">
-                                    ★
-                                </label>
-
-                                <!-- contador manipulable por JS -->
-                                <span 
-                                    class="likeContador"
-                                    data-like-contador="1">
-                                    12
-                                </span>
-
-                            </div>
-
-                            <div class="botones_comentario">
-                                <button class="editarComentario">Editar</button>
-                                <button class="eliminarComentario">Eliminar</button>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <!-- COMENTARIO -->
-                    <div class="comentarioItem" data-comentario-id="2" data-editado="true">
-
-                        <p class="comentarioTexto">
-                            Muy bueno 😂
-                        </p>
-                        
-                        <div class="comentarioAcciones">
-                            
-                            <div class="indicadorEditado">
-
-                                <p class="textoEditado"></p>
-
-                            </div>
-
-                            <div class="likeContenedor">
-                                
-                                <!-- input que JS va a escuchar -->
-                                <input 
-                                    type="checkbox"
-                                    class="likeInput"
-                                    id="likeComentario2"
-                                    data-comentario-id="2"
-                                >
-
-                                <!-- estrella clickeable -->
-                                <label 
-                                    for="likeComentario2"
-                                    class="likeEstrellas"
-                                    title="Me gusta">
-                                    ★
-                                </label>
-
-                                <!-- contador manipulable por JS -->
-                                <span 
-                                    class="likeContador"
-                                    data-like-contador="2">
-                                    8
-                                </span>
-
-                            </div>
-
-                            <div class="botones_comentario">
-                                <button class="editarComentario">Editar</button>
-                                <button class="eliminarComentario">Eliminar</button>
-                            </div>
-
-                        </div>
-
-                    </div>
+                <div class="listaComentarios"></div>
 
             </div>
 
         </div>
-        <script src="../js/visualizacionMeme.js"></script>
+
+        <script src="../js/auth.js"></script>
+        <script src="../js/visualizar.js"></script>
+        
     </body>
+
+
 
 </html>

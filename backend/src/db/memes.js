@@ -231,17 +231,12 @@ async function eliminarMeme(id_meme, usuario_id) {
     FROM memes
     WHERE id_meme = $1 AND usuario_id = $2;
   `;
-  const checkResultado = await dbClient.query(checkQuery, [id_meme, usuario_id]);
+  const checkResultado = await dbClient.query(checkQuery, [id_meme, Number(usuario_id)]);
 
   if (checkResultado.rows.length === 0) {
-    const error = new Error("El meme no existe");
-    error.status = 404;
+    const error = new Error("El meme no existe o no tenes permisos");
+    error.status = 403;
     throw error;
-  }
-  if (checkResultado.rows[0].usuario_id !== usuario_id) {
-    const error = new Error("No tenés permiso para eliminar este meme");
-    error.status = 403
-    throw error
   }
 
   // Borrar el meme

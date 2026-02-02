@@ -40,7 +40,7 @@ create table memes (
 create table puntuaciones_memes (
     meme_id INT NOT NULL REFERENCES memes (id_meme) ON DELETE CASCADE,
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario) ON DELETE CASCADE,
-    puntaje DECIMAL(2,1) NOT NULL,
+    puntaje INT NOT NULL,
     PRIMARY KEY (meme_id, usuario_id)
     
 );
@@ -108,3 +108,4 @@ values ('El goat siendo el goat', 'https://pbs.twimg.com/media/Fq0SGCkXgAEJyQL.j
 ('Estoy de novia', 'https://pbs.twimg.com/media/EtLA9yJXUAQQeOD.jpg', NULL, 'Surgió en el programa de Mirtha, quién intentaba consultarle a Carrió sobre temas de politica, pero en cambio Carrió la interrumpe de forma inesperada diciendo "Tengo Novio". Actualmente se utiliza para presumir una relación que puede o no ser real de forma humoristica', 'Lilita Carrió', 1, 13, 4),
 ('¡Tres empanadas para 2 personas!', 'https://pbs.twimg.com/media/EU9s7IkXsAIJ0HW.jpg', 'https://youtu.be/q10LsZlR7tk?si=NwwEIU5npCBJuSu0', 'El meme surge a partir de que Antonio (un personaje de clase media-alta que presume de su estatus) sale de la casa de sus parientes extremadamente pobres comiendo una empanada, cuando se sienta en el auto le comenta a su hermano (que lo esperaba dentro del mismo) "¿Sábes qué tenían para comer?... ¡Tres empanadas! Me partieron el alma... ¡Tres empanadas que les sobraron de ayer para dos personas!" mostrando una lástima falsa. Actualmentese utiliza para humorear sobre la pobreza en algún ambiente.', 'Luis Brandoni como Antonio Musicardi', 1, 14, 5),
 ('Hagale una pregunta a la tarada!!', 'https://www.diariopanorama.com/fotos/notas/2023/08/17/paola-argento-458163-081726.jpg', 'https://youtu.be/8STCF1fVczM?si=bRLwDDAEQNM4wze3', 'Surgió de un episodio en el que Coki con su clásico tono burlón invita a la gente a comprar una respuesta de su hermana con un cartel que dice: "Hágale una pregunta a la tarada", burlandose de la supuesta falta de inteligencia de su hermana y sacando plata de la misma. Actualmente se usa para burlarse de una respuesta obvia o burlarse con ironia del otro.', 'Darío y Luisana Lopilato como Coki y Paola Argento', 1, 13, 6);
+
