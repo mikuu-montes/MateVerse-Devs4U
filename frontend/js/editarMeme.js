@@ -82,9 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Video
             document.getElementById('input_video_meme').value = meme.video_url || '';
             // Fechas
-            if (meme.fecha_publicacion) {
-                document.getElementById('fechaPublicacion_meme').value =
-                    meme.fecha_publicacion.split('T')[0];
+            if (meme.fecha_original) {
+                document.getElementById('fechaSurgio_meme').value =
+                    meme.fecha_original.split('T')[0];
             }
 
 
@@ -123,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
             titulo: document.getElementById('nombreMeme').textContent.trim(),
             descripcion: document.getElementById('descripcion').textContent.trim(),
             protagonistas: document.getElementById('protagonista').textContent.trim(),
-            fecha_publicacion: document.getElementById('fechaPublicacion_meme').value.trim(),
             categoria_id: categoriaVal,
             contexto_id: currentMemeContextoId
         };
@@ -132,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const datosContexto = {
             origen: document.getElementById('origen_meme').textContent.trim(),
             medio_fuente: document.getElementById('medio_meme').textContent.trim(),
-            
+            fecha_original: document.getElementById('fechaSurgio_meme').value.trim(),
         };
 
         console.log("ENVIANDO:", { ...datosMeme, ...datosContexto });
