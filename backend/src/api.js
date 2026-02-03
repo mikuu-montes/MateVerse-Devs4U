@@ -250,8 +250,10 @@ async function actualizarMemeEnBDD(id, datosActualizar) {
              descripcion = $3,
              protagonistas = $4,
              categoria_id = $5,
-             contexto_id = $6
-         WHERE id_meme = $7`,
+             contexto_id = $6,
+             video_url = $7
+
+         WHERE id_meme = $8`,
         [
             datosActualizar.imagen_url,
             datosActualizar.titulo,
@@ -259,6 +261,7 @@ async function actualizarMemeEnBDD(id, datosActualizar) {
             datosActualizar.protagonistas,
             datosActualizar.categoria_id,
             datosActualizar.contexto_id,
+            datosActualizar.video_url,
             id
         ]
         
@@ -287,6 +290,7 @@ app.put('/api/v1/memes/:id', async (req, res) => {
 
     const {
         imagen_url,
+        video_url,
         titulo,
         descripcion,
         protagonistas,
@@ -309,6 +313,7 @@ app.put('/api/v1/memes/:id', async (req, res) => {
 
         const datosMeme = {
             imagen_url,
+            video_url,
             titulo,
             descripcion,
             protagonistas,
