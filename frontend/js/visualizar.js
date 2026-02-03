@@ -37,12 +37,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     idUsuarioLogueado = Number(obtenerIdUsuarioLogueado());
     console.log("id del usuario logueado:", idUsuarioLogueado);
 
-    idMeme = Number(sessionStorage.getItem('idMemeSeleccionado'));
-    console.log("id del meme:", idMeme);
+    // Obtengo id del meme desde la URL
+    const params = new URLSearchParams(window.location.search);
+    idMeme = Number(params.get('id'));
+
 
     if (!idMeme) {
-    alert("No se encontró el meme seleccionado");
+        idMeme = Number(sessionStorage.getItem('idMemeSeleccionado'));
     }
+
+    console.log("id del meme:", idMeme);
+
     const url = `http://localhost:3000/api/v1/meme/${idMeme}`;
 
     try{
