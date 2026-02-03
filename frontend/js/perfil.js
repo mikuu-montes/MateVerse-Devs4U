@@ -199,14 +199,28 @@ async function cargarCategorias() {
         }
 
         const categorias = await response.json();
+        categorias.forEach(cat => {
+            console.log(cat);
+        });
+        
         contenedorCat.innerHTML = "";
 
         categorias.forEach((cat, indice) => {
             const h = document.createElement("h2");
             h.classList.add("categoria");
             h.id = `fav${indice + 1}`;
-            h.textContent = `#${cat.nombre_categoria}`;
+            h.textContent = `#${cat.categoria}`;
             contenedorCat.appendChild(h);
+
+            // Agregar click a cada categoría
+            h.addEventListener("click", () => {
+                // Guardamos la categoría seleccionada en sessionStorage
+                sessionStorage.setItem("busquedaActual", cat.categoria);
+
+                // Recargamos la página de inicio para que tome la nueva búsqueda
+                window.location.href = "../Inicio/index.html"; // o el path de tu template de inicio
+            });
+        
         });
 
         if (categorias.length === 0) contenedorCat.style.display = "none";

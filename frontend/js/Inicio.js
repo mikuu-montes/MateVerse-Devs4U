@@ -123,6 +123,15 @@ buscador.addEventListener('input', (texto) => {
 
 // Cargar todos los memes al inicio
 window.addEventListener('DOMContentLoaded', () => {
-    buscador.value = '';
-    cargarMemes();
+    // Revisamos si hay una búsqueda guardada
+    const busquedaGuardada = sessionStorage.getItem("busquedaActual") || "";
+
+    // Si hay una búsqueda guardada, usamos esa; si no, dejamos vacía
+    buscador.value = busquedaGuardada;
+
+    // Cargar memes según la búsqueda
+    cargarMemes(busquedaGuardada);
+
+    // Si querés que la búsqueda sea "solo una vez", la eliminamos
+    // sessionStorage.removeItem("busquedaActual");
 });
