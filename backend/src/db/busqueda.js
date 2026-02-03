@@ -56,9 +56,11 @@ async function buscarMemes(texto) {
       m.imagen_url,
       m.descripcion,
       m.fecha_publicacion,
-      COALESCE(AVG(p.puntaje), 0) AS promedio_puntaje
+      COALESCE(AVG(p.puntaje), 0) AS promedio_puntaje,
+      COUNT(c.id_comentario) AS cantidad_comentarios
     FROM memes m
     LEFT JOIN puntuaciones_memes p ON m.id_meme = p.meme_id
+    LEFT JOIN comentarios c ON m.id_meme = c.meme_id
     LEFT JOIN categorias cat ON m.categoria_id = cat.id_categoria
     LEFT JOIN contextos ctx ON m.contexto_id = ctx.id_contexto
     WHERE ${where}
