@@ -29,6 +29,14 @@ async function actualizarPuntajeMeme(id_meme, id_usuario, nuevoPuntaje) {
     );
 }
 
+async function eliminarPuntajeMeme(id_meme, id_usuario){
+    await dbClient.query(`
+        DELETE FROM puntuaciones_memes
+        WHERE meme_id = $1
+        AND usuario_id = $2`, [id_meme, id_usuario]
+    );
+}
+
 // Devuelve el puntaje que un usuario dio a un meme, o null si no tenia puntaje.
 async function usuarioPuntuoMeme(id_meme, id_usuario) {
     const puntaje = await dbClient.query(`
@@ -48,5 +56,6 @@ async function usuarioPuntuoMeme(id_meme, id_usuario) {
 module.exports = {
     puntuarMeme,
     actualizarPuntajeMeme,
+    eliminarPuntajeMeme,
     usuarioPuntuoMeme
 }
