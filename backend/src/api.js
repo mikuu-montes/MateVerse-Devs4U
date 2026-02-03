@@ -64,6 +64,7 @@ const {
 const {
   puntuarMeme,
   actualizarPuntajeMeme,
+  eliminarPuntajeMeme,
   usuarioPuntuoMeme
 } = require('./db/puntuacionMeme.js');
 
@@ -609,6 +610,31 @@ app.post("/api/v1/meme/:id/puntuar", async (req, res) => {
   }
 });
 
+//elimina la puntuacion
+app.delete("/api/v1/meme/:id/puntuar", async (req,res) => {
+  try{
+    const idMeme = req.params.id;
+    const idUsuario = req.body.usuario_id;
+
+    if (!idMeme) {
+      return res.status(400).json({ error: "Id de comentario inválido" });
+    }
+
+    if (!idUsuario) {
+      return res.status(400).json({ error: "Id de usuario inválido" });
+    }
+
+    await eliminarPuntajeMeme(idMeme, idUsuario);
+
+    res.status(200).json({ eliminado: true });
+
+
+  }catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al eliminar el puntaje" });
+  }
+
+})
 
 //ENDPOINTS COMENTARIOS:
 
