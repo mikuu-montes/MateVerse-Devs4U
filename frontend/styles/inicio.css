@@ -83,14 +83,14 @@
 .containerEstrellas {
     display: flex;
     align-items: center;
-    width: 100px; /* ancho total del conjunto de estrellas */
+    width: 90px; /* ancho total del conjunto de estrellas */
 }
 
 .estrellasVacias {
     position: relative;
     display: inline-block;
     color: #ccc;
-    width: 100%;
+    width: 90px;
     overflow: hidden;
 }
 

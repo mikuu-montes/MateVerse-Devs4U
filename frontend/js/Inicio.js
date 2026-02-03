@@ -10,14 +10,17 @@ const urlMeme = "http://localhost:3000/api/v1/memes";
 const containerPosteos = document.getElementById('containerPosteos');
 const buscador = document.getElementById('buscador');
 
+//Saca las tildes del texto
 function quitarTildes(texto) {
     return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
-  
+
+//Reemplaza los caracteres que son especiales en regex por el mismo pero con un \ antes (para que no lo considere especial).
 function escaparRegex(texto) {
     return texto.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+//Resalta elt exto que coincida
 function resaltarTexto(textoOriginal, busqueda) {
     if (!busqueda) return textoOriginal;
 
@@ -80,6 +83,7 @@ async function cargarMemes(contenidoABuscar = "") {
             const contenidoPost = document.createElement('div');
             contenidoPost.className = posicionPost;
             const porcentajeEstrellas = (meme.promedio_puntaje / 5) * 100;
+
             contenidoPost.innerHTML = `
                 <div class="containerImgPost">
                     <img class="imgPost" alt="Imagen del Meme" src="${meme.imagen_url}">

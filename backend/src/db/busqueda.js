@@ -19,7 +19,7 @@ async function buscarMemes(texto) {
         m.imagen_url,
         m.descripcion,
         m.fecha_publicacion,
-        COALESCE(AVG(p.puntaje), 0) AS promedio_puntaje
+        COALESCE(AVG(p.puntaje)::float, 0) AS promedio_puntaje
       FROM memes m
       LEFT JOIN puntuaciones_memes p ON m.id_meme = p.meme_id
       GROUP BY m.id_meme
