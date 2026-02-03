@@ -10,6 +10,41 @@ const urlMeme = "http://localhost:3000/api/v1/memes";
 const containerPosteos = document.getElementById('containerPosteos');
 const buscador = document.getElementById('buscador');
 
+function quitarTildes(texto) {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+  
+function escaparRegex(texto) {
+    return texto.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function resaltarTexto(textoOriginal, busqueda) {
+    if (!busqueda) return textoOriginal;
+
+    const textoPlano = quitarTildes(textoOriginal);
+    const palabras = quitarTildes(busqueda)
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(escaparRegex);
+
+    if (palabras.length === 0) return textoOriginal;
+
+    const regex = new RegExp(palabras.join("|"), "gi");
+
+    let resultado = "";
+    let ultimoIndice = 0;
+
+    textoPlano.replace(regex, (match, offset) => {
+    resultado += textoOriginal.slice(ultimoIndice, offset);
+    resultado += `<span class="highlight">${textoOriginal.substr(offset, match.length)}</span>`;
+    ultimoIndice = offset + match.length;
+    });
+
+    resultado += textoOriginal.slice(ultimoIndice);
+    return resultado;
+}
+  
 //Si hay contenido para buscar, muestra todos los memes que coincidas, sino, muestra todos los memes.
 //Si se hace click en un meme, se envie a traves de sessionStorage el id del meme seleccionado.
 async function cargarMemes(contenidoABuscar = "") {
@@ -44,18 +79,19 @@ async function cargarMemes(contenidoABuscar = "") {
 
             const contenidoPost = document.createElement('div');
             contenidoPost.className = posicionPost;
+            const porcentajeEstrellas = (meme.promedio_puntaje / 5) * 100;
             contenidoPost.innerHTML = `
                 <div class="containerImgPost">
                     <img class="imgPost" alt="Imagen del Meme" src="${meme.imagen_url}">
                 </div>
                 <div class="containerInfoPost">
-                    <h1 class="tituloPost">${meme.titulo}</h1>
-                    <p class="infoPost">${meme.descripcion}</p>
+                    <h1 class="tituloPost">${resaltarTexto(meme.titulo, contenidoABuscar)}</h1>
+                    <p class="infoPost">${resaltarTexto(meme.descripcion, contenidoABuscar)}</p>
                     <div class="conteinerComentarioPost">
                         <h6 class="fechaCreacion">Publicado: ${new Date(meme.fecha_publicacion).toLocaleDateString('es-ES', { day: 'numeric', month: 'numeric', year: 'numeric' })}</h6>
                         <div class="containerEstrellas">
                             <div class="estrellasVacias">
-                                <div class="estrellasLlenas" style="width:${meme.promedio_puntaje}"></div>
+                                <div class="estrellasLlenas" style="width:${porcentajeEstrellas}%"></div>
                             </div>
                         </div>
                         <h6 class="cantComentarios">${meme.cantidad_comentarios} comentarios</h6>
@@ -81,8 +117,12 @@ async function cargarMemes(contenidoABuscar = "") {
 // Busca los memes que coincidas, a medida que el susario escriba.
 buscador.addEventListener('input', (texto) => {
     const contenido = texto.target.value.trim();
+    sessionStorage.setItem('busquedaActual', contenido);
     cargarMemes(contenido);
 });
 
 // Cargar todos los memes al inicio
-window.addEventListener('DOMContentLoaded', () => cargarMemes());
+window.addEventListener('DOMContentLoaded', () => {
+    buscador.value = '';
+    cargarMemes();
+});
