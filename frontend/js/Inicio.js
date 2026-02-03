@@ -21,12 +21,13 @@ function escaparRegex(texto) {
 function resaltarTexto(textoOriginal, busqueda) {
     if (!busqueda) return textoOriginal;
 
-    const textoPlano = quitarTildes(textoOriginal);
+    // Convertimos ambos a forma "sin tildes" para comparar
+    const textoPlano = quitarTildes(textoOriginal).toLowerCase();
     const palabras = quitarTildes(busqueda)
-    .toLowerCase()
-    .split(/\s+/)
-    .filter(Boolean)
-    .map(escaparRegex);
+        .toLowerCase()
+        .split(/\s+/)
+        .filter(Boolean)
+        .map(escaparRegex);
 
     if (palabras.length === 0) return textoOriginal;
 
@@ -36,14 +37,15 @@ function resaltarTexto(textoOriginal, busqueda) {
     let ultimoIndice = 0;
 
     textoPlano.replace(regex, (match, offset) => {
-    resultado += textoOriginal.slice(ultimoIndice, offset);
-    resultado += `<span class="highlight">${textoOriginal.substr(offset, match.length)}</span>`;
-    ultimoIndice = offset + match.length;
+        resultado += textoOriginal.slice(ultimoIndice, offset);
+        resultado += `<span class="highlight">${textoOriginal.substr(offset, match.length)}</span>`;
+        ultimoIndice = offset + match.length;
     });
 
     resultado += textoOriginal.slice(ultimoIndice);
     return resultado;
 }
+
   
 //Si hay contenido para buscar, muestra todos los memes que coincidas, sino, muestra todos los memes.
 //Si se hace click en un meme, se envie a traves de sessionStorage el id del meme seleccionado.
