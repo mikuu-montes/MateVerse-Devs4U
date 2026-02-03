@@ -463,7 +463,10 @@ async function cargarContenedores(meme, comentarios) {
     document.getElementById(`medioSurgimiento`).textContent = meme.medio_fuente
     document.getElementById(`fechaOriginal`).textContent = meme.fecha_original;
     document.getElementById(`fechaPublicado`).textContent = meme.fecha_publicacion;
-    document.getElementById(`video`).href = meme.video_url;
+    if (meme.video_url) {
+        document.getElementById(`video`).href = meme.video_url;
+        document.getElementById(`video`).textContent = "Video del meme";
+    }
 
     //Pongo el logo guardado como corresponda
     memeEstaGuardado(meme);
