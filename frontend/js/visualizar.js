@@ -1,6 +1,8 @@
 let idUsuarioLogueado;
 let idMeme;
 let guardarMemeCheck;
+let puntajeActualUsuario = null;
+let enviandoPuntaje = false;
 
 async function obtenerDatosUsuarioLogueado (idUsuario){
 
@@ -68,8 +70,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
 });
-
-
 
 
 async function  memeEstaGuardado (meme){
@@ -391,32 +391,77 @@ async function nuevoComentario(meme){
 
 //Puntuar meme
 async function puntuarMeme(meme){
-    const estrellas = document.querySelectorAll(`.rating`);
 
+    const estrellas = document.querySelectorAll(`.rating`);
+    
     estrellas.forEach(estrella => {
-        estrella.addEventListener ('change', async () =>{
+
+        estrella.addEventListener ('click', async () =>{
+
+            // 🚫 evita doble request
+            if (enviandoPuntaje) {
+                console.log('BLOQUEADO: request en curso')
+                return;
+            }
+
+            enviandoPuntaje = true;
+
             const valor = Number(estrella.value);
 
+
             try {
-                const respuesta = await fetch(
-                    `http://localhost:3000/api/v1/meme/${meme.id_meme}/puntuar`,
-                    {
-                        method: `POST`,
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            usuario_id: idUsuarioLogueado,
-                            puntaje: valor
-                        })
+        
+                //Si el usuario toca nuevamente el mismo puntaje que ya habia dado lo elimina
+                if (puntajeActualUsuario === valor){
+
+                    const respuesta = await fetch(
+                        `http://localhost:3000/api/v1/meme/${meme.id_meme}/puntuar`,
+                        {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                usuario_id: idUsuarioLogueado
+                            })
+                        }
+                    );
+
+                    if (!respuesta.ok){
+                        throw new Error("Error al eliminar puntuación");
                     }
 
-                );
+                    
+                    estrellas.forEach(e => e.checked = false);
 
-                if (!respuesta.ok){
-                    throw new Error("Error al calificar meme");
+                    puntajeActualUsuario = null;
+
+                    console.log('✅ puntaje eliminado');
+
+                } else {
+                    const respuesta = await fetch(
+                        `http://localhost:3000/api/v1/meme/${meme.id_meme}/puntuar`,
+                        {
+                            method: `POST`,
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                usuario_id: idUsuarioLogueado,
+                                puntaje: valor
+                            })
+                        }
+
+                    );
+
+                    puntajeActualUsuario = valor;
+                    if (!respuesta.ok){
+                        throw new Error("Error al calificar meme");
+                    }
+
                 }
+
 
             }catch (error) {
                 alert("No se pudo guardar la puntuación");
+            }finally {
+                enviandoPuntaje = false;
             }
         });
 
@@ -434,14 +479,17 @@ async function puntajeMeme(memeId, usuarioId){
 
         const data = await respuesta.json();
 
-        if (data.puntaje !== undefined && data.punatje !== null){
+        if (data.puntaje !== undefined && data.puntaje !== null && puntajeActualUsuario === null){
 
             const estrella = document.querySelector(`.rating[value="${data.puntaje}"]`);
 
             if (estrella){
                 estrella.checked = true;
+                puntajeActualUsuario = data.puntaje;
             }
 
+        } else {
+            puntajeActualUsuario = null;
         }
     } catch (err){
         console.error(err);
