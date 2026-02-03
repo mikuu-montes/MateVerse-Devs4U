@@ -26,9 +26,13 @@
       tarjeta.innerHTML = `
         
         <img src = "${meme.imagen_url}" >
-        <a href = "../Visualizacion Meme/index.html?id=${meme.id_meme}" class="nombreMeme">${meme.titulo}</a>
+        <p>${meme.titulo}</p>
 
-        `;
+      `;
+
+      tarjeta.addEventListener('click', () => {
+        window.location.href = `../Visualizacion Meme/index.html?id=${meme.id_meme}`;
+      });
 
       contenedor.appendChild(tarjeta)
       
