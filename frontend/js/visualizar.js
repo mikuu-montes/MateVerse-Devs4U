@@ -196,7 +196,6 @@ async function cargarComentario(comentario){
     botonesComentario.appendChild(btnEliminar);
 
 
-
     //Si el usuario que creo el comentario coincide con el usuario logueado muestra la opción de eliminar y borrar
     if (comentario.usuario_id === idUsuarioLogueado) {
         
@@ -341,6 +340,7 @@ async function nuevoComentario(meme){
 
     const textareaComentario = document.getElementById('comentarioMeme');
     const botonComentar = document.querySelector('.comentarioBoton');
+    
 
     botonComentar.addEventListener('click', async () => {
 
@@ -370,6 +370,12 @@ async function nuevoComentario(meme){
             }
 
             const comentarioCreado = await respuesta.json();
+
+            const mensaje = document.getElementById('mensajeSinComentarios');
+
+            if (mensaje){
+                mensaje.remove();
+            }
 
 
             textareaComentario.value = "";
@@ -465,11 +471,23 @@ async function cargarContenedores(meme, comentarios) {
     //Si el usuario clickea el logo de guardado, agrega o quita el meme de la lista de guardados
     guardarMeme(meme)
 
-    //cargo comentarios con sus botones y likes correspondientes. 
-    for (const comentario of comentarios){
+    //Si no hay comentarios aparece mensaje que lo indica si no cargo comentarios con sus botones y likes correspondientes. 
 
-        cargarComentario(comentario);
+    if (comentarios.length === 0){
+
+        const contenedorComentarios = document.querySelector('.listaComentarios');
+        const mensaje = document.createElement('p');
+        mensaje.id = "mensajeSinComentarios";
+        mensaje.textContent = "No hay comentarios todavía :("
+        contenedorComentarios.appendChild(mensaje);
+    } else{
+        for (const comentario of comentarios){
+
+            cargarComentario(comentario);
+        }
+
     }
+
 
     //Sector de nuevo comentario
 
