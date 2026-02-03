@@ -1,6 +1,8 @@
 let idUsuarioLogueado;
 let idMeme;
 let guardarMemeCheck;
+let puntajeActualUsuario = null;
+let enviandoPuntaje = false;
 
 async function obtenerDatosUsuarioLogueado (idUsuario){
 
@@ -73,8 +75,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
 });
-
-
 
 
 async function  memeEstaGuardado (meme){
@@ -199,7 +199,6 @@ async function cargarComentario(comentario){
     btnEliminar.classList.add(`btnEliminar`);
     btnEliminar.textContent = 'Eliminar';
     botonesComentario.appendChild(btnEliminar);
-
 
 
     //Si el usuario que creo el comentario coincide con el usuario logueado muestra la opción de eliminar y borrar
@@ -346,6 +345,7 @@ async function nuevoComentario(meme){
 
     const textareaComentario = document.getElementById('comentarioMeme');
     const botonComentar = document.querySelector('.comentarioBoton');
+    
 
     botonComentar.addEventListener('click', async () => {
 
@@ -376,6 +376,12 @@ async function nuevoComentario(meme){
 
             const comentarioCreado = await respuesta.json();
 
+            const mensaje = document.getElementById('mensajeSinComentarios');
+
+            if (mensaje){
+                mensaje.remove();
+            }
+
 
             textareaComentario.value = "";
 
@@ -390,32 +396,77 @@ async function nuevoComentario(meme){
 
 //Puntuar meme
 async function puntuarMeme(meme){
-    const estrellas = document.querySelectorAll(`.rating`);
 
+    const estrellas = document.querySelectorAll(`.rating`);
+    
     estrellas.forEach(estrella => {
-        estrella.addEventListener ('change', async () =>{
+
+        estrella.addEventListener ('click', async () =>{
+
+            // 🚫 evita doble request
+            if (enviandoPuntaje) {
+                console.log('BLOQUEADO: request en curso')
+                return;
+            }
+
+            enviandoPuntaje = true;
+
             const valor = Number(estrella.value);
 
+
             try {
-                const respuesta = await fetch(
-                    `http://localhost:3000/api/v1/meme/${meme.id_meme}/puntuar`,
-                    {
-                        method: `POST`,
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            usuario_id: idUsuarioLogueado,
-                            puntaje: valor
-                        })
+        
+                //Si el usuario toca nuevamente el mismo puntaje que ya habia dado lo elimina
+                if (puntajeActualUsuario === valor){
+
+                    const respuesta = await fetch(
+                        `http://localhost:3000/api/v1/meme/${meme.id_meme}/puntuar`,
+                        {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                usuario_id: idUsuarioLogueado
+                            })
+                        }
+                    );
+
+                    if (!respuesta.ok){
+                        throw new Error("Error al eliminar puntuación");
                     }
 
-                );
+                    
+                    estrellas.forEach(e => e.checked = false);
 
-                if (!respuesta.ok){
-                    throw new Error("Error al calificar meme");
+                    puntajeActualUsuario = null;
+
+                    console.log('✅ puntaje eliminado');
+
+                } else {
+                    const respuesta = await fetch(
+                        `http://localhost:3000/api/v1/meme/${meme.id_meme}/puntuar`,
+                        {
+                            method: `POST`,
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                usuario_id: idUsuarioLogueado,
+                                puntaje: valor
+                            })
+                        }
+
+                    );
+
+                    puntajeActualUsuario = valor;
+                    if (!respuesta.ok){
+                        throw new Error("Error al calificar meme");
+                    }
+
                 }
+
 
             }catch (error) {
                 alert("No se pudo guardar la puntuación");
+            }finally {
+                enviandoPuntaje = false;
             }
         });
 
@@ -433,14 +484,17 @@ async function puntajeMeme(memeId, usuarioId){
 
         const data = await respuesta.json();
 
-        if (data.puntaje !== undefined && data.punatje !== null){
+        if (data.puntaje !== undefined && data.puntaje !== null && puntajeActualUsuario === null){
 
             const estrella = document.querySelector(`.rating[value="${data.puntaje}"]`);
 
             if (estrella){
                 estrella.checked = true;
+                puntajeActualUsuario = data.puntaje;
             }
 
+        } else {
+            puntajeActualUsuario = null;
         }
     } catch (err){
         console.error(err);
@@ -462,7 +516,10 @@ async function cargarContenedores(meme, comentarios) {
     document.getElementById(`medioSurgimiento`).textContent = meme.medio_fuente
     document.getElementById(`fechaOriginal`).textContent = meme.fecha_original;
     document.getElementById(`fechaPublicado`).textContent = meme.fecha_publicacion;
-    document.getElementById(`video`).href = meme.video_url;
+    if (meme.video_url) {
+        document.getElementById(`video`).href = meme.video_url;
+        document.getElementById(`video`).textContent = "Video del meme";
+    }
 
     //Pongo el logo guardado como corresponda
     memeEstaGuardado(meme);
@@ -470,11 +527,23 @@ async function cargarContenedores(meme, comentarios) {
     //Si el usuario clickea el logo de guardado, agrega o quita el meme de la lista de guardados
     guardarMeme(meme)
 
-    //cargo comentarios con sus botones y likes correspondientes. 
-    for (const comentario of comentarios){
+    //Si no hay comentarios aparece mensaje que lo indica si no cargo comentarios con sus botones y likes correspondientes. 
 
-        cargarComentario(comentario);
+    if (comentarios.length === 0){
+
+        const contenedorComentarios = document.querySelector('.listaComentarios');
+        const mensaje = document.createElement('p');
+        mensaje.id = "mensajeSinComentarios";
+        mensaje.textContent = "No hay comentarios todavía :("
+        contenedorComentarios.appendChild(mensaje);
+    } else{
+        for (const comentario of comentarios){
+
+            cargarComentario(comentario);
+        }
+
     }
+
 
     //Sector de nuevo comentario
 
