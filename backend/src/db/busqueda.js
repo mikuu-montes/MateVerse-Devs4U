@@ -46,6 +46,12 @@ async function buscarMemes(texto) {
       OR unaccent(lower(cat.nombre)) ILIKE $${i + 1} 
       OR unaccent(lower(ctx.origen)) ILIKE $${i + 1} 
       OR unaccent(lower(ctx.medio_fuente)) ILIKE $${i + 1}
+      OR lower(m.titulo) ILIKE $${i + 1} 
+      OR lower(m.descripcion) ILIKE $${i + 1} 
+      OR lower(m.protagonistas) ILIKE $${i + 1} 
+      OR lower(cat.nombre) ILIKE $${i + 1} 
+      OR lower(ctx.origen) ILIKE $${i + 1} 
+      OR lower(ctx.medio_fuente) ILIKE $${i + 1}
     `;
   }
 

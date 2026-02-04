@@ -199,14 +199,28 @@ async function cargarCategorias() {
         }
 
         const categorias = await response.json();
+        categorias.forEach(cat => {
+            console.log(cat);
+        });
+        
         contenedorCat.innerHTML = "";
 
         categorias.forEach((cat, indice) => {
             const h = document.createElement("h2");
             h.classList.add("categoria");
             h.id = `fav${indice + 1}`;
-            h.textContent = `#${cat.nombre_categoria}`;
+            h.textContent = `#${cat.categoria}`;
             contenedorCat.appendChild(h);
+
+            // Agregar click a cada categoría
+            h.addEventListener("click", () => {
+                // Guardamos la categoría seleccionada en sessionStorage
+                sessionStorage.setItem("busquedaActual", cat.categoria);
+
+                // Recargamos la página de inicio para que tome la nueva búsqueda
+                window.location.href = "../Inicio/index.html"; // o el path de tu template de inicio
+            });
+        
         });
 
         if (categorias.length === 0) contenedorCat.style.display = "none";
@@ -235,19 +249,21 @@ async function cargarMemes() {
             const postMeme = document.createElement("div");
             postMeme.classList.add("memeBox");
             postMeme.innerHTML = `
-                <a href="../Visualizacion Meme/index.html?id=${meme.id_meme}" class="nombreMeme">
-        ${meme.titulo}</a>
-            <div class="botonesMeme">
+                <a href="#" class="nombreMeme">${meme.titulo}</a>
+                <div class="botonesMeme">
                 <button class="editar" data-id="${meme.id_meme}">✏️</button>
                 <button class="eliminar" data-id="${meme.id_meme}">🗑️</button>
                 </div>
             `;
             filaPosts.appendChild(postMeme);
 
-
-
+            // Redirige el id del meme junto con la ventana de la página si hacen click sobre el.
+            postMeme.querySelector(".nombreMeme").addEventListener('click', (e) => {
+                e.preventDefault();
+                sessionStorage.setItem('idMemeSeleccionado', meme.id_meme);
+                window.location.href = "../Visualizacion Meme/index.html";
+            });
             
-
             // Si se quiere editar, redirige a otra página junto con el id de meme.
             postMeme.querySelector(".editar").addEventListener("click", (e) => {
                 e.preventDefault();
