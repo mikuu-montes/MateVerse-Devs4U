@@ -41,8 +41,7 @@ create table puntuaciones_memes (
     meme_id INT NOT NULL REFERENCES memes (id_meme) ON DELETE CASCADE,
     usuario_id INT NOT NULL REFERENCES usuarios (id_usuario) ON DELETE CASCADE,
     puntaje INT NOT NULL,
-    PRIMARY KEY (meme_id, usuario_id)
-    
+    PRIMARY KEY (meme_id, usuario_id)  
 );
 
 create table comentarios (
@@ -51,8 +50,7 @@ create table comentarios (
     fecha_creacion DATE NOT NULL DEFAULT CURRENT_DATE,
     editado BOOLEAN NOT NULL DEFAULT FALSE,
     meme_id INT NOT NULL REFERENCES memes (id_meme) ON DELETE CASCADE,
-    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario) ON DELETE CASCADE
-    
+    usuario_id INT NOT NULL REFERENCES usuarios (id_usuario) ON DELETE CASCADE   
 );
 
 create table likes_comentarios (
