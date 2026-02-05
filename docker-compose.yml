@@ -1,6 +1,5 @@
 services:
   db:
-    profiles: ["db"]
     image: postgres:17
     container_name: database
     environment:
@@ -13,14 +12,12 @@ services:
       - ./psql_data/:/var/lib/postgresql/data
       - ./backend/data:/docker-entrypoint-initdb.d
   backend:
-    profiles: ["backend"]
     build:
       context: ./backend
     container_name: container_backend
     ports:
       - "3000:3000"
   frontend:
-    profiles: ["frontend"]
     build:
       context: ./frontend
     container_name: container_frontend

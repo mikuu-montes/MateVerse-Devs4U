@@ -2,15 +2,15 @@
 
 #Levanto el container de nuestra base de datos.
 start-database:
-	cd ./backend && docker compose --profile db up -d
+	docker compose up db
 
 #Detengo el container de la base de datos.
 stop-database:
-	cd ./backend && docker compose --profile db down
+	docker compose down db
 
 #Entro desde la terminal a la base de datos(para poder manejarla rapido)
 ver-database:
-	cd ./backend && docker compose exec db psql -U Devs4U mateverse
+	docker compose exec db psql -U Devs4U mateverse
 
 #Inicia nuestro backend.
 start-backend:
@@ -28,3 +28,7 @@ restart-backend-completo: stop-backend stop-database start-backend-completo
 
 #Detiene todo nuestro backend completo
 stop-backend-completo: stop-backend stop-database
+
+#reinicia toda la pagina
+restart-pagina: 
+	docker compose down && docker compose up --build
