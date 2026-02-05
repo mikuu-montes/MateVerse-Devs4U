@@ -514,8 +514,18 @@ async function cargarContenedores(meme, comentarios) {
     document.getElementById(`categoria`).textContent = meme.categoria;
     document.getElementById(`origen`).textContent = meme.origen;
     document.getElementById(`medioSurgimiento`).textContent = meme.medio_fuente
-    document.getElementById(`fechaOriginal`).textContent = meme.fecha_original;
-    document.getElementById(`fechaPublicado`).textContent = meme.fecha_publicacion;
+
+    if (meme.fecha_original) {
+    document.getElementById('fechaOriginal').textContent =
+        meme.fecha_original.split('T')[0];
+    }
+
+    if (meme.fecha_publicacion) {
+        document.getElementById('fechaPublicado').textContent =
+            meme.fecha_publicacion.split('T')[0];
+    }
+
+    
     if (meme.video_url) {
         document.getElementById(`video`).href = meme.video_url;
         document.getElementById(`video`).textContent = "Video del meme";
