@@ -164,7 +164,6 @@ async function publicarMeme({
   }
 }
 
-
 //Edita un meme existente y su contexto asociado, solo si el usuario tiene permiso.
 //Retorna el meme actualizado, en caso de falta de permisos retorna error 403, o error 404 si el meme no existe. 
 async function editarMeme(id_meme, usuario_id,{
