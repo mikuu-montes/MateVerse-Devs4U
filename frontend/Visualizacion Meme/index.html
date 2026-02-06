@@ -21,7 +21,6 @@
 
             </a>
 
-
             <div id="contenedorLogos">
 
                 <a href="../Inicio/index.html" class="linkContainerInicio">
@@ -67,16 +66,12 @@
                 <!-- TÍTULO DEBAJO DE LA FOTO -->
                 <div class="nombreMemeContenedor">
 
-
-            
-
                     <h3 class="nombreMeme textoEditable" id="nombreMeme">
                         Titulo del meme
                     </h3>
 
                     <input type="text" class="inputEditar" style="display:none;">
                     
-
                 </div>
 
                 <div class="containerGuardarMeme">
@@ -93,7 +88,6 @@
                 
                 </div>
                 
-
             </div>
     
             <!-- COLUMNA DERECHA DEL MEME -->
@@ -103,13 +97,11 @@
                    
                 <div class="descripcionContenedor">
 
-
                     <h3 class="descripcion textoEditable" id="descripcionMeme">
                         Descripción del meme
                     </h3>
 
                     <input type="text" class="inputEditar" style="display:none;">
-
 
                 </div>
 
@@ -117,13 +109,11 @@
 
                 <div class="protagonistaContenedor">
 
-
                     <h3 class="protagonista textoEditable" id="protagonistaMeme">
                         Protagonistas del meme 
                     </h3>
 
                     <input type="text" class="inputEditar" style="display:none;">
-
 
                 </div>
         
@@ -155,20 +145,17 @@
 
                 <div class="fechaSurgioContenedor">
 
-
                     <h3 class="fechaSurgio textoEditable" id="fechaOriginal">
                         Fecha donde surgió
                     </h3>
 
                     <input type="date" class="inputEditar" style="display:none;">
 
-
                 </div>
                 
                 <h2 style="font-weight: bold";>FECHA DE PUBLICACION DEL MEME</h2>
 
                 <div class="fechaCreacionContenedor">
-
 
                     <h3 class="fechaCreacion textoEditable" id="fechaPublicado">
                         Fecha de creación
@@ -184,9 +171,7 @@
 
                     <a class="urlVideo" id="video">No hay video sobre el meme :(</a>
                     
-
                 </div>
-
 
             </div>
 
@@ -217,19 +202,45 @@
                     <label for="comentarioMeme" class="comentarioLabel">
                         Dejá tu comentario sobre el meme
                     </label>
-
+                
                     <textarea
                         id="comentarioMeme"
                         class="comentarioTexTarea"
                         placeholder="¿Qué opinás de este meme?"
                         rows="4">
                     </textarea>
-
+                
+                    <label for="descripcionPalabra" class="comentarioLabel">
+                        Palabra descriptiva del meme
+                    </label>
+                
+                    <input
+                        type="text"
+                        id="descripcionPalabra"
+                        class="comentarioInput"
+                        placeholder="Ej: Divertido, absurdo, creativo"
+                    >
+                
+                    <!-- Selector de Reacción -->
+                    <div class="emojiSelectorContenedor">
+                        <button type="button" id="emojieSeleccionado" class="emojieBoton">☺</button>
+                
+                        <div class="emojiDropdown" style="display: none">
+                            <span class="emojie" data-emojie="👍">👍</span>
+                            <span class="emojie" data-emojie="❤️">❤️</span>
+                            <span class="emojie" data-emojie="😂">😂</span>
+                            <span class="emojie" data-emojie="😢">😢</span>
+                            <span class="emojie" data-emojie="😡">😡</span>
+                            <span class="emojie" data-emojie="😎">😎</span>
+                        </div>
+                    </div>
+                
                     <button class="comentarioBoton">
                         Comentar
                     </button>
-
+                
                 </div>
+                
 
                 <div class="ratingContenedor">
 
@@ -254,7 +265,6 @@
 
                 </div>
                  
-
             </div>
     
             <div class="columna3TodosComentarios">

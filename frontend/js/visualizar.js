@@ -32,7 +32,6 @@ async function obtenerDatosUsuarioLogueado (idUsuario){
     
 }
 
-
 document.addEventListener('DOMContentLoaded', async () => {
     
     
@@ -75,7 +74,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
 });
-
 
 async function  memeEstaGuardado (meme){
     
@@ -340,20 +338,57 @@ async function cargarComentario(comentario){
 
 };   
 
-//Nuevo Comentario
-async function nuevoComentario(meme){
-
+//Nuevo Comentario con palabra descriptiva y reacción (emojis tipo Facebook)
+async function nuevoComentario(meme) {
+    
     const textareaComentario = document.getElementById('comentarioMeme');
     const botonComentar = document.querySelector('.comentarioBoton');
     
+    // Selección de la palabra descriptiva
+    const inputDescripcion = document.getElementById('descripcionPalabra');
+    
+    // Selector de emoji
+    const emojiSelectorContenedor = document.querySelector('.emojiSelectorContenedor');
+    const botonEmoji = document.getElementById('emojieSeleccionado');
+    const emojiDropdown = document.querySelector('.emojiDropdown');
+    
+    // Mostrar/ocultar el dropdown de emojis
+    botonEmoji.addEventListener('click', () => {
+        emojiDropdown.style.display = emojiDropdown.style.display === 'block' ? 'none' : 'block';
+    });
 
+    // Actualizar el emoji seleccionado
+    let emojiSeleccionado = '☺'; 
+
+    document.querySelectorAll('.emojie').forEach(emoji => {
+        emoji.addEventListener('click', () => {
+            emojiSeleccionado = emoji.dataset.emojie; 
+            botonEmoji.textContent = emojiSeleccionado; 
+            emojiDropdown.style.display = 'none';
+        });
+    });
+
+    // Evento click del botón comentar
     botonComentar.addEventListener('click', async () => {
 
         const contenido = textareaComentario.value.trim();
+        const descripcion = inputDescripcion.value.trim();
 
+        // Si el contenido del comentario está vacío
         if (contenido === "") {
             alert("Escribí un comentario");
             return;
+        }
+
+        // Si la palabra descriptiva está vacía
+        if (descripcion === "") {
+            alert("Agregá una palabra descriptiva para el meme");
+            return;
+        }
+
+        // Si no se ha seleccionado ningún emoji 
+        if (emojiSeleccionado === '☺' && !document.querySelector('.emojiDropdown').contains(document.querySelector('.emojie:hover'))) {
+            emojiSeleccionado = null;
         }
 
         try {
@@ -364,8 +399,9 @@ async function nuevoComentario(meme){
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contenido: contenido,
-                        usuario_id: idUsuarioLogueado,
-                        meme_id: meme.id_meme
+                        descripcion_palabra: descripcion,
+                        reaccion: emojiSeleccionado,
+                        usuario_id: idUsuarioLogueado
                     })
                 }
             );
@@ -376,15 +412,15 @@ async function nuevoComentario(meme){
 
             const comentarioCreado = await respuesta.json();
 
+            // Quitar mensaje de "sin comentarios" si existe
             const mensaje = document.getElementById('mensajeSinComentarios');
-
-            if (mensaje){
-                mensaje.remove();
-            }
-
+            if (mensaje) mensaje.remove();
 
             textareaComentario.value = "";
+            inputDescripcion.value = "";
+            botonEmoji.textContent = '☺';
 
+            // Cargar comentario en la lista
             cargarComentario(comentarioCreado);
 
         } catch (error) {
@@ -393,6 +429,8 @@ async function nuevoComentario(meme){
         }
     });
 }
+
+
 
 //Puntuar meme
 async function puntuarMeme(meme){
@@ -500,8 +538,6 @@ async function puntajeMeme(memeId, usuarioId){
         console.error(err);
     }
 }
-
-
 
 async function cargarContenedores(meme, comentarios) {
 
