@@ -5,14 +5,12 @@ let puntajeActualUsuario = null;
 let enviandoPuntaje = false;
 
 async function obtenerDatosUsuarioLogueado (idUsuario){
-
     try{
         const url = `http://localhost:3000/api/v1/usuarios/${idUsuario}`;
 
         const respuesta = await fetch (url);
 
         if (!respuesta.ok) {
-
             throw new Error('No se pudo obtener el usuario');
         }
 
@@ -21,19 +19,13 @@ async function obtenerDatosUsuarioLogueado (idUsuario){
         document.querySelector(`.fotoPerfil`).src = usuarioLogueado.foto_perfil;
 
         document.querySelector(`.nombreUsuario`).textContent = usuarioLogueado.nombre_usuario;
-
     } catch (error) {
-
         console.error(error);
         alert('Error al cargar los datos del usuario');
-
     }
-
-    
-}
+};
 
 document.addEventListener('DOMContentLoaded', async () => {
-    
     
     idUsuarioLogueado = Number(obtenerIdUsuarioLogueado());
     console.log("id del usuario logueado:", idUsuarioLogueado);
@@ -41,7 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Obtengo id del meme desde la URL
     const params = new URLSearchParams(window.location.search);
     idMeme = Number(params.get('id'));
-
 
     if (!idMeme) {
         idMeme = Number(sessionStorage.getItem('idMemeSeleccionado'));
@@ -66,17 +57,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         cargarContenedores(meme,comentarios)
         
-            
-        
     } catch (err){
         console.error(err);
         alert("No se pudo cargar el meme y sus comentarios");
     }
-
 });
 
 async function  memeEstaGuardado (meme){
-    
     //verifica si el meme esta guardado o no para poner el logo correcto
     try {
         const respuesta = await fetch(
@@ -98,7 +85,7 @@ async function  memeEstaGuardado (meme){
     } catch (error) {
         console.error(error);
     }
-}
+};
 
 async function guardarMeme (meme){
     guardarMemeCheck.addEventListener('change', async () => {
@@ -120,7 +107,6 @@ async function guardarMeme (meme){
             const data = await respuesta.json();
             guardarMemeCheck.checked = data.guardado;
 
-
             if (!respuesta.ok) {
                 throw new Error('Error al guardar');
             }
@@ -130,37 +116,59 @@ async function guardarMeme (meme){
             alert('No se pudo actualizar el guardado');
         }
     });
-}
+};
 
-//Cargar un comentario
-async function cargarComentario(comentario){
+// Cargar un comentario
+async function cargarComentario(comentario) {
 
     const contenedorComentarios = document.querySelector('.listaComentarios');
 
-    const comentarioItem = document.createElement(`div`);
-    comentarioItem.classList.add(`comentarioItem`);
+    const comentarioItem = document.createElement('div');
+    comentarioItem.classList.add('comentarioItem');
+
+    /* ================= HEADER (titulo + emoji + editado) ================= */
+
+    /* ================= HEADER (titulo + emoji + estado) ================= */
+
+    const comentarioHeader = document.createElement('div');
+    comentarioHeader.classList.add('comentarioHeader');
+
+    const comentarioTitulo = document.createElement('h4');
+    comentarioTitulo.classList.add('comentarioTitulo');
+    comentarioTitulo.textContent = comentario.descripcion_palabra;
+    comentarioHeader.appendChild(comentarioTitulo);
+
+    // Emoji
+    if (comentario.reaccion) {
+        const comentarioEmoji = document.createElement('span');
+        comentarioEmoji.classList.add('comentarioEmoji');
+        comentarioEmoji.textContent = comentario.reaccion;
+        comentarioHeader.appendChild(comentarioEmoji);
+    }
+
+    // Estado: Original / Editado (SIEMPRE visible)
+    const comentarioEstado = document.createElement('span');
+    comentarioEstado.classList.add('comentarioEditadoHeader');
+    comentarioEstado.textContent = comentario.editado ? 'Editado' : 'Original';
+    comentarioHeader.appendChild(comentarioEstado);
+
+    comentarioItem.appendChild(comentarioHeader);
 
 
-    const contenidoComentario = document.createElement(`p`);
-    contenidoComentario.classList.add(`comentarioTexto`);
+    /* ================= BODY (contenido + likes) ================= */
+
+    const comentarioBody = document.createElement('div');
+    comentarioBody.classList.add('comentarioBody');
+
+    const contenidoComentario = document.createElement('p');
+    contenidoComentario.classList.add('comentarioTexto');
     contenidoComentario.textContent = comentario.contenido;
-    comentarioItem.appendChild(contenidoComentario);
+    comentarioBody.appendChild(contenidoComentario);
 
-    const accionesComentario = document.createElement(`div`);
-    accionesComentario.classList.add(`comentarioAcciones`);
-    comentarioItem.appendChild(accionesComentario);
-
-    const indicadorEditado = document.createElement(`div`);
-    indicadorEditado.classList.add(`indicadorEditado`);
-    accionesComentario.appendChild(indicadorEditado);
-
-    const textoEditado = document.createElement('p');
-    textoEditado.classList.add(`textoEditado`);
-    indicadorEditado.appendChild(textoEditado);
+    /* ================= LIKES ================= */
 
     const likeContenedor = document.createElement('div');
     likeContenedor.classList.add('likeContenedor');
-    accionesComentario.appendChild(likeContenedor);
 
     const likeInput = document.createElement('input');
     likeInput.type = 'checkbox';
@@ -178,53 +186,51 @@ async function cargarComentario(comentario){
 
     const likeContador = document.createElement('span');
     likeContador.classList.add('likeContador');
-    likeContador.textContent = comentario.likes;
+    likeContador.textContent = comentario.likes ?? 0;
     likeContenedor.appendChild(likeContador);
 
+    comentarioBody.appendChild(likeContenedor);
+    comentarioItem.appendChild(comentarioBody);
 
-    const botonesComentario = document.createElement(`div`);
-    botonesComentario.classList.add(`botonesComentario`);
+    /* ================= ACCIONES ================= */
+
+    const accionesComentario = document.createElement('div');
+    accionesComentario.classList.add('comentarioAcciones');
+
+    const botonesComentario = document.createElement('div');
+    botonesComentario.classList.add('botonesComentario');
     accionesComentario.appendChild(botonesComentario);
 
-
-    const btnEditar = document.createElement(`button`);
-    btnEditar.classList.add(`btnEditar`);
+    const btnEditar = document.createElement('button');
+    btnEditar.classList.add('btnEditar');
     btnEditar.textContent = 'Editar';
     botonesComentario.appendChild(btnEditar);
 
-
-    const btnEliminar = document.createElement(`button`);
-    btnEliminar.classList.add(`btnEliminar`);
+    const btnEliminar = document.createElement('button');
+    btnEliminar.classList.add('btnEliminar');
     btnEliminar.textContent = 'Eliminar';
     botonesComentario.appendChild(btnEliminar);
 
-
-    //Si el usuario que creo el comentario coincide con el usuario logueado muestra la opción de eliminar y borrar
     if (comentario.usuario_id === idUsuarioLogueado) {
-        
-        botonesComentario.style.display = `flex`;
+        botonesComentario.style.display = 'flex';
+    }
 
-    };
+    comentarioItem.appendChild(accionesComentario);
 
-    //Verifica si el usuario likeo o no el comentario para mostrar la estrella pintada si lo hizo
+    /* ================= CHECK LIKE ================= */
+
     try {
-        const respuesta = await fetch( 
+        const respuesta = await fetch(
             `http://localhost:3000/api/v1/comentarios/${comentario.id_comentario}/like/${idUsuarioLogueado}`
         );
-
-        if (!respuesta.ok) {
-            throw new Error('Error al cargar like del comentario');
-        }
 
         const data = await respuesta.json();
         likeInput.checked = data.likeoComentario;
 
-    } catch(error) {
+    } catch (error) {
         console.error(error);
-        alert('No se pudo verificar el like');
     }
 
-    //Si el usuario clickea la estrella, quita o agrega el like segun corresponda y actualiza el numero de likes
     likeInput.addEventListener('change', async () => {
         try {
             const respuesta = await fetch(
@@ -232,122 +238,98 @@ async function cargarComentario(comentario){
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        usuario_id: idUsuarioLogueado
-                    })
+                    body: JSON.stringify({ usuario_id: idUsuarioLogueado })
                 }
             );
 
-            if (!respuesta.ok) {
-                throw new Error('Error al dar like al comentario');
-            }
-
             const data = await respuesta.json();
-
             likeContador.textContent = data.likes;
             likeInput.checked = data.likeado;
 
         } catch (error) {
             console.error(error);
             likeInput.checked = !likeInput.checked;
-            alert('No se pudo procesar el like');
         }
     });
 
+    /* ================= EDITAR ================= */
 
-    //Si el usuario clickea el boton editar le permite editar su comentario
-    btnEditar.addEventListener('click', async () => { 
+    btnEditar.addEventListener('click', async () => {
 
-        const nuevoContenido = prompt("Edita tu comentario:", comentario.contenido);
-        
+        const nuevoContenido = prompt(
+            "Edita tu comentario:",
+            comentario.contenido
+        );
 
-        if (nuevoContenido && nuevoContenido.trim() !== "") {
-
-            try{
-                const respuesta =  await fetch (`http://localhost:3000/api/v1/comentarios/${comentario.id_comentario}`,
-                    {
-                        method: 'PUT',
-                        headers: {'Content-Type': `application/json`},
-                        body: JSON.stringify({
-                            usuario_id: idUsuarioLogueado,
-                            nuevoContenido: nuevoContenido
-                        })
-                    }
-                );
-
-                
-
-                if (respuesta.ok){
-
-                    const nuevoComentario = await respuesta.json();
-
-                    comentario.contenido = nuevoComentario.contenido;
-                    contenidoComentario.textContent = nuevoComentario.contenido
-                    comentarioItem.dataset.editado = "true"
-
-                }else{
-                    alert("Error al editar el comentario");
-                    return;
-                }
-                
-            
-
-            } catch (error){
-                console.error(error);
-                alert('No se pudo editar el comentario');
-            }
-        }
-    })
-
-
-    //Si el usuario clickea eliminar le pregunta si queire borrar su comentario
-    btnEliminar.addEventListener('click', async() => {
-        
-        const confirmarEliminacion = confirm("¿Desea eliminar el comentario?");
-
-        if (!confirmarEliminacion) {
-            return;
-        }
+        if (!nuevoContenido || nuevoContenido.trim() === "") return;
 
         try {
             const respuesta = await fetch(
                 `http://localhost:3000/api/v1/comentarios/${comentario.id_comentario}`,
                 {
-                    method: 'DELETE',
+                    method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        usuario_id: idUsuarioLogueado
+                        usuario_id: idUsuarioLogueado,
+                        nuevoContenido
                     })
                 }
             );
 
-            if (!respuesta.ok) {
-                throw new Error('Error al eliminar comentario');
+            const nuevoComentario = await respuesta.json();
+
+            comentario.contenido = nuevoComentario.contenido;
+            contenidoComentario.textContent = nuevoComentario.contenido;
+            comentarioEstado.textContent = 'Editado';
+
+            // Mostrar "Editado" en el header si no estaba
+            let editadoHeader = comentarioHeader.querySelector('.comentarioEditadoHeader');
+
+            if (!editadoHeader) {
+                editadoHeader = document.createElement('span');
+                editadoHeader.classList.add('comentarioEditadoHeader');
+                editadoHeader.textContent = 'Editado';
+                comentarioHeader.appendChild(editadoHeader);
             }
+
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    /* ================= ELIMINAR ================= */
+
+    btnEliminar.addEventListener('click', async () => {
+
+        if (!confirm("¿Desea eliminar el comentario?")) return;
+
+        try {
+            await fetch(
+                `http://localhost:3000/api/v1/comentarios/${comentario.id_comentario}`,
+                {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario_id: idUsuarioLogueado })
+                }
+            );
 
             comentarioItem.remove();
 
         } catch (error) {
             console.error(error);
-            alert('No se pudo eliminar el comentario');
         }
-    })
-
+    });
 
     contenedorComentarios.appendChild(comentarioItem);
-
-};   
+}
+ 
 
 //Nuevo Comentario con palabra descriptiva y reacción (emojis tipo Facebook)
 async function nuevoComentario(meme) {
     
     const textareaComentario = document.getElementById('comentarioMeme');
     const botonComentar = document.querySelector('.comentarioBoton');
-    
-    // Selección de la palabra descriptiva
     const inputDescripcion = document.getElementById('descripcionPalabra');
-    
-    // Selector de emoji
     const emojiSelectorContenedor = document.querySelector('.emojiSelectorContenedor');
     const botonEmoji = document.getElementById('emojieSeleccionado');
     const emojiDropdown = document.querySelector('.emojiDropdown');
@@ -428,9 +410,7 @@ async function nuevoComentario(meme) {
             alert("No se pudo publicar el comentario");
         }
     });
-}
-
-
+};
 
 //Puntuar meme
 async function puntuarMeme(meme){
@@ -441,7 +421,7 @@ async function puntuarMeme(meme){
 
         estrella.addEventListener ('click', async () =>{
 
-            // 🚫 evita doble request
+            //evita doble request
             if (enviandoPuntaje) {
                 console.log('BLOQUEADO: request en curso')
                 return;
@@ -450,7 +430,6 @@ async function puntuarMeme(meme){
             enviandoPuntaje = true;
 
             const valor = Number(estrella.value);
-
 
             try {
         
@@ -472,7 +451,6 @@ async function puntuarMeme(meme){
                         throw new Error("Error al eliminar puntuación");
                     }
 
-                    
                     estrellas.forEach(e => e.checked = false);
 
                     puntajeActualUsuario = null;
@@ -500,16 +478,14 @@ async function puntuarMeme(meme){
 
                 }
 
-
             }catch (error) {
                 alert("No se pudo guardar la puntuación");
             }finally {
                 enviandoPuntaje = false;
             }
         });
-
     });
-}
+};
 
 //Cargar puntaje meme
 async function puntajeMeme(memeId, usuarioId){
@@ -537,14 +513,13 @@ async function puntajeMeme(memeId, usuarioId){
     } catch (err){
         console.error(err);
     }
-}
+};
 
 async function cargarContenedores(meme, comentarios) {
 
     //Agrego info del meme
     document.querySelector(`.fotoMeme`).src = meme.imagen_url;
     document.querySelector(`.nombreMeme`).textContent = meme.titulo;
-
     document.getElementById(`descripcionMeme`).textContent = meme.descripcion;
     document.getElementById(`protagonistaMeme`).textContent = meme.protagonistas;
     document.getElementById(`categoria`).textContent = meme.categoria;
@@ -561,7 +536,6 @@ async function cargarContenedores(meme, comentarios) {
             meme.fecha_publicacion.split('T')[0];
     }
 
-    
     if (meme.video_url) {
         document.getElementById(`video`).href = meme.video_url;
         document.getElementById(`video`).textContent = "Video del meme";
@@ -576,7 +550,6 @@ async function cargarContenedores(meme, comentarios) {
     //Si no hay comentarios aparece mensaje que lo indica si no cargo comentarios con sus botones y likes correspondientes. 
 
     if (comentarios.length === 0){
-
         const contenedorComentarios = document.querySelector('.listaComentarios');
         const mensaje = document.createElement('p');
         mensaje.id = "mensajeSinComentarios";
@@ -584,13 +557,9 @@ async function cargarContenedores(meme, comentarios) {
         contenedorComentarios.appendChild(mensaje);
     } else{
         for (const comentario of comentarios){
-
             cargarComentario(comentario);
         }
-
     }
-
-
     //Sector de nuevo comentario
 
     //Cargo foto y nombre del usuario logueado
@@ -604,8 +573,6 @@ async function cargarContenedores(meme, comentarios) {
 
     //Puntuar meme
     puntuarMeme(meme);
-
-
 };
 
 

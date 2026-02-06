@@ -223,8 +223,12 @@ html {
 
 .comentarioTexTarea {
     resize: none;
-    padding: 8px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
     font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
 .comentarioBoton {
@@ -429,69 +433,59 @@ html {
     transform: scale(1.4);
 }
 
-/* Estilos para el contenedor del comentario */
 .comentarioContenedor {
     margin: 20px 0;
 }
+/* ===== FORZAR ESTRUCTURA VERTICAL DEL COMENTARIO ===== */
 
-/* Estilos para el textarea */
-.comentarioTexTarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+.comentarioItem {
+    flex-direction: column;      /* ← CLAVE */
+    align-items: stretch;        /* ← CLAVE */
 }
 
-/* Estilos para la palabra descriptiva */
-.comentarioInput {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+/* ===== HEADER ARRIBA ===== */
 
-/* Estilos para el selector de emojis */
-.emojiSelectorContenedor {
-    position: relative;
-    display: inline-block;
-}
-
-.emojieBoton {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 24px;
-    text-align: center;
-    line-height: 40px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    background: white;
-}
-
-.emojiDropdown {
-    position: absolute;
-    bottom: 50px;
-    left: 0;
+.comentarioHeader {
     display: flex;
+    align-items: center;
     gap: 8px;
-    padding: 5px 10px;
-    border-radius: 25px;
-    background: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    margin-bottom: 6px;
 }
 
-.emojiDropdown .emojie {
-    font-size: 24px;
-    cursor: pointer;
-    transition: transform 0.1s;
+/* Título */
+.comentarioTitulo {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2f6f8f;
 }
 
-.emojiDropdown .emojie:hover {
-    transform: scale(1.4);
+/* Emoji */
+.comentarioEmoji {
+    font-size: 18px;
 }
 
+/* Editado (al lado del emoji) */
+.comentarioEditadoHeader {
+    font-size: 11px;
+    color: #777;
+    font-style: italic;
+    background-color: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+/* ===== CONTENIDO + LIKES ABAJO ===== */
+
+.comentarioBody {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+/* ===== BOTONES ABAJO DEL TODO ===== */
+
+.comentarioAcciones {
+    align-self: flex-end;
+}
