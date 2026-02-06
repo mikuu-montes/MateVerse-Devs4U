@@ -47,6 +47,8 @@ create table puntuaciones_memes (
 create table comentarios (
     id_comentario SERIAL PRIMARY KEY,
     contenido TEXT NOT NULL,
+    descripcion_palabra VARCHAR(50) NOT NULL,
+    reaccion VARCHAR(20),
     fecha_creacion DATE NOT NULL DEFAULT CURRENT_DATE,
     editado BOOLEAN NOT NULL DEFAULT FALSE,
     meme_id INT NOT NULL REFERENCES memes (id_meme) ON DELETE CASCADE,
