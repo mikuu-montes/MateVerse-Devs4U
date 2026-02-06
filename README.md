@@ -201,6 +201,16 @@ Tabla intermedia entre **Usuarios** y **Memes** que permite guardar el puntaje q
     <td>texto del comentario (no nulo)</td>
   </tr>
   <tr>
+    <td>descripcion_una_palabra</td>
+    <td>VARCHAR(50)</td>
+    <td>Como describiria el meme en una palabra(no nulo)</td>
+  </tr>
+  <tr>
+    <td>reaccion</td>
+    <td>VARCHAR(20)</td>
+    <td>Reaccion que le da al comentario</td>
+  </tr>
+  <tr>
     <td>fecha_creacion</td>
     <td>DATE</td>
     <td>Fecha en la que se realizó el comentario (no nula, se crea automaticamente)</td>
