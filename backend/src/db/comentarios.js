@@ -12,28 +12,30 @@ const dbClient = new Pool({
 //Retorna [] si no hay comentarios.
 async function obtenerTodosLosComentariosPorMeme(id_meme) {
     const comentarios = await dbClient.query(`
-        SELECT c.id_comentario, c.contenido, c.fecha_creacion, c.editado, c.usuario_id, COUNT(lk.comentario_id) AS likes 
+        SELECT c.id_comentario, c.contenido, c.descripcion_palabra, c.reaccion, c.fecha_creacion, c.editado, c.usuario_id, COUNT(lk.comentario_id) AS likes 
         FROM comentarios c
         LEFT JOIN likes_comentarios lk
         ON c.id_comentario = lk.comentario_id
         WHERE c.meme_id = $1 
         GROUP BY c.id_comentario,
         c.contenido,
+        c.descripcion_palabra,
+        c.reaccion,
         c.fecha_creacion,
         c.editado,
         c.usuario_id
-        ORDER BY c.fecha_creacion ASC`, [id_meme]
+        ORDER BY c.fecha_creacion ASC, c.id_comentario ASC`, [id_meme]
     );
     return comentarios.rows;
 }
 
 //Crea un nuevo comentario en el meme con el id correspondiente, a nombre del usuario correspondiente, con el contenido que se quiere.
 //Devuelve el comentario recien creado con todos sus datos.
-async function crearComentarioEnMeme(id_meme, id_usuario, contenido) {
+async function crearComentarioEnMeme(id_meme, id_usuario, contenido, descripcion_palabra, reaccion = null ) {
     const comentario_creado = await dbClient.query(`
-        INSERT INTO comentarios (contenido, fecha_creacion, editado, meme_id, usuario_id)
-        VALUES ($1, CURRENT_DATE, false, $2, $3)
-        RETURNING *`, [contenido, id_meme, id_usuario]
+        INSERT INTO comentarios (contenido, descripcion_palabra, reaccion, fecha_creacion, editado, meme_id, usuario_id)
+        VALUES ($1, $2, $3, CURRENT_DATE, false, $4, $5)
+        RETURNING *`, [contenido, descripcion_palabra, reaccion, id_meme, id_usuario]
     );     
     return comentario_creado.rows[0];
 }
@@ -62,13 +64,16 @@ async function eliminarComentario(id_comentario, id_usuario){
 
 //Edita el comentario solicitado con el nuevo contenido, solo si el comentario pertenece al usuario.
 //Devuelve el comentario modificado si es del usuario, si no devuelve null.
-async function editarComentario(id_comentario, id_usuario, nuevo_contenido) {
+async function editarComentario(id_comentario, id_usuario, nuevo_contenido, nueva_descripcion, nueva_reaccion = null) {
     const comentario_actualizado = await dbClient.query(`
         UPDATE comentarios
-        SET contenido = $1, editado = true
-        WHERE id_comentario = $2
-        AND usuario_id = $3
-        RETURNING *`, [nuevo_contenido, id_comentario, id_usuario]
+        SET contenido = $1, 
+            descripcion_palabra = $2,
+            reaccion = $3,
+            editado = true
+        WHERE id_comentario = $4
+        AND usuario_id = $5
+        RETURNING *`, [nuevo_contenido, nueva_descripcion, nueva_reaccion, id_comentario, id_usuario]
     );
 
     if (comentario_actualizado.rowCount === 0){
