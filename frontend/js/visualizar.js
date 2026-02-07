@@ -118,17 +118,208 @@ async function guardarMeme (meme){
     });
 };
 
+let modalComentario = null;
+let comentarioActual = null;
+let emojiSeleccionado = '☺';
+
+//Abre las opciones de reaccion que puede agregar la persona
+async function abrirModalEditarComentario(comentario) {
+    comentarioActual = comentario;
+
+    if (!modalComentario) {
+        modalComentario = document.createElement('div');
+        modalComentario.classList.add('modalEditarComentario');
+
+        modalComentario.innerHTML = `
+            <div class="modalContenido">
+                <h4>Editar Comentario</h4>
+
+                <label>Palabra descriptiva:</label>
+                <input type="text" id="editarTituloComentario" />
+
+                <label>Contenido:</label>
+                <textarea id="editarContenidoComentario" rows="3"></textarea>
+
+                <label>Reacción:</label>
+                <div class="emojiSelectorEditar">
+                    <button id="botonEmojiEditar">☺</button>
+                    <div class="emojiDropdownEditar" style="display:none;">
+                        <span class="emojieEditar" data-emojie="☺" title="Sin Reaccion">☺</span>
+                        <span class="emojieEditar" data-emojie="👍" title="Me gusta">👍</span>
+                        <span class="emojieEditar" data-emojie="❤️" title="Me encanta">❤️</span>
+                        <span class="emojieEditar" data-emojie="😂" title="Divertido">😂</span>
+                        <span class="emojieEditar" data-emojie="😢" title="Triste">😢</span>
+                        <span class="emojieEditar" data-emojie="🔥" title="Epico">🔥</span>
+                        <span class="emojieEditar" data-emojie="😮" title="Me sorprende">😮</span>
+                        <span class="emojieEditar" data-emojie="🤔" title="Pensativo">🤔</span>
+                        <span class="emojieEditar" data-emojie="💀" title="Muerto">💀</span>
+                        <span class="emojieEditar" data-emojie="🙏" title="Respeto">🙏</span>
+                        <span class="emojieEditar" data-emojie="🤭" title="Risita">🤭</span>
+                        <span class="emojieEditar" data-emojie="😜" title="Alocado">😜</span>
+                        <span class="emojieEditar" data-emojie="😏" title="Pícaro">😏</span>
+                        <span class="emojieEditar" data-emojie="😲" title="Asombrado">😲</span>
+                        <span class="emojieEditar" data-emojie="😶" title="Sin palabras">😶</span>
+                        <span class="emojieEditar" data-emojie="😍" title="Enamorado">😍</span>
+                        <span class="emojieEditar" data-emojie="🫣" title="Avergonzado">🫣</span>
+                        <span class="emojieEditar" data-emojie="😡" title="Enojado">😡</span>
+                        <span class="emojieEditar" data-emojie="😎" title="Canchero">😎</span>
+                    </div>
+                </div>
+
+                <div class="modalBotones">
+                    <button id="guardarCambiosComentario">Guardar</button>
+                    <button id="cerrarModalComentario">Cancelar</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modalComentario);
+
+        // Botón cerrar
+        modalComentario.querySelector('#cerrarModalComentario').addEventListener('click', () => {
+            modalComentario.style.display = 'none';
+        });
+
+        // Selector de emojis
+        const botonEmoji = modalComentario.querySelector('#botonEmojiEditar');
+        const emojiDropdown = modalComentario.querySelector('.emojiDropdownEditar');
+
+        botonEmoji.addEventListener('click', () => {
+            emojiDropdown.style.display = emojiDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        modalComentario.querySelectorAll('.emojieEditar').forEach(emoji => {
+            emoji.addEventListener('click', () => {
+                emojiSeleccionado = emoji.dataset.emojie;
+                botonEmoji.textContent = emojiSeleccionado;
+                emojiDropdown.style.display = 'none';
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!emojiDropdown.contains(e.target) && e.target !== botonEmoji) {
+                emojiDropdown.style.display = 'none';
+            }
+        });
+
+        // Guardar cambios del comentario
+        modalComentario.querySelector('#guardarCambiosComentario').addEventListener('click', async () => {
+            try {
+                const nuevosDatos = {
+                    nuevoContenido: modalComentario.querySelector('#editarContenidoComentario').value.trim(),
+                    nueva_descripcion: modalComentario.querySelector('#editarTituloComentario').value.trim(),
+                    nueva_reaccion: emojiSeleccionado === '☺' ? null : emojiSeleccionado,
+                    usuario_id: idUsuarioLogueado
+                };
+
+                if (!nuevosDatos.nuevoContenido || !nuevosDatos.nueva_descripcion) {
+                    alert('Palabra descriptiva y contenido son obligatorios');
+                    return;
+                }
+
+                console.log("ID del comentario:", comentarioActual.id_comentario);
+                console.log("Datos enviados:", nuevosDatos);
+
+                const respuesta = await fetch(`http://localhost:3000/api/v1/comentarios/${comentarioActual.id_comentario}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(nuevosDatos)
+                });
+
+                if (!respuesta.ok) {
+                    const errorJson = await respuesta.json();
+                    throw new Error(errorJson.error || 'Error al editar el comentario');
+                }
+
+                const comentarioActualizado = await respuesta.json();
+
+                // Actualizamos los datos en el objeto comentarioActual
+                comentarioActual.contenido = comentarioActualizado.contenido;
+                comentarioActual.descripcion_palabra = comentarioActualizado.descripcion_palabra;
+                comentarioActual.reaccion = comentarioActualizado.reaccion;
+                comentarioActual.editado = comentarioActualizado.editado;
+
+                // Buscar el comentario en el DOM
+                const item = document.querySelector(`#comentario_${comentarioActual.id_comentario}`);
+                if (item) {
+                    // Actualizar solo los elementos necesarios dentro del comentario
+                    const tituloElem = item.querySelector('.comentarioTitulo');
+                    const contenidoElem = item.querySelector('.comentarioTexto');
+                    const estadoElem = item.querySelector('.comentarioEditadoHeader');
+                    const emojiElem = item.querySelector('.comentarioEmoji');
+
+                    if (tituloElem) tituloElem.textContent = comentarioActual.descripcion_palabra;
+                    if (contenidoElem) contenidoElem.textContent = comentarioActual.contenido;
+                    if (estadoElem) estadoElem.textContent = comentarioActual.editado ? 'Editado' : 'Original';
+
+                    if (emojiElem) {
+                        if (comentarioActual.reaccion === '☺' || comentarioActual.reaccion === null) {
+                            emojiElem.style.display = 'none';
+                        } else {
+                            emojiElem.style.display = 'inline';
+                            emojiElem.textContent = comentarioActual.reaccion || '';
+                        }
+                    }
+                    
+                }
+
+                modalComentario.style.display = 'none';
+            } catch (error) {
+                console.error('Error al editar el comentario:', error);
+                alert('No se pudo editar el comentario. Ver consola para más detalles.');
+            }
+        });
+
+
+    }
+
+    // Rellenar modal con datos más recientes
+    const tituloInput = modalComentario.querySelector('#editarTituloComentario');
+    const contenidoInput = modalComentario.querySelector('#editarContenidoComentario');
+    const botonEmoji = modalComentario.querySelector('#botonEmojiEditar');
+
+    if (tituloInput) tituloInput.value = comentarioActual.descripcion_palabra || '';
+    if (contenidoInput) contenidoInput.value = comentarioActual.contenido || '';
+    if (botonEmoji) {
+        if (comentarioActual.reaccion === '☺') {
+            botonEmoji.style.visibility = 'hidden';
+        } else {
+            botonEmoji.textContent = comentarioActual.reaccion || '☺';
+            emojiSeleccionado = comentarioActual.reaccion || '☺';
+        }
+    }
+    
+    modalComentario.style.display = 'flex';
+}
+
+//Recibo todos los comentarios del backend
+async function cargarComentarios(comentarios) {
+    const contenedorComentarios = document.querySelector('.listaComentarios');
+    contenedorComentarios.innerHTML = ''; 
+
+    if (!comentarios || comentarios.length === 0) {
+        const mensaje = document.createElement('p');
+        mensaje.id = "mensajeSinComentarios";
+        mensaje.textContent = "No hay comentarios todavía :(";
+        contenedorComentarios.appendChild(mensaje);
+        return;
+    }
+
+    for (const comentario of comentarios) {
+        await cargarComentario(comentario, false); 
+    }
+}
+
 // Cargar un comentario
-async function cargarComentario(comentario) {
+async function cargarComentario(comentario, esNuevo = false) {
 
     const contenedorComentarios = document.querySelector('.listaComentarios');
 
+    // Evita duplicados por ID
+    if (document.getElementById(`comentario_${comentario.id_comentario}`)) return;
+
     const comentarioItem = document.createElement('div');
     comentarioItem.classList.add('comentarioItem');
-
-    /* ================= HEADER (titulo + emoji + editado) ================= */
-
-    /* ================= HEADER (titulo + emoji + estado) ================= */
+    comentarioItem.id = `comentario_${comentario.id_comentario}`;
 
     const comentarioHeader = document.createElement('div');
     comentarioHeader.classList.add('comentarioHeader');
@@ -138,24 +329,25 @@ async function cargarComentario(comentario) {
     comentarioTitulo.textContent = comentario.descripcion_palabra;
     comentarioHeader.appendChild(comentarioTitulo);
 
-    // Emoji
-    if (comentario.reaccion) {
-        const comentarioEmoji = document.createElement('span');
-        comentarioEmoji.classList.add('comentarioEmoji');
-        comentarioEmoji.textContent = comentario.reaccion;
-        comentarioHeader.appendChild(comentarioEmoji);
-    }
+    const emoji = comentario.reaccion || '☺'; 
 
-    // Estado: Original / Editado (SIEMPRE visible)
+    // Emoji
+    const comentarioEmoji = document.createElement('span');
+    comentarioEmoji.classList.add('comentarioEmoji');
+    if(emoji !== '☺'){
+        comentarioEmoji.textContent = emoji;
+    }else{
+        comentarioEmoji.textContent = '';
+    }
+    comentarioHeader.appendChild(comentarioEmoji);
+
+    // Esta editado o es original
     const comentarioEstado = document.createElement('span');
     comentarioEstado.classList.add('comentarioEditadoHeader');
     comentarioEstado.textContent = comentario.editado ? 'Editado' : 'Original';
     comentarioHeader.appendChild(comentarioEstado);
 
     comentarioItem.appendChild(comentarioHeader);
-
-
-    /* ================= BODY (contenido + likes) ================= */
 
     const comentarioBody = document.createElement('div');
     comentarioBody.classList.add('comentarioBody');
@@ -165,8 +357,7 @@ async function cargarComentario(comentario) {
     contenidoComentario.textContent = comentario.contenido;
     comentarioBody.appendChild(contenidoComentario);
 
-    /* ================= LIKES ================= */
-
+    //Likes
     const likeContenedor = document.createElement('div');
     likeContenedor.classList.add('likeContenedor');
 
@@ -192,8 +383,7 @@ async function cargarComentario(comentario) {
     comentarioBody.appendChild(likeContenedor);
     comentarioItem.appendChild(comentarioBody);
 
-    /* ================= ACCIONES ================= */
-
+    //Botones
     const accionesComentario = document.createElement('div');
     accionesComentario.classList.add('comentarioAcciones');
 
@@ -217,20 +407,25 @@ async function cargarComentario(comentario) {
 
     comentarioItem.appendChild(accionesComentario);
 
-    /* ================= CHECK LIKE ================= */
-
+    //Verifica si el usuario likeo o no el comentario para mostrar la estrella pintada si lo hizo
     try {
-        const respuesta = await fetch(
+        const respuesta = await fetch( 
             `http://localhost:3000/api/v1/comentarios/${comentario.id_comentario}/like/${idUsuarioLogueado}`
         );
+
+        if (!respuesta.ok) {
+            throw new Error('Error al cargar like del comentario');
+        }
 
         const data = await respuesta.json();
         likeInput.checked = data.likeoComentario;
 
-    } catch (error) {
+    } catch(error) {
         console.error(error);
+        alert('No se pudo verificar el like');
     }
 
+        //Si el usuario clickea la estrella, quita o agrega el like segun corresponda y actualiza el numero de likes
     likeInput.addEventListener('change', async () => {
         try {
             const respuesta = await fetch(
@@ -238,67 +433,32 @@ async function cargarComentario(comentario) {
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ usuario_id: idUsuarioLogueado })
+                    body: JSON.stringify({
+                        usuario_id: idUsuarioLogueado
+                    })
                 }
             );
 
+            if (!respuesta.ok) {
+                throw new Error('Error al dar like al comentario');
+            }
+
             const data = await respuesta.json();
+
             likeContador.textContent = data.likes;
             likeInput.checked = data.likeado;
 
         } catch (error) {
             console.error(error);
             likeInput.checked = !likeInput.checked;
+            alert('No se pudo procesar el like');
         }
     });
 
-    /* ================= EDITAR ================= */
+    //Boton editar comentario
+    btnEditar.addEventListener('click', () => abrirModalEditarComentario(comentario));
 
-    btnEditar.addEventListener('click', async () => {
-
-        const nuevoContenido = prompt(
-            "Edita tu comentario:",
-            comentario.contenido
-        );
-
-        if (!nuevoContenido || nuevoContenido.trim() === "") return;
-
-        try {
-            const respuesta = await fetch(
-                `http://localhost:3000/api/v1/comentarios/${comentario.id_comentario}`,
-                {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        usuario_id: idUsuarioLogueado,
-                        nuevoContenido
-                    })
-                }
-            );
-
-            const nuevoComentario = await respuesta.json();
-
-            comentario.contenido = nuevoComentario.contenido;
-            contenidoComentario.textContent = nuevoComentario.contenido;
-            comentarioEstado.textContent = 'Editado';
-
-            // Mostrar "Editado" en el header si no estaba
-            let editadoHeader = comentarioHeader.querySelector('.comentarioEditadoHeader');
-
-            if (!editadoHeader) {
-                editadoHeader = document.createElement('span');
-                editadoHeader.classList.add('comentarioEditadoHeader');
-                editadoHeader.textContent = 'Editado';
-                comentarioHeader.appendChild(editadoHeader);
-            }
-
-        } catch (error) {
-            console.error(error);
-        }
-    });
-
-    /* ================= ELIMINAR ================= */
-
+    //Boton eliminar comentario
     btnEliminar.addEventListener('click', async () => {
 
         if (!confirm("¿Desea eliminar el comentario?")) return;
@@ -320,11 +480,17 @@ async function cargarComentario(comentario) {
         }
     });
 
-    contenedorComentarios.appendChild(comentarioItem);
+    //Forma en la que insertamos los comentarios en el template
+    if (esNuevo) {
+        //Si lo acaba de publicar, lo pone arriba del todo 
+        contenedorComentarios.prepend(comentarioItem);
+    } else {
+        //Si ya estaba, los ponemos uno abajo del otro
+        contenedorComentarios.append(comentarioItem);
+    }
 }
- 
 
-//Nuevo Comentario con palabra descriptiva y reacción (emojis tipo Facebook)
+//NAgrega un unevo comentario
 async function nuevoComentario(meme) {
     
     const textareaComentario = document.getElementById('comentarioMeme');
@@ -334,12 +500,18 @@ async function nuevoComentario(meme) {
     const botonEmoji = document.getElementById('emojieSeleccionado');
     const emojiDropdown = document.querySelector('.emojiDropdown');
     
-    // Mostrar/ocultar el dropdown de emojis
+    //Muestra o deha de mostrar la seleccion de meojie
     botonEmoji.addEventListener('click', () => {
         emojiDropdown.style.display = emojiDropdown.style.display === 'block' ? 'none' : 'block';
     });
 
-    // Actualizar el emoji seleccionado
+    //Si se aprieta otra parte de la pantalla, se dejan de ver las opciones
+    document.addEventListener('click', (event) => {
+        if (!emojiSelectorContenedor.contains(event.target) && event.target !== botonEmoji) {
+            emojiDropdown.style.display = 'none';
+        }
+    });
+
     let emojiSeleccionado = '☺'; 
 
     document.querySelectorAll('.emojie').forEach(emoji => {
@@ -350,7 +522,7 @@ async function nuevoComentario(meme) {
         });
     });
 
-    // Evento click del botón comentar
+    //FUncionalidad al botonz
     botonComentar.addEventListener('click', async () => {
 
         const contenido = textareaComentario.value.trim();
@@ -403,7 +575,7 @@ async function nuevoComentario(meme) {
             botonEmoji.textContent = '☺';
 
             // Cargar comentario en la lista
-            cargarComentario(comentarioCreado);
+            cargarComentario(comentarioCreado, true);
 
         } catch (error) {
             console.error(error);
@@ -541,37 +713,19 @@ async function cargarContenedores(meme, comentarios) {
         document.getElementById(`video`).textContent = "Video del meme";
     }
 
-    //Pongo el logo guardado como corresponda
+    // 2. Lógica de estado (Guardado y Puntaje previo)
     memeEstaGuardado(meme);
-
-    //Si el usuario clickea el logo de guardado, agrega o quita el meme de la lista de guardados
-    guardarMeme(meme)
-
-    //Si no hay comentarios aparece mensaje que lo indica si no cargo comentarios con sus botones y likes correspondientes. 
-
-    if (comentarios.length === 0){
-        const contenedorComentarios = document.querySelector('.listaComentarios');
-        const mensaje = document.createElement('p');
-        mensaje.id = "mensajeSinComentarios";
-        mensaje.textContent = "No hay comentarios todavía :("
-        contenedorComentarios.appendChild(mensaje);
-    } else{
-        for (const comentario of comentarios){
-            cargarComentario(comentario);
-        }
-    }
-    //Sector de nuevo comentario
-
-    //Cargo foto y nombre del usuario logueado
-    obtenerDatosUsuarioLogueado(idUsuarioLogueado);
-
-    //Agrego nuevo comentario
-    nuevoComentario(meme);
-
-    //Cargar puntaje que el usuario previamente le dio al meme
+    guardarMeme(meme);
     puntajeMeme(meme.id_meme, idUsuarioLogueado);
 
-    //Puntuar meme
+    // 3. CARGA DE COMENTARIOS (Aquí estaba el error de duplicidad)
+    // Solo llamamos a cargarComentarios. Esta función ya limpia el contenedor,
+    // verifica si está vacío y usa append() para respetar el orden de tu DB.
+    cargarComentarios(comentarios);
+
+    // 4. Inicializar acciones de usuario
+    obtenerDatosUsuarioLogueado(idUsuarioLogueado);
+    nuevoComentario(meme);
     puntuarMeme(meme);
 };
 

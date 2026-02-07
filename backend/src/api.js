@@ -269,6 +269,7 @@ async function actualizarMemeEnBDD(id, datosActualizar) {
     );
 }
 
+//Actualiza el contexto en la bd
 async function actualizarContextoEnBDD(contexto_id, datosActualizar) {
     return pool.query(
         `UPDATE contextos
@@ -713,26 +714,8 @@ app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
     const idComentario = req.params.idComentario;
     const { usuario_id, nuevoContenido, nueva_descripcion, nueva_reaccion = null } = req.body;
 
-    if (!idComentario) {
-      return res.status(400).json({ error: "Id de comentario inválido" });
-    }
-
-    if (!usuario_id) {
-      return res.status(400).json({ error: "Id de usuario inválido" });
-    }
-
-    if (!nuevoContenido || nuevoContenido.trim() === '') {
-      return res.status(400).json({ error: "El contenido no puede estar vacío" });
-    }
-
-    if (!nueva_descripcion || nueva_descripcion.trim() === '') {
-      return res.status(400).json({ error: "La descripción de la palabra no puede estar vacía" });
-    }
-
-    const reaccionesValidas = ['👍', '❤️', '😂', '😢', '😡', '😎'];
-
-    if (reaccion && !reaccionesValidas.includes(reaccion)) {
-      return res.status(400).json({ error: "Reacción no válida" });
+    if (!idComentario || !usuario_id || !nuevoContenido || !nueva_descripcion) {
+      return res.status(400).json({ error: "Datos inválidos" });
     }
 
     const comentarioModificado = await editarComentario(
@@ -750,7 +733,6 @@ app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
     res.json(comentarioModificado);
 
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Error al editar el comentario" });
   }
 });

@@ -24,7 +24,7 @@ async function obtenerTodosLosComentariosPorMeme(id_meme) {
         c.fecha_creacion,
         c.editado,
         c.usuario_id
-        ORDER BY c.fecha_creacion ASC, c.id_comentario ASC`, [id_meme]
+        ORDER BY c.fecha_creacion DESC, c.id_comentario DESC`, [id_meme]
     );
     return comentarios.rows;
 }
