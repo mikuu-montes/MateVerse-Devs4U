@@ -654,6 +654,11 @@ app.post('/api/v1/comentarios/:idMeme', async (req, res) => {
       return res.status(400).json({ error: "La descripción de la palabra no puede estar vacía" });
     }
 
+    //Valida que sea solo una palabra (sin espacios)
+    if (descripcion_palabra.trim().includes(' ')) {
+      return res.status(400).json({ error: "La descripción debe ser una sola palabra" });
+    }
+
     const usuario = await getUsuarioPorId(usuario_id);
 
     if (!usuario) {
@@ -716,6 +721,11 @@ app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
 
     if (!idComentario || !usuario_id || !nuevoContenido || !nueva_descripcion) {
       return res.status(400).json({ error: "Datos inválidos" });
+    }
+
+    //valida que sea solo una palabra (sin espacios)
+    if (nueva_descripcion.trim().includes(' ')) {
+      return res.status(400).json({ error: "La descripción debe ser una sola palabra" });
     }
 
     const comentarioModificado = await editarComentario(
