@@ -202,8 +202,8 @@ Tabla intermedia entre **Usuarios** y **Memes** que permite guardar el puntaje q
   </tr>
   <tr>
     <td>descripcion_una_palabra</td>
-    <td>VARCHAR(50)</td>
-    <td>Como describiria el meme en una palabra(no nulo)</td>
+    <td>VARCHAR(50) con restriccion</td>
+    <td>Como describiria el meme en una palabra(no nulo, con una restriccion que asegura una sola palabra)</td>
   </tr>
   <tr>
     <td>reaccion</td>
