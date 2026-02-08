@@ -216,8 +216,11 @@ async function abrirModalEditarComentario(comentario) {
                     return;
                 }
 
-                console.log("ID del comentario:", comentarioActual.id_comentario);
-                console.log("Datos enviados:", nuevosDatos);
+                // Valida que la descripción sea solo una palabra (sin espacios)
+                if (nuevosDatos.nueva_descripcion.includes(' ')) {
+                    alert("La descripción debe ser una sola palabra");
+                    return;
+                }
 
                 const respuesta = await fetch(`http://localhost:3000/api/v1/comentarios/${comentarioActual.id_comentario}`, {
                     method: 'PUT',
@@ -540,6 +543,12 @@ async function nuevoComentario(meme) {
             return;
         }
 
+        //Si la palabra no es una sola
+        if (descripcion.includes(' ')) {
+            alert("La descripción debe ser una sola palabra");
+            return;
+        }
+
         // Si no se ha seleccionado ningún emoji 
         if (emojiSeleccionado === '☺' && !document.querySelector('.emojiDropdown').contains(document.querySelector('.emojie:hover'))) {
             emojiSeleccionado = null;
@@ -728,15 +737,3 @@ async function cargarContenedores(meme, comentarios) {
     nuevoComentario(meme);
     puntuarMeme(meme);
 };
-
-
-
-
-
-
-    
-    
-
-
-
-
