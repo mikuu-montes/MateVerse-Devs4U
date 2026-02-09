@@ -33,8 +33,8 @@ const {
   eliminarMeme,
   obtenerContextoIdPorMeme
 } = require("./db/memes.js");
+
 const {
-  getAllUsuarios,
   getUsuario,
   getUsuarioPorId,
   createUsuario,
@@ -42,6 +42,7 @@ const {
   updateUsuario,
   updateFotoPerfil,
 } = require("./db/usuarios.js");
+
 const {
     obtenerTodosLosComentariosPorMeme,
     crearComentarioEnMeme,
@@ -52,23 +53,24 @@ const {
     contarLikesComentario,
     usuarioLikeoComentario
 } = require("./db/comentarios.js");
+
 const {
   buscarMemes
 } = require("./db/busqueda.js");
+
 const {
   guardarMeme,
   eliminarMemeGuardado,
   obtenerMemesGuardados,
   usuarioGuardoMeme
-} = require ("./db/memeGuardado.js")
+} = require ("./db/memeGuardado.js");
+
 const {
   puntuarMeme,
   actualizarPuntajeMeme,
   eliminarPuntajeMeme,
   usuarioPuntuoMeme
 } = require('./db/puntuacionMeme.js');
-
-
 
 //MEMES 
 
@@ -91,6 +93,8 @@ app.get("/api/v1/memes", async (req, res) => {
 
   }
 });
+
+//Todas las categorias que hay en la bd
 app.get('/api/v1/categorias', async (req, res) => {
     try {
         const result = await pool.query(
@@ -106,19 +110,22 @@ app.get('/api/v1/categorias', async (req, res) => {
 //Un solo meme con sus comentarios.
 app.get("/api/v1/meme/:id", async (req, res) => {
   try {
-
     const id_meme = req.params.id;
     if(!id_meme){
       return res.status(400).json({ error: "Id de meme inválido. "});
     }
+
     const meme= await getMeme(id_meme);
     if (!meme){
       return res.status(404).json({error: "Meme no encontrado"})
     }
+
     const comentarios = await obtenerTodosLosComentariosPorMeme(id_meme);
+
     if (!comentarios){
       return res.status(404).json({Error: "Comentarios no encontrados." });
     }
+
     res.json({ meme,comentarios });
 
   } catch (err) {
@@ -187,8 +194,6 @@ app.get("/api/v1/ranking", async (req, res) => {
 });
 
 //Publicar meme
-// Endpoint para publicar memes
-// Endpoint para publicar memes
 app.post("/api/v1/memes", async (req, res) => {
   try {
     const {
@@ -237,12 +242,7 @@ app.post("/api/v1/memes", async (req, res) => {
   }
 });
 
-
-
-
 //Editar meme
-// Express
-// PUT para actualizar meme
 async function actualizarMemeEnBDD(id, datosActualizar) {
     return pool.query(
         `UPDATE memes 
@@ -269,6 +269,7 @@ async function actualizarMemeEnBDD(id, datosActualizar) {
     );
 }
 
+//Actualiza el contexto en la bd
 async function actualizarContextoEnBDD(contexto_id, datosActualizar) {
     return pool.query(
         `UPDATE contextos
@@ -284,7 +285,6 @@ async function actualizarContextoEnBDD(contexto_id, datosActualizar) {
         ]
     );
 }
-
 
 app.put('/api/v1/memes/:id', async (req, res) => {
     const { id } = req.params;
@@ -339,9 +339,6 @@ app.put('/api/v1/memes/:id', async (req, res) => {
     }
 });
 
-
-
-
 //Borrar meme
 app.delete("/api/v1/memes/:id", async (req, res) => {
   console.log("DELETE request body:", req.body);
@@ -370,7 +367,6 @@ app.delete("/api/v1/memes/:id", async (req, res) => {
     res.status(500).json({ error: "Error al borrar el meme" });
   }
 });
-
 
 //ENDPOINTS USUARIO
 
@@ -514,7 +510,6 @@ app.put('/api/v1/usuarios/:id/foto', async (req, res) => {
 
 //GUARDADO DE MEMES
 
-
 //Si el suuario toca el boton de guardar revisa el estado del meme. Si el meme ya esta guardado lo quita de alli y si no, lo guarda.
 //devuelve guardado : true o guardado: false para poder luego en el forntend poner el logo de guardado pintado o no segun corrresponda.
 app.post('/api/v1/meme/:id/guardar', async (req, res) => {
@@ -582,7 +577,6 @@ app.get(`/api/v1/usuario/:usuarioId/meme/:memeId/puntaje`, async (req,res) => {
   }
 })
 
-
 //agrega u actualiza puntuacion
 app.post("/api/v1/meme/:id/puntuar", async (req, res) => {
   try {
@@ -642,7 +636,7 @@ app.delete("/api/v1/meme/:id/puntuar", async (req,res) => {
 app.post('/api/v1/comentarios/:idMeme', async (req, res) => {
   try {
     const idMeme = req.params.idMeme;
-    const { usuario_id, contenido } = req.body;
+    const { usuario_id, contenido, descripcion_palabra, reaccion = null } = req.body;
 
     if (!idMeme) {
       return res.status(400).json({ error: "Id de meme inválido" });
@@ -652,11 +646,21 @@ app.post('/api/v1/comentarios/:idMeme', async (req, res) => {
       return res.status(400).json({ error: "Id de usuario inválido" });
     }
 
-    if (!contenido) {
+    if (!contenido || contenido.trim() === '') {
       return res.status(400).json({ error: "El contenido no puede estar vacío" });
     }
 
+    if (!descripcion_palabra || descripcion_palabra.trim() === '') {
+      return res.status(400).json({ error: "La descripción de la palabra no puede estar vacía" });
+    }
+
+    //Valida que sea solo una palabra (sin espacios)
+    if (descripcion_palabra.trim().includes(' ')) {
+      return res.status(400).json({ error: "La descripción debe ser una sola palabra" });
+    }
+
     const usuario = await getUsuarioPorId(usuario_id);
+
     if (!usuario) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
@@ -666,7 +670,7 @@ app.post('/api/v1/comentarios/:idMeme', async (req, res) => {
       return res.status(404).json({ error: "Meme no encontrado" });
     }
 
-    const comentario = await crearComentarioEnMeme(idMeme,usuario_id, contenido);
+    const comentario = await crearComentarioEnMeme(idMeme, usuario_id, contenido, descripcion_palabra, reaccion);
 
     comentario.likes = 0;
 
@@ -713,24 +717,23 @@ app.delete('/api/v1/comentarios/:idComentario', async (req, res) => {
 app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
   try {
     const idComentario = req.params.idComentario;
-    const { usuario_id, nuevoContenido } = req.body;
+    const { usuario_id, nuevoContenido, nueva_descripcion, nueva_reaccion = null } = req.body;
 
-    if (!idComentario) {
-      return res.status(400).json({ error: "Id de comentario inválido" });
+    if (!idComentario || !usuario_id || !nuevoContenido || !nueva_descripcion) {
+      return res.status(400).json({ error: "Datos inválidos" });
     }
 
-    if (!usuario_id) {
-      return res.status(400).json({ error: "Id de usuario inválido" });
-    }
-
-    if (!nuevoContenido) {
-      return res.status(400).json({ error: "El contenido no puede estar vacío" });
+    //valida que sea solo una palabra (sin espacios)
+    if (nueva_descripcion.trim().includes(' ')) {
+      return res.status(400).json({ error: "La descripción debe ser una sola palabra" });
     }
 
     const comentarioModificado = await editarComentario(
       idComentario,
       usuario_id,
-      nuevoContenido
+      nuevoContenido,
+      nueva_descripcion,
+      nueva_reaccion
     );
 
     if (!comentarioModificado) {
@@ -740,7 +743,6 @@ app.put('/api/v1/comentarios/:idComentario', async (req, res) => {
     res.json(comentarioModificado);
 
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Error al editar el comentario" });
   }
 });
