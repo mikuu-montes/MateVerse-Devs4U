@@ -325,7 +325,39 @@ Tabla que indica que meme guardó cada usuario. La PRIMARY  KEY es(meme_id, usua
 ## Recorrido por la página:
 Las siguientes imágenes son las distintas secciones que tiene la página.
 
-# Faltan las imagenes...
+### Página de Registro de Nuevo Usuario
+![](./Imagenes-ReadMe/registro.png)
+
+### Página de Inicio de Sesión
+![](./Imagenes-ReadMe/inicio-sesion.png)
+
+### Página de información sobre Mateverse
+![](./Imagenes-ReadMe/info.png)
+
+
+### Página de Inicio
+![](./Imagenes-ReadMe/inicio.png)
+
+
+### Página 1 de Visualización de un meme 
+![](./Imagenes-ReadMe/visualizar_1.png)
+
+### Página 2 de Visualización de un meme 
+![](./Imagenes-ReadMe/visualizar_2.png)
+
+### Página de Ranking de los mejores memes
+![](./Imagenes-ReadMe/ranking.png)
+
+### Página del Perfil del usuario
+![](./Imagenes-ReadMe/perfil.png)
+
+### Página de la Coleccion de memes guardados por el usuario
+![](./Imagenes-ReadMe/memes_guardados.png)
+
+### Página para Publicar un nuevo meme
+![](./Imagenes-ReadMe/nuevo_meme.png)
+
+
 
 ## Créditos:
 Este trabajo fue realizado como tarea para la materia de **Introducción al Desarrollo del Software**, cátedra **Camejo**, en la **UBA**, por las alumnas:
