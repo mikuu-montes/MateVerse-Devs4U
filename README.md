@@ -338,10 +338,8 @@ Las siguientes imágenes son las distintas secciones que tiene la página.
 ### Página de información sobre Mateverse
 ![](./Imagenes-ReadMe/info.png)
 
-
 ### Página de Inicio
 ![](./Imagenes-ReadMe/inicio.png)
-
 
 ### Página 1 de Visualización de un meme 
 ![](./Imagenes-ReadMe/visualizar_1.png)
@@ -355,12 +353,17 @@ Las siguientes imágenes son las distintas secciones que tiene la página.
 ### Página del Perfil del usuario
 ![](./Imagenes-ReadMe/perfil.png)
 
+### Página 1 de edición del meme
+![](./Imagenes-ReadMe/edicion_meme1.png)
+
+### Página 2 de edición del meme
+![](./Imagenes-ReadMe/edicion_meme2.png)
+
 ### Página de la Coleccion de memes guardados por el usuario
 ![](./Imagenes-ReadMe/memes_guardados.png)
 
 ### Página para Publicar un nuevo meme
 ![](./Imagenes-ReadMe/nuevo_meme.png)
-
 
 
 ## Créditos:

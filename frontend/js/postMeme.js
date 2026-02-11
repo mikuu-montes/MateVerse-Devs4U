@@ -1,3 +1,11 @@
+// Revisa si hay un usuario logueado
+const usuarioId = obtenerIdUsuarioLogueado();
+
+//Si no esta logueado lo muevo a otro template.
+if (!usuarioId) {
+    window.location.href = "../Login Usuario/index.html";
+}
+
 window.addEventListener("DOMContentLoaded", () => {
     const formCrearMeme = document.getElementById('formCrearMeme');
     const selectCategoria = document.getElementById('input_categoria');
