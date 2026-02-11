@@ -1,3 +1,11 @@
+// Revisa si hay un usuario logueado
+const usuarioId = obtenerIdUsuarioLogueado();
+
+//Si no esta logueado lo muevo a otro template.
+if (!usuarioId) {
+    window.location.href = "../Login Usuario/index.html";
+}
+
 let idUsuarioLogueado;
 let idMeme;
 let guardarMemeCheck;
