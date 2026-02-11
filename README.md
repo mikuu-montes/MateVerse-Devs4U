@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./frontend/imagenes/icono.ico" width="150">
+</p>
+
 <h1 align="center">🇦🇷 MateVerse 🧉</h1>
 
 **Mateverse** es un sitio web colaborativo donde los usuarios pueden descubrir, subir y comentar memes del "lore argentino" (memes históricos, políticos, televisivos, deportivos, etc.), con su trasfondo y contexto sociocultural. Esta surgió con la idea de mostrar nuestra cultura a un nuevo público, permitiendoles ser parte de la misma.
@@ -274,13 +278,13 @@ Tabla que indica que meme guardó cada usuario. La PRIMARY  KEY es(meme_id, usua
 
 ## Requisitos opcionales para el proyecto:
 **Si queres correr el backend o la base de datos localmente sin docker:**
-- [Tener Node.js (v18 o superior)](https://nodejs.org/es)
+- [Tener Node.js (v18 o superior)](https://nodejs.org/es/download)
 - [Tenes PostgreSQL](https://www.postgresql.org/download/)
 
 ## Pasos para levantar el proyecto:
 
 ### 1- Clona el repositorio:
-```git clone git@github.com:mikuu-montes/MateVerse-Devs4U.git``` o ```git clone https://github.com/mikuu-montes/MateVerse-Devs4U.git```
+```git clone git@github.com:mikuu-montes/MateVerse-Devs4U.git``` o ```git clone https://github.com/mikuu-montes/MateVerse-Devs4U.git``` (te va a pedir que coloques tu contraseña)
 
 ### 2- Moverse a la carpeta del proyecto:
 ```cd MateVerse-Devs4U```
@@ -299,7 +303,7 @@ Tabla que indica que meme guardó cada usuario. La PRIMARY  KEY es(meme_id, usua
 #### 3.2- Levantar los servicios individualmente:
 
 - Levantar la Base de Datos: ```docker compose up db``` o ```make start-database```
-- Levantar el backend: ```docker compose up backend``` o ```start-backend```
+- Levantar el backend: ```docker compose up backend``` o ```make start-backend```
 - Levantar el backend junto con la base de datos: ```docker compose up db backend``` o ```make start-backend-completo```
 - Levantar el frontend: ```docker compose up frontend```.
 
