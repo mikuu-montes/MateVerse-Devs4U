@@ -61,30 +61,30 @@
             <h2>PUBLICAR MEMES</h2>
 
             <form id="formCrearMeme" action="#" method="post">
-    <input type="text" name="titulo" placeholder="Titulo" required>
-    <input type="text" name="imagen_url" placeholder="Link de imagen del meme o de una que lo represente" required>
-    <input type="url" name="video_url" placeholder="Si tu meme es un video, pone el link aca">
-    <input type="text" name="descripcion" placeholder="Descripcion" required>
-    <input type="text" name="protagonista" placeholder="Protagonista" required>
+                <input type="text" name="titulo" placeholder="Titulo" required>
+                <input type="text" name="imagen_url" placeholder="Link de imagen del meme o de una que lo represente" required>
+                <input type="url" name="video_url" placeholder="Si tu meme es un video, pone el link aca">
+                <input type="text" name="descripcion" placeholder="Descripcion" required>
+                <input type="text" name="protagonista" placeholder="Protagonista" required>
 
-    <select id="input_categoria" name="id_categoria" required>
-        <option value="" disabled selected>Selecciona una categoría</option>
-    </select>
-    <input type="hidden" name="contexto_id">
+                <select id="input_categoria" name="id_categoria" required>
+                    <option value="" disabled selected>Selecciona una categoría</option>
+                </select>
+                <input type="hidden" name="contexto_id">
 
-    <input type="text" name="lugar_surgimiento" placeholder="Lugar de surgimiento" required>
-    <input type="text" name="medio_fuente" placeholder="Medio de fuente" required>
-    <label for="fechaCreacion">Fecha de surgimiento del meme</label>
-    <input type="date" name="fecha" required>
+                <input type="text" name="lugar_surgimiento" placeholder="Lugar de surgimiento" required>
+                <input type="text" name="medio_fuente" placeholder="Medio de fuente" required>
+                <label for="fechaCreacion">Fecha de surgimiento del meme</label>
+                <input type="date" name="fecha" required>
 
-    <button type="submit">Registrar</button>
-</form>
+                <button type="submit">Registrar</button>
+            </form>
 
 
         </div>
     
-        <script src="../js/postMeme.js"></script>
         <script src="../js/auth.js"></script>
+        <script src="../js/postMeme.js"></script>
 
 
     </body>
