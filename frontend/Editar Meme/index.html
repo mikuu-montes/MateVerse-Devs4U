@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>MateVerse | Editar meme</title>
+        <link rel="icon" href="../imagenes/icono.ico">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="../styles/styles.css">
+        <link rel="stylesheet" href="../styles/visualizacion-meme.css">
+        <link rel="stylesheet" href="../styles/editar.css">
+    </head>
+
+    <body>
+        
+        <div class="navbar">
+
+            <a href="../Información/index.html" class="linkContainerInfo">
+
+                <img id="logoPag" title="MateVerse" src="../imagenes/icono.ico" alt="Logo MateVerse">
+
+            </a>
+
+
+            <div id="contenedorLogos">
+
+                <a href="../Inicio/index.html" class="linkContainerInicio">
+
+                    <img class="logos" title="Inicio" src="../imagenes/inicio.png" alt="Logo Inicio">
+
+                </a>
+
+                <a href="../Ranking/index.html" class="linkContainerRanking">
+
+                    <img class="logos" title="Ranking" src="../imagenes/ranking.png" alt="Logo Ranking">
+
+                </a>
+
+                <a href="../Perfil Usuario/index.html" class="linkContainerPerfil">
+                    <img class="logos" title="Perfil" src="../imagenes/perfil.png" alt="Logo Perfil">
+                </a>
+
+                <a href="../Memes Guardados/index.html" class="linkContainerGuardados">
+
+                    <img class="logos" title="Guardados" src="../imagenes/archivo.png" alt="Logo Archivo">
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <a href="../Post Meme/index.html" class="linkContainerPostear">
+            
+            <img class="logos" title="Postear" id="postearMeme" src="../imagenes/postear_meme.png" alt="Logo Posteo Meme">
+
+        </a>
+
+        <div class="paginaMeme">
+            <!-- COLUMNA IZQUIERDA -->
+            <div class="columnaFoto">
+
+                <figure class="fotoContenedor">
+                    <img class="fotoMeme" src="../imagenes/medallas.png">   
+                </figure>
+                <h2 style="font-weight: bold" id= "link_imagen";>LINK DE LA IMAGEN</h2>
+                <input type="url" id="input_foto_meme" class="inputEditar" placeholder="Pegá la URL de la nueva imagen">
+                
+                
+                <!-- TÍTULO DEBAJO DE LA FOTO -->
+                <div class="nombreMemeContenedor">
+
+                     <h3 style="font-weight: bold" id="titulo">Título</h3>
+                    <h3 id="nombreMeme" contenteditable="true" class="inputEditar"></h3>
+                </div>
+                </div>
+                
+    
+            <!-- COLUMNA DERECHA DEL MEME -->
+            <div class="nombreContenedor">
+
+                <h2 style="font-weight: bold";>DESCRIPCION DEL MEME</h2> 
+                   
+                <div class="descripcionContenedor">
+                    <p id="descripcion" contenteditable="true" class="inputEditar"></p>
+                </div>
+
+                <h2 style="font-weight: bold";>PROTAGONISTAS DEL MEME</h2>
+
+                <p id="protagonista" contenteditable="true" class="inputEditar"></p>
+        
+                <h2 style="font-weight: bold";>CATEGORIA</h2>
+
+                <select id="input_categoria" class="inputEditar"></select>
+            
+                <h2 style="font-weight: bold";>ORIGEN DEL MEME</h2>
+
+                 <p id="origen_meme" contenteditable="true" class="inputEditar"></p>
+            
+                <h2 style="font-weight: bold";>MEDIO DEL QUE SURGIO EL MEME</h2>
+
+                
+                <p id="medio_meme" contenteditable="true" class="inputEditar"></p>
+
+                <h2 style="font-weight: bold";>LINK DEL VIDEO</h2>
+                
+                <input type="url" id="input_video_meme"  class="inputEditar" placeholder="Pegá la URL del nuevo video">
+
+                <h2 style="font-weight: bold";>FECHA DE SURGIMIENTO</h2>
+
+                <input type="date" id="fechaSurgio_meme" class="inputEditar">
+                
+               
+                <input type="hidden" id="input_contexto_id">
+                
+
+
+                <button class='boton_guardar' id="guardado_de_cambios">Guardar Cambios</button>
+
+            </div>
+
+        </div>
+        <script src="../js/editarMeme.js"></script>
+        <script src="../js/auth.js"></script>
+    </body>
+       
+
+</html>

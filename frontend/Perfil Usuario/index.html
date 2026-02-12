@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <title>MateVerse | Perfil</title>
+        <link rel="icon" href="../imagenes/icono.ico">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="../styles/styles.css">
+        <link rel="stylesheet" href="../styles/perfil.css">
+
+    </head>
+
+    <body>
+        
+        <div class="navbar">
+
+            <a href="../Información/index.html" class="linkContainerInfo">
+
+                <img id="logoPag" title="MateVerse" src="../imagenes/icono.ico" alt="Logo MateVerse">
+
+            </a>
+
+
+            <div id="contenedorLogos">
+
+                <a href="../Inicio/index.html" class="linkContainerInicio">
+
+                    <img class="logos" title="Inicio" src="../imagenes/inicio.png" alt="Logo Inicio">
+
+                </a>
+
+                <a href="../Ranking/index.html" class="linkContainerRanking">
+
+                    <img class="logos" title="Ranking" src="../imagenes/ranking.png" alt="Logo Ranking">
+
+                </a>
+
+                <a href="../Perfil Usuario/index.html" class="linkContainerPerfil">
+                    <img class="logos" title="Perfil" src="../imagenes/perfil.png" alt="Logo Perfil">
+                </a>
+
+                <a href="../Memes Guardados/index.html" class="linkContainerGuardados">
+
+                    <img class="logos" title="Guardados" src="../imagenes/archivo.png" alt="Logo Archivo">
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <a href="../Post Meme/index.html" class="linkContainerPostear">
+            
+            <img class="logos" title="Postear" id="postearMeme" src="../imagenes/postear_meme.png" alt="Logo Posteo Meme">
+
+        </a>
+
+        <div class="paginaPerfil">
+            
+            <figure class="fotoContenedor">
+
+                <img class="fotoPerfil is-rounded" src="../imagenes/perfil-default.jpeg">
+
+                <span class="iconoEditar">
+
+                    <i class="far fa-edit"></i>
+
+                </span>
+
+                <input type="url" id="inputFoto" placeholder="Pegá la URL de la nueva imagen">
+
+            </figure>
+
+            <div class= "contenedorCampoEditable usuarioContenedor">
+
+                <span class="nombreUsuario textoEditable" id="nombreUsuario">@Nombre_de_Usuario</span>
+                <input type="text" id="cambiarUsuario" class="inputEditar"> 
+        
+            </div>
+
+            <button class="botonEliminarUsuario"> Eliminar cuenta </button>
+            <button class="botonSalirCuenta">Cerrar Sesión</button>
+
+            <div class= "contenedorCampoEditable nombreContenedor">
+
+                <span class="nombreCompleto textoEditable" id="nombreCompleto">Nombre Apellido</span>
+                <input type="text" id="cambiarNombre"  class="inputEditar"> 
+        
+            </div>
+            
+            <div class= "contenedorCampoEditable claveContenedor">
+
+                <span class="clave textoEditable" id="clave">********</span>
+                <input type="password" id="cambiarClave"  class="inputEditar"> 
+        
+            </div>
+            
+            
+            <div class= "contenedorCampoEditable mailContenedor">
+
+                <span class="mail textoEditable" id="mail">nombre.apellido@gmail.com</span>
+                <input type="text" id="cambiarMail"  class="inputEditar" > 
+        
+            </div>
+
+            <div class="contenedorCantFavoritas">
+
+                <h2 style="font-weight: bold";>CATEGORIAS FAVORITAS</h2>
+
+                <div class="contenedorCat">
+                </div>
+
+            </div>
+
+            <div class="postsContenedor">
+
+                <h2 style="font-weight: bold";>MEMES PUBLICADOS</h2>
+                
+                <div class="filaPosts">
+                </div>
+
+            </div>
+
+        </div>
+
+        <script src="../js/auth.js"></script>
+        <script src="../js/perfil.js"></script>
+
+    </body>
+
+</html>

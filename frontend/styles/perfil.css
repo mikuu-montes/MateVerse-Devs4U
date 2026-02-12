@@ -1,0 +1,311 @@
+html, body{
+    min-height: 100vh;
+    height: auto;
+}
+
+.paginaPerfil{
+    position: relative;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 300px 1fr 1fr;
+    grid-template-rows: 250px auto auto auto;
+    grid-template-areas:
+        "foto nombre pass"
+        "usuario mail mail"
+        "categorias categorias categorias"
+        "post post post";
+    background-color:rgba(255, 255, 255, 0.85); 
+    height: 100%;    
+    width: 89%;
+    margin-top: 110px; 
+    margin-left: auto;  
+    margin-right: auto;
+    padding: 15px;
+}
+
+.botonEliminarUsuario, .botonSalirCuenta {
+    position: absolute;
+    right: 15px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    width: 150px;
+}
+
+.botonEliminarUsuario {
+    top:15px;
+    background-color: #e74c3c;
+}
+
+.botonSalirCuenta {
+    top: 60px;
+    background-color: green;
+}
+
+.botonEliminarUsuario:hover{
+    background-color: #c0392b;
+}
+
+.botonSalirCuenta:hover {
+    background-color: rgb(1, 92, 1);
+}
+
+.fotoContenedor {
+    width:256px;
+    height:256px;    
+    margin-left: 0;
+    justify-self: center;
+    position: relative;         
+}
+
+.fotoPerfil{
+    border: 4px solid #acd5ea;     
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+    width: 100%;     
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    justify-self: center;
+    display: inline-flex; 
+    cursor: pointer;
+    transition: 0.2s; 
+}
+
+.fotoPerfil:hover {
+    opacity: 0.8;
+}
+
+.iconoEditar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: white;
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+    pointer-events: none; 
+}
+
+.fotoPerfil:hover + .iconoEditar {
+    opacity: 1;
+}
+
+#inputFoto {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 110%;          /* 👈 lo manda al costado derecho */
+    transform: translateY(-50%);
+    width: 220px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 2px solid #acd5ea;
+    z-index: 20;
+    background-color: white;
+}
+
+#inputFoto.activo {
+    display: block;
+}
+
+.contenedorCampoEditable {
+    display: flex;
+    align-items: center;
+    height: 42px;
+    position: relative;        
+    width: 100%;
+}
+
+.textoEditable {
+    cursor: pointer;
+    transition: 0.2s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 42px;
+    line-height: 42px;
+    width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+    margin: 0;
+    font-weight: bold;
+    opacity: 1;
+    pointer-events: auto;
+    display: block;
+}
+
+.textoEditable:hover {
+    opacity: 0.6;
+}
+
+.inputEditar {
+    margin-top: 15px;
+    font-weight: bold;
+    background-color: #acd5ea55;
+    border: 2px solid #acd5ea;
+    border-radius: 8px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 42px;
+    line-height: 42px;
+    width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.usuarioContenedor{
+    margin: 15px;
+    grid-area:usuario;
+    width: auto;
+    justify-content: center;
+    text-align: center;
+}
+
+.nombreUsuario{
+    justify-self: center;
+    margin:0;
+    padding-top: 15px;
+    font-weight: bold;
+}
+
+.nombreContenedor{
+    grid-area: nombre;
+    justify-self: center;
+    border: 2px solid #acd5ea;
+    background-color:#acd5ea55;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+    border-radius: 8px;
+    align-self: end;
+    width: 90%
+}
+
+.nombreCompleto{
+    padding-left: 5px;
+    justify-self: left;
+}
+
+.claveContenedor{
+    grid-area: pass;
+    justify-self: center;
+    border: 2px solid #acd5ea;
+    background-color:#acd5ea55;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+    border-radius: 8px;
+    align-self: end;
+    width: 90%
+}
+
+.clave{
+    padding-left: 5px;
+    padding-top: 2px;
+    justify-self: left;
+}
+
+.mailContenedor{
+    grid-area: mail;
+    justify-self: center;
+    border: 2px solid #acd5ea;
+    background-color:#acd5ea55;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+    border-radius: 8px;
+    align-self: start;
+    margin-top: 15px;
+    width: 95%
+}
+
+.mail{
+    padding-left: 5px;
+}
+
+.contenedorCatFavoritas {
+  grid-area:categorias; 
+  display: flex;
+  flex-direction: column; 
+  gap: 5px;
+  align-self: start;
+}
+
+.contenedorCat{
+  grid-area:categorias; 
+  display: flex;
+  gap: 10px;
+  padding-top: 10px ;
+}
+
+.categoria {
+  background-color:#acd5ea;
+  padding: 6px 12px;
+  border-radius: 16px;
+  transition: 0.2s;
+  width: 150px;
+  color: #4184a6;
+}
+
+.categoria:hover {
+  background-color: #cce5ff;
+}
+
+.postsContenedor {
+  grid-area: post;
+  display: flex;
+  gap: 30px; 
+  flex-direction: column;
+}
+
+.filaPosts {
+  display: flex; 
+  flex-direction: row;
+  gap: 20px;    
+  flex-wrap: wrap
+}
+
+.memeBox {
+  background-color: #acd5ea;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.nombreMeme {
+  font-weight: bold;
+  font-size: 18px;
+  justify-self: center;
+  color: inherit;
+  text-decoration-line: none;
+}
+
+.botonesMeme{
+    justify-self: center;
+}
+
+.botonesMeme button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 10px;
+  transition: transform 0.2s;
+}
+
+.inputEditar.activo {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.textoEditable.oculto {
+    opacity: 0;
+}
+
+.usuarioContenedor .textoEditable, .usuarioContenedor .inputEditar {
+    text-align: center;
+}
